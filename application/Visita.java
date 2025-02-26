@@ -1,9 +1,7 @@
-package PACKAGE_NAME;
+package application;
 
 import java.util.Calendar;
 import java.util.Set;
-import PACKAGE_NAME.GiorniSettimana;
-import PACKAGE_NAME.Volontario;
 
 public class Visita {
     

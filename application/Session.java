@@ -1,4 +1,5 @@
-package PACKAGE_NAME;
+package application;
+import utility.FileManager;
 
 public class Session {
 

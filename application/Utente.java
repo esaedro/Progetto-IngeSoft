@@ -1,4 +1,4 @@
-package PACKAGE_NAME;
+package application;
 
 public abstract class Utente {
     
@@ -6,7 +6,8 @@ public abstract class Utente {
     private String password;
 
     private Boolean login(Utente utente) {
-
+            
+        return null;
     }
     
 }

@@ -1,6 +1,6 @@
-package PACKAGE_NAME;
+package utility;
 
-import PACKAGE_NAME.Session;
+import application.Session;
 
 public class View {
     
@@ -32,3 +32,5 @@ public class View {
     public void setSession(Session session) {
         this.session = session;
     }
+
+}

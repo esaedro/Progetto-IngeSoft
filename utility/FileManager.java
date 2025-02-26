@@ -1,5 +1,4 @@
-package PACKAGE_NAME;
-
+package utility;
 
 public class FileManager {
     
