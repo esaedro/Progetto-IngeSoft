@@ -10,21 +10,20 @@ public class Session {
     private Utente utenteAcceduto; //utenteCorrente?
     private FileManager filemanager;
 
-    private void salva() {
+    public void salva() {
 
     }
 
-    private void carica() {
+    public void carica() {
 
     }
 
-    private void cambiaPassword(Utente utente) {
+    public void cambiaPassword(Utente utente) {
 
     }
 
-
-    private void logic(Utente utente) {
-
+    public Boolean logic(Utente utente) {
+        return null;
     }
 
     public Utente[] getUtenti() {

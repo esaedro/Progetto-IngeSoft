@@ -13,17 +13,20 @@ public class View {
 
 
     public void salva() {
-    
+        session.salva();
     }
 
     public void carica() {
+        session.carica();
+    }
+
+    public void mostraLista(Boolean visite, Boolean volontari, Boolean luoghi) { //cambio nome
 
     }
 
-    public void mostraLista(Boolean visite, Boolean volontari, Boolean luoghi) {
+    public void login() {
 
     }
-
 
     public Session getSession() {
         return session;

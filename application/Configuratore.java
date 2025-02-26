@@ -1,44 +1,28 @@
 package application;
 
-public class Configuratore {
-
-    private String nomeUtente;
-    private String password;
+public class Configuratore extends Utente {
 
     public Configuratore(String nomeUtente, String password) {
-        this.nomeUtente = nomeUtente;
-        this.password = password;
-    }
-    public String getNomeUtente() {
-        return nomeUtente;
-    }
-    public void setNomeUtente(String nomeUtente) {
-        this.nomeUtente = nomeUtente;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
+        super(nomeUtente, password);
     }
 
-    private void inizializzaParametroTerritoriale() {
+    public void inizializzaParametroTerritoriale() {
 
     } 
 
-    private void setNumeroMassimoIscritti() {
+    public void setNumeroMassimoIscritti() {
 
     }
 
-    private void consultaDati() {
+    public void consultaDati() {  //da togliere?
 
     }
 
-    private void impostaDatePrecluse() {
+    public void impostaDatePrecluse() {
 
     }
 
-    private void inserisciLuoghiVisiti() {
+    public void inserisciLuoghiVisite() {
 
     }
 
