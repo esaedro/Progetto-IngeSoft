@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public abstract class Utente implements Serializable {
     
-    private String nomeUtente;
-    private String password;
-    private Session session;
+    protected String nomeUtente;
+    protected String password;
+    protected Session session;
 
     private Boolean login(Utente utente) {
             
@@ -34,6 +34,12 @@ public abstract class Utente implements Serializable {
         this.password = password;
     }
     
-    
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
+    } 
 
 }

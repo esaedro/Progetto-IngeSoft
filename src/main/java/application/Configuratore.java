@@ -6,12 +6,12 @@ public class Configuratore extends Utente {
         super(nomeUtente, password);
     }
 
-    public void inizializzaParametroTerritoriale() {
-
+    public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
+        Luogo.setParametroTerritoriale(parametroTerritoriale);
     } 
 
-    public void setNumeroMassimoIscritti() {
-
+    public void setNumeroMassimoIscritti(int numeroMassimoIscritti) {
+        Visita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
     }
 
     public void consultaDati() {  //da togliere?
