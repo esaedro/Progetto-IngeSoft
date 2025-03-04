@@ -1,29 +1,28 @@
 package application;
 
+import java.util.Calendar;
+import java.util.Set;
+
 public class Configuratore extends Utente {
 
     public Configuratore(String nomeUtente, String password) {
         super(nomeUtente, password);
     }
 
-    public void inizializzaParametroTerritoriale() {
-
+    public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
+        Luogo.setParametroTerritoriale(parametroTerritoriale);
     } 
 
-    public void setNumeroMassimoIscritti() {
-
+    public void setNumeroMassimoIscritti(int numeroMassimoIscritti) {
+        Visita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
     }
 
-    public void consultaDati() {  //da togliere?
-
+    public void impostaDatePrecluse(Set<Calendar> datePrecluse) {
+        Visita.aggiungiDatePrecluse(datePrecluse); 
     }
 
-    public void impostaDatePrecluse() {
-
-    }
-
-    public void inserisciLuoghiVisite() {
-
+    public void inserisciLuoghiVisite(Set<Luogo> luogo) {
+        super.session.luoghi.addAll(luogo);
     }
 
 }
