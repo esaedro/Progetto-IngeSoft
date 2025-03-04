@@ -2,15 +2,14 @@ package application;
 
 import java.io.Serializable;
 
-public abstract class Utente implements Serializable {
+public class Utente implements Serializable {
     
     protected String nomeUtente;
     protected String password;
     protected Session session;
 
-    private Boolean login(String nomeUtente, String password) {
-            
-        return null;
+    private Utente login(String nomeUtente, String password) {
+        return session.login(nomeUtente, password);
     }
 
     public Utente(String nomeUtente, String password) {

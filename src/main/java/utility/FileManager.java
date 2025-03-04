@@ -27,9 +27,9 @@ public class FileManager {
         }
     }
 
-    public <T> ArrayList<T> carica (String nomeFile, Class<T> _class) {
+    public <T> ArrayList<T> carica (String nomeFile, Class<T> classToLoad) {
         Gson gson = new Gson();
-        Type arrayType = TypeToken.getParameterized(ArrayList.class, _class).getType();
+        Type arrayType = TypeToken.getParameterized(ArrayList.class, classToLoad).getType();
         try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
             return gson.fromJson(reader, arrayType);
         } catch (IOException e) {
