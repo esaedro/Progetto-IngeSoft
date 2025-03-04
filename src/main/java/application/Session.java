@@ -1,11 +1,13 @@
 package application;
 import utility.FileManager;
 
+import java.util.ArrayList;
+
 public class Session {
 
-    protected Utente[] utenti;
-    protected Luogo[] luoghi;
-    protected Visita[] visite;
+    protected ArrayList<Utente> utenti;
+    protected ArrayList<Luogo> luoghi;
+    protected ArrayList<Visita> visite;
 
     private Utente utenteAcceduto; //utenteCorrente?
     private FileManager filemanager;
@@ -26,27 +28,27 @@ public class Session {
         return null;
     }
 
-    public Utente[] getUtenti() {
+    public ArrayList<Utente> getUtenti() {
         return utenti;
     }
 
-    public void setUtenti(Utente[] utenti) {
+    public void setUtenti(ArrayList<Utente> utenti) {
         this.utenti = utenti;
     }
 
-    public Luogo[] getLuoghi() {
+    public ArrayList<Luogo> getLuoghi() {
         return luoghi;
     }
 
-    public void setLuoghi(Luogo[] luoghi) {
+    public void setLuoghi(ArrayList<Luogo> luoghi) {
         this.luoghi = luoghi;
     }
 
-    public Visita[] getVisite() {
+    public ArrayList<Visita> getVisite() {
         return visite;
     }
 
-    public void setVisite(Visita[] visite) {
+    public void setVisite(ArrayList<Visita> visite) {
         this.visite = visite;
     }
 
@@ -66,7 +68,7 @@ public class Session {
         this.filemanager = filemanager;
     }
 
-    public Session(Utente[] utenti, Luogo[] luoghi, Visita[] visite, Utente utenteAcceduto, FileManager filemanager) {
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, Utente utenteAcceduto, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
