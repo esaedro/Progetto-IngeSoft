@@ -1,6 +1,8 @@
 package application;
 
-public class Luogo {
+import java.io.Serializable;
+
+public class Luogo implements Serializable {
     
     private static String parametroTerritoriale;
     private String nome;

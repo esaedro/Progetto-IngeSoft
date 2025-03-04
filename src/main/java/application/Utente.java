@@ -1,9 +1,12 @@
 package application;
 
-public abstract class Utente {
+import java.io.Serializable;
+
+public abstract class Utente implements Serializable {
     
     private String nomeUtente;
     private String password;
+    private Session session;
 
     private Boolean login(Utente utente) {
             
