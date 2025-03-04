@@ -1,17 +1,22 @@
 package utility;
 
+import application.Luogo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class FileManager {
     
     private String percorsoFile;
-    static private final String fileUtenti = "utenti.json";
-    static private final String fileVisite = "visite.json";
+    static public final String fileUtenti = "utenti.json";
+    static public final String fileVisite = "visite.json";
+    static public final String fileLuoghi = "luoghi.json";
 
     public void salva(String nomeFile, Object object) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -22,10 +27,11 @@ public class FileManager {
         }
     }
 
-    public Object carica(String nomeFile) {
+    public <T> ArrayList<T> carica (String nomeFile, Class<T> _class) {
         Gson gson = new Gson();
+        Type arrayType = TypeToken.getParameterized(ArrayList.class, _class).getType();
         try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
-            return gson.fromJson(reader, Object.class);
+            return gson.fromJson(reader, arrayType);
         } catch (IOException e) {
             // TODO: gestire anche questa eccezione
             return null;
