@@ -18,6 +18,10 @@ public class FileManager {
     static public final String fileVisite = "visite.json";
     static public final String fileLuoghi = "luoghi.json";
 
+    public FileManager(String percorsoFile) {
+        this.percorsoFile = percorsoFile;
+    }
+
     public void salva(String nomeFile, Object object) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try (FileWriter writer = new FileWriter(percorsoFile + nomeFile)) {
@@ -37,26 +41,4 @@ public class FileManager {
             return null;
         }
     }
-
-    
-    public FileManager(String percorsoFile) {
-        this.percorsoFile = percorsoFile;
-    }
-
-    public String getPercorsoFile() {
-        return percorsoFile;
-    }
-
-    public void setPercorsoFile(String percorsoFile) {
-        this.percorsoFile = percorsoFile;
-    }
-
-    public String getFileUtenti() {
-        return fileUtenti;
-    }
-
-    public String getFileVisite() {
-        return fileVisite;
-    }
-
 }

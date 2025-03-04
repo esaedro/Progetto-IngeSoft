@@ -13,11 +13,14 @@ public class Session {
     private FileManager filemanager;
 
     public void salva() {
-
+        filemanager.salva(FileManager.fileVisite, visite);
+        filemanager.salva(FileManager.fileLuoghi, luoghi);
     }
 
     public void carica() {
-
+        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
+        visite = filemanager.carica(FileManager.fileUtenti, Visita.class);
+        luoghi = filemanager.carica(FileManager.fileUtenti, Luogo.class);
     }
 
     public void cambiaPassword(Utente utente) {
