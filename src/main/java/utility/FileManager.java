@@ -1,22 +1,40 @@
 package utility;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class FileManager {
     
     private String percorsoFile;
-    private final String fileUtenti;
-    private final String fileVisite;
-    
-    public void salva() {
+    static private final String fileUtenti = "utenti.json";
+    static private final String fileVisite = "visite.json";
+
+    public void salva(String nomeFile, Object object) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(percorsoFile + nomeFile)) {
+            gson.toJson(object, writer);
+        } catch (IOException e) {
+            // TODO: gestire questa eccezione
+        }
     }
 
-    public void carica() {
+    public Object carica(String nomeFile) {
+        Gson gson = new Gson();
+        try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
+            return gson.fromJson(reader, Object.class);
+        } catch (IOException e) {
+            // TODO: gestire anche questa eccezione
+            return null;
+        }
     }
 
     
-    public FileManager(String percorsoFile, String fileUtenti, String fileVisite) {
+    public FileManager(String percorsoFile) {
         this.percorsoFile = percorsoFile;
-        this.fileUtenti = fileUtenti;
-        this.fileVisite = fileVisite;
     }
 
     public String getPercorsoFile() {
