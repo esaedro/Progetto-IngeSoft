@@ -7,6 +7,7 @@ import java.util.Set;
 public class Visita implements Serializable {
     
     private static int numeroMassimoIscrittoPerFruitore;
+    private static Set<Calendar> datePrecluse;
     private String titolo;
     private String descrizione;
     private String puntoIncontro;
@@ -123,6 +124,12 @@ public class Visita implements Serializable {
     }
     public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
         this.volontariIdonei = volontariIdonei;
+    }
+    public static Set<Calendar> getDatePrecluse() {
+        return datePrecluse;
+    }
+    public static void aggiungiDatePrecluse(Set<Calendar> datePrecluse) {
+        datePrecluse.addAll(datePrecluse);
     }
 
 }

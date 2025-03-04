@@ -8,7 +8,7 @@ public abstract class Utente implements Serializable {
     protected String password;
     protected Session session;
 
-    private Boolean login(Utente utente) {
+    private Boolean login(String nomeUtente, String password) {
             
         return null;
     }
