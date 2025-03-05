@@ -24,6 +24,7 @@ public class Visita implements Serializable {
     private Boolean bigliettoIngresso;
     private Luogo luogo;
     private Set<Volontario> volontariIdonei;
+
     public Visita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
             Calendar oraInizio, int durata, Set<GiorniSettimana> giorniSettimana, int maxPartecipante, int minPartecipante,
             Boolean bigliettoIngresso, Luogo luogo, Set<Volontario> volontariIdonei) {

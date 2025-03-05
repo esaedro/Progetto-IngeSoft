@@ -1,7 +1,10 @@
 package application;
 import utility.FileManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Session {
 
@@ -12,23 +15,50 @@ public class Session {
     private Utente utenteAcceduto; //utenteCorrente?
     private FileManager filemanager;
 
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, Utente utenteAcceduto, FileManager filemanager) {
+        this.utenti = utenti;
+        this.luoghi = luoghi;
+        this.visite = visite;
+        this.utenteAcceduto = utenteAcceduto;
+        this.filemanager = filemanager;
+    }
+
     public void salva() {
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
     }
 
     public void carica() {
-        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
         visite = filemanager.carica(FileManager.fileUtenti, Visita.class);
         luoghi = filemanager.carica(FileManager.fileUtenti, Luogo.class);
     }
 
-    public void cambiaPassword(Utente utente) {
-
+    public void cambiaPassword(Utente utente, String newPassword) {
+        try {
+            for (Utente user : utenti) {
+                if (user.getNomeUtente().equals(utente.getNomeUtente())) {
+                    user.setPassword(Arrays.toString(MessageDigest.getInstance("SHA-256").digest(newPassword.getBytes())));
+                }
+            }
+            filemanager.salva(FileManager.fileUtenti, utenti);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Utente login(String nomeUtente, String password) {
-        return null;
+        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
+        try {
+            for (Utente user: utenti) {
+                    if (user.getNomeUtente().equals(nomeUtente)
+                            && user.getPassword().equals(MessageDigest.getInstance("SHA-256").digest(password.getBytes()))) {
+                        return user;
+                    }
+            }
+            return null;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Utente> getUtenti() {
@@ -68,14 +98,6 @@ public class Session {
     }
 
     public void setFilemanager(FileManager filemanager) {
-        this.filemanager = filemanager;
-    }
-
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, Utente utenteAcceduto, FileManager filemanager) {
-        this.utenti = utenti;
-        this.luoghi = luoghi;
-        this.visite = visite;
-        this.utenteAcceduto = utenteAcceduto;
         this.filemanager = filemanager;
     }
 
