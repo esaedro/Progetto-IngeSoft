@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 public class Utente implements Serializable {
     
-    protected String nomeUtente;
-    protected String password;
+    private String nomeUtente;
+    private String password;
     protected Session session;
 
-    private Utente login(String nomeUtente, String password) {
+    public Utente login(String nomeUtente, String password) {
         return session.login(nomeUtente, password);
     }
 
