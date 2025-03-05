@@ -13,8 +13,7 @@ public class AppView {
     
     private Utente utente;
 
-    public AppView(Utente utente) {
-        this.utente = utente;
+    public AppView() {
     }
 
     public void start() { //Prima impostazione password
@@ -22,7 +21,7 @@ public class AppView {
         System.out.println("Per uscire scrivere '0' nella password");
         Utente utenteProvvisorio = null;
 
-        while  (utenteProvvisorio == null) {
+        while (utenteProvvisorio == null) {
             utenteProvvisorio = menuInserimentoCredenziali(new Utente(new Session()));
         }
 
@@ -121,14 +120,12 @@ public class AppView {
     }
 
     public Utente menuInserimentoCredenziali(Utente utente) {
-        if (utente instanceof Configuratore) {
+        if (utente instanceof Configuratore || true) {
             String nomeUtente, password;
 
             do {
                 System.out.println("Inserire le credenziali del configuratore: ");
-                System.out.print("Nome utente: ");
                 nomeUtente = leggiStringa("Inserire il nome utente: ");
-                System.out.print("Password: ");
                 password = leggiStringa("Inserire la password: ");
             } while (password.equals(Character.toString('0')) || !conferma("Credenziali accettate"));
             
@@ -224,7 +221,7 @@ public class AppView {
             }
         } while(!finito);
 
-        lettore.close();
+        // lettore.close();
         return valoreLetto;
     }
 
@@ -243,13 +240,13 @@ public class AppView {
 
     public static String leggiStringa(String messaggio) {
         Scanner lettore = new Scanner(System.in);
-        lettore.useDelimiter(System.getProperty("line.separator"));
+        // lettore.useDelimiter(System.getProperty("line.separator"));
         boolean finito = false;
         String lettura = null;
 
         do {
            System.out.print(messaggio);
-           lettura =  lettore.next();
+           lettura = lettore.next();
            lettura = lettura.trim();
            if (lettura.length() > 0) {
               finito = true;
@@ -258,7 +255,7 @@ public class AppView {
            }
         } while(!finito);
 
-        lettore.close();
+        // lettore.close();
         return lettura;
      }
 

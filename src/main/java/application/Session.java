@@ -28,6 +28,9 @@ public class Session {
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
     }
+    public void salvaUtenti() {
+        filemanager.salva(FileManager.fileUtenti, utenti);
+    }
 
     public void carica() {
         visite = filemanager.carica(FileManager.fileUtenti, Visita.class);
@@ -35,31 +38,23 @@ public class Session {
     }
 
     public void cambiaPassword(Utente utente, String newPassword) {
-        try {
-            for (Utente user : utenti) {
-                if (user.getNomeUtente().equals(utente.getNomeUtente())) {
-                    user.setPassword(Arrays.toString(MessageDigest.getInstance("SHA-256").digest(newPassword.getBytes())));
-                }
+        for (Utente user : utenti) {
+            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
+                user.setPassword(newPassword);
             }
-            filemanager.salva(FileManager.fileUtenti, utenti);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
         }
+        filemanager.salva(FileManager.fileUtenti, utenti);
     }
 
     public Utente login(String nomeUtente, String password) {
         utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
-        try {
-            for (Utente user: utenti) {
-                    if (user.getNomeUtente().equals(nomeUtente)
-                            && user.getPassword().equals(MessageDigest.getInstance("SHA-256").digest(password.getBytes()).toString())) {
-                        return user;
-                    }
-            }
-            return null;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+        for (Utente user: utenti) {
+                if (user.getNomeUtente().equals(nomeUtente)
+                        && user.getPassword().equals(password)) {
+                    return user;
+                }
         }
+        return null;
     }
 
     public ArrayList<Utente> getUtenti() {
