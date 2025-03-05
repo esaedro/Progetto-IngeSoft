@@ -8,13 +8,17 @@ public class Utente implements Serializable {
     private String password;
     protected Session session;
 
-    public Utente login(String nomeUtente, String password) {
-        return session.login(nomeUtente, password);
-    }
-
     public Utente(String nomeUtente, String password) {
         this.nomeUtente = nomeUtente;
         this.password = password;
+    }
+
+    public Utente(Session session) {
+        this.session = session;
+    }
+
+    public Utente login(String nomeUtente, String password) {
+        return session.login(nomeUtente, password);
     }
 
     public String getNomeUtente() {

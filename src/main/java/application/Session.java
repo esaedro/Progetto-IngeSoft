@@ -11,15 +11,16 @@ public class Session {
     protected ArrayList<Utente> utenti;
     protected ArrayList<Luogo> luoghi;
     protected ArrayList<Visita> visite;
-
-    private Utente utenteAcceduto; //utenteCorrente?
     private FileManager filemanager;
 
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, Utente utenteAcceduto, FileManager filemanager) {
+    public Session() {
+        this.filemanager = new FileManager("database/");
+    }
+
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
-        this.utenteAcceduto = utenteAcceduto;
         this.filemanager = filemanager;
     }
 
@@ -51,7 +52,7 @@ public class Session {
         try {
             for (Utente user: utenti) {
                     if (user.getNomeUtente().equals(nomeUtente)
-                            && user.getPassword().equals(MessageDigest.getInstance("SHA-256").digest(password.getBytes()))) {
+                            && user.getPassword().equals(MessageDigest.getInstance("SHA-256").digest(password.getBytes()).toString())) {
                         return user;
                     }
             }
@@ -83,14 +84,6 @@ public class Session {
 
     public void setVisite(ArrayList<Visita> visite) {
         this.visite = visite;
-    }
-
-    public Utente getUtenteAcceduto() {
-        return utenteAcceduto;
-    }
-
-    public void setUtenteAcceduto(Utente utenteAcceduto) {
-        this.utenteAcceduto = utenteAcceduto;
     }
 
     public FileManager getFilemanager() {

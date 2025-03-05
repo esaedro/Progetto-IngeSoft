@@ -48,6 +48,26 @@ public class Visita implements Serializable {
     public static void setNumeroMassimoIscrittoPerFruitore(int numeroMassimoIscrittoPerFruitore) {
         Visita.numeroMassimoIscrittoPerFruitore = numeroMassimoIscrittoPerFruitore;
     }
+
+    @Override
+    public String toString() {
+        return "Visita{" +
+                "titolo='" + titolo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", puntoIncontro='" + puntoIncontro + '\'' +
+                ", dataInizio=" + dataInizio.getTime() +
+                ", dataFine=" + dataFine.getTime() +
+                ", oraInizio=" + oraInizio.getTime() +
+                ", durata=" + durata +
+                ", giorniSettimana=" + giorniSettimana +
+                ", maxPartecipante=" + maxPartecipante +
+                ", minPartecipante=" + minPartecipante +
+                ", bigliettoIngresso=" + bigliettoIngresso +
+                ", luogo=" + luogo +
+                ", volontariIdonei=" + volontariIdonei +
+                '}';
+    }
+
     public String getTitolo() {
         return titolo;
     }
