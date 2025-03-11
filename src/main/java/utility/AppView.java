@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
-
 import application.*;
 
 public class AppView {
@@ -28,7 +27,15 @@ public class AppView {
         utente = utenteProvvisorio;
         carica();
         
-        System.out.println("Benvenuto " + utente.getNomeUtente());
+        System.out.println("\nBenvenuto " + utente.getNomeUtente());
+
+        //se la password inizia con sequenza predefinita allora è da cambiare perchè questo è il primo accesso 
+        menuCambioPassword();
+
+        System.out.println("\nSi inizializzi il parametro territoriale a cui fa riferimento l'applicazione");
+        menuInserimentoParametroTerritoriale();
+        System.out.println("\nSi inizializzi il numero massimo di iscritti per visita");
+        menuInserimentoMassimoIscritti();
 
         mostraMenu(utente);
         salva();
@@ -36,10 +43,12 @@ public class AppView {
 
     public void salva() {
         utente.getSession().salva();
+        System.out.println("\nSessione salvata");
     }
 
     public void carica() {
         utente.getSession().carica();
+        System.out.println("\nSessione caricata");
     }
 
     public void mostraLista(Boolean visite, Boolean volontari, Boolean luoghi) { 
@@ -68,7 +77,7 @@ public class AppView {
         int scelta = 0;
 
         do {
-            System.out.println("Menu:");
+            System.out.println("\nMenu:");
             System.out.println("1. Mostra lista luoghi");
             System.out.println("2. Mostra lista volontari");
             System.out.println("3. Mostra lista visite");
@@ -110,21 +119,21 @@ public class AppView {
                 menuInserimentoDate();
                 break;
                 case 0:
-                System.out.println("Uscita dal programma.");
+                System.out.println("\nUscita dal programma.");
                 break;
                 default:
-                System.out.println("Opzione non valida.");
+                System.out.println("\nOpzione non valida.");
                 break;
             }
         } while (scelta != 0);
     }
 
     public Utente menuInserimentoCredenziali(Utente utente) {
-        if (utente instanceof Configuratore || true) {
+        if (utente instanceof Configuratore) {
             String nomeUtente, password;
 
             do {
-                System.out.println("Inserire le credenziali del configuratore: ");
+                System.out.println("\nInserire le credenziali del configuratore: ");
                 nomeUtente = leggiStringa("Inserire il nome utente: ");
                 password = leggiStringa("Inserire la password: ");
             } while (!(password.equals(Character.toString('0'))) && !(conferma("Credenziali inserite")));
@@ -134,26 +143,35 @@ public class AppView {
             return utente.login(nomeUtente, password);
         }
         else {
-            System.out.println("Permessi non sufficienti"); //Fase 1 solo configuratori accedono
+            System.out.println("\nPermessi non sufficienti"); //Fase 1 solo configuratori accedono
             return null;
         }
     }
 
+    public void menuCambioPassword() {
+        String newPassword;
+        do {
+            newPassword = leggiStringa("\nInserire la nuova password: ");
+        } while (!conferma("Password accettata"));
+
+        utente.getSession().cambiaPassword(utente, newPassword);
+    }
+
     public void menuInserimentoParametroTerritoriale() { //chiamo poi il metodo di configuratore passandogli il parametro da tastiera
         
-        if (Luogo.getParametroTerritoriale() != null) {
+        if (Luogo.getParametroTerritoriale() == null) {
 
             if (utente instanceof Configuratore) {    
                 String parametro;
                 do {
-                    parametro = leggiStringa("Inserire il parametro territoriale: ");
+                    parametro = leggiStringa("\nInserire il parametro territoriale: ");
                 } while (!conferma("Parametro inserito correttamente"));
 
                 ((Configuratore) utente).inizializzaParametroTerritoriale(parametro);
             }
-            else System.out.println("Permessi non sufficienti");
+            else System.out.println("\nPermessi non sufficienti");
         }
-        else System.out.println("Parametro territoriale gia' impostato: " + Luogo.getParametroTerritoriale());
+        else System.out.println("\nParametro territoriale gia' impostato: " + Luogo.getParametroTerritoriale());
     }
 
     public void menuInserimentoMassimoIscritti() {
@@ -161,26 +179,26 @@ public class AppView {
 
             int maxIscritti = Visita.getNumeroMassimoIscrittoPerFruitore();
             do {
-                maxIscritti = leggiIntero("Inserire il nuovo numero massimo di iscritti: ", 1, 1000);
-            } while(!conferma("Nuovo numero massimo di iscritti: " + maxIscritti));
+                maxIscritti = leggiIntero("\nInserire il nuovo numero massimo di iscritti: ", 1, 1000);
+            } while(!conferma("\nNuovo numero massimo di iscritti: " + maxIscritti));
             
             ((Configuratore) utente).setNumeroMassimoIscritti(maxIscritti);
         }
-        else System.out.println("Permessi non sufficienti");
+        else System.out.println("\nPermessi non sufficienti");
     }
 
      public void menuInserimentoDate() {
         if (utente instanceof Configuratore) {
             Month meseLavoro = CalendarManager.meseDiLavoro(3);
             Month meseLavoro2 = meseLavoro.plus(1);
-            System.out.println("Inserire le date precluse per i giorni dal 16" + meseLavoro.toString() + "al 15" + meseLavoro2.toString() + ": ");
+            System.out.println("\nInserire le date precluse per i giorni dal 16 " + meseLavoro.toString() + " al 15 " + meseLavoro2.toString() + ": ");
 
             int dataInserita;
             Set<Calendar> datePrecluse = new HashSet<>();
 
             do {
                 do {
-                    dataInserita = leggiIntero("Inserire una data preclusa (0 per uscire)", 1, meseLavoro.maxLength());
+                    dataInserita = leggiIntero("Inserire una data preclusa (0 per uscire): ", 0, meseLavoro.maxLength());
                     if (dataInserita > 15) {
                         Calendar dataDaInserire = Calendar.getInstance();
                         dataDaInserire.set(Calendar.DAY_OF_MONTH, dataInserita);
@@ -221,7 +239,6 @@ public class AppView {
             }
         } while(!finito);
 
-        // lettore.close();
         return valoreLetto;
     }
 
@@ -255,7 +272,6 @@ public class AppView {
            }
         } while(!finito);
 
-        // lettore.close();
         return lettura;
      }
 
