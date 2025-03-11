@@ -40,7 +40,7 @@ public class Session {
                 user.setPassword(newPassword);
             }
         }
-        filemanager.salva(FileManager.fileUtenti, utenti);
+        salvaUtenti();
     }
 
     public Utente login(String nomeUtente, String password) {
@@ -95,6 +95,5 @@ public class Session {
     public void setFilemanager(FileManager filemanager) {
         this.filemanager = filemanager;
     }
-
 
 }

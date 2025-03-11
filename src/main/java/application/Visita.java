@@ -18,15 +18,15 @@ public class Visita implements Serializable {
     private int durata;
     private Set<GiorniSettimana> giorniSettimana;
 
-    private int maxPartecipante;
     private int minPartecipante;
+    private int maxPartecipante;
 
     private Boolean bigliettoIngresso;
     private Luogo luogo;
     private Set<Volontario> volontariIdonei;
 
     public Visita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
-            Calendar oraInizio, int durata, Set<GiorniSettimana> giorniSettimana, int maxPartecipante, int minPartecipante,
+            Calendar oraInizio, int durata, Set<GiorniSettimana> giorniSettimana, int minPartecipante, int maxPartecipante,
             Boolean bigliettoIngresso, Luogo luogo, Set<Volontario> volontariIdonei) {
         this.titolo = titolo;
         this.descrizione = descrizione;
@@ -36,8 +36,8 @@ public class Visita implements Serializable {
         this.oraInizio = oraInizio;
         this.durata = durata;
         this.giorniSettimana = giorniSettimana;
-        this.maxPartecipante = maxPartecipante;
         this.minPartecipante = minPartecipante;
+        this.maxPartecipante = maxPartecipante;
         this.bigliettoIngresso = bigliettoIngresso;
         this.luogo = luogo;
         this.volontariIdonei = volontariIdonei;
@@ -149,8 +149,8 @@ public class Visita implements Serializable {
     public static Set<Calendar> getDatePrecluse() {
         return datePrecluse;
     }
-    public static void aggiungiDatePrecluse(Set<Calendar> datePrecluse) {
-        datePrecluse.addAll(datePrecluse);
+    public static void aggiungiDatePrecluse(Set<Calendar> datePrecluseDaAggiungere) {
+        datePrecluse.addAll(datePrecluseDaAggiungere);
     }
 
 }

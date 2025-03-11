@@ -129,7 +129,6 @@ public class AppView {
     }
 
     public Utente menuInserimentoCredenziali(Utente utente) {
-        if (utente instanceof Configuratore) {
             String nomeUtente, password;
 
             do {
@@ -141,18 +140,16 @@ public class AppView {
             if (password.equals(Character.toString('0'))) return null;
 
             return utente.login(nomeUtente, password);
-        }
-        else {
-            System.out.println("\nPermessi non sufficienti"); //Fase 1 solo configuratori accedono
-            return null;
-        }
     }
 
     public void menuCambioPassword() {
         String newPassword;
         do {
             newPassword = leggiStringa("\nInserire la nuova password: ");
-        } while (!conferma("Password accettata"));
+            if (newPassword.equals(utente.getPassword())) {
+                System.out.println("\nLa nuova password non puo' essere uguale a quella attuale");
+            }
+        } while (newPassword.equals(utente.getPassword()) || !conferma("Password accettata"));
 
         utente.getSession().cambiaPassword(utente, newPassword);
     }
