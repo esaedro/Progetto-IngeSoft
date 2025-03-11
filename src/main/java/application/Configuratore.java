@@ -9,6 +9,11 @@ public class Configuratore extends Utente {
         super(nomeUtente, password);
     }
 
+    public Configuratore(Utente utente) {
+        super(utente.getNomeUtente(), utente.getPassword());
+        super.session = utente.session;
+    }
+
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
         Luogo.setParametroTerritoriale(parametroTerritoriale);
     } 
