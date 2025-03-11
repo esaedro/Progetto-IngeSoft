@@ -6,4 +6,9 @@ public class Volontario extends Utente {
     public Volontario(String nomeUtente, String password) {
         super(nomeUtente, password);
     }
+
+    public Volontario(Utente utente) {
+        super(utente.getNomeUtente(), utente.getPassword());
+        super.session = utente.session;
+    }
 }

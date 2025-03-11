@@ -1,10 +1,7 @@
 package application;
 import utility.FileManager;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Session {
 
@@ -51,6 +48,16 @@ public class Session {
         for (Utente user: utenti) {
                 if (user.getNomeUtente().equals(nomeUtente)
                         && user.getPassword().equals(password)) {
+                    user.session = this;
+                    if (nomeUtente.startsWith("C")) {
+                        utenti.remove(user);
+                        user = new Configuratore(user);
+                        utenti.add(user);
+                    } else if (nomeUtente.startsWith("V")) {
+                        utenti.remove(user);
+                        user = new Volontario(user);
+                        utenti.add(user);
+                    }
                     return user;
                 }
         }
