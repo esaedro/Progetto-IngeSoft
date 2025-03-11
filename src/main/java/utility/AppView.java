@@ -127,7 +127,7 @@ public class AppView {
                 System.out.println("Inserire le credenziali del configuratore: ");
                 nomeUtente = leggiStringa("Inserire il nome utente: ");
                 password = leggiStringa("Inserire la password: ");
-            } while (password.equals(Character.toString('0')) || !conferma("Credenziali accettate"));
+            } while (!(password.equals(Character.toString('0'))) && !(conferma("Credenziali inserite")));
             
             if (password.equals(Character.toString('0'))) return null;
 
