@@ -27,7 +27,7 @@ public class TipoVisita implements Serializable {
 
     public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
             Calendar oraInizio, int durata, Set<DayOfWeek> giorniSettimana, int minPartecipante, int maxPartecipante,
-            Boolean bigliettoIngresso, Luogo luogo, Set<Volontario> volontariIdonei) {
+            Boolean bigliettoIngresso, Set<Volontario> volontariIdonei) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.puntoIncontro = puntoIncontro;

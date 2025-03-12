@@ -10,14 +10,21 @@ import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
+
 import org.beryx.textio.TextIO;
 import org.beryx.textio.TextIoFactory;
 
-import application.*;
+import application.Configuratore;
+import application.Luogo;
+import application.Session;
+import application.TipoVisita;
+import application.Utente;
+import application.Volontario;
 
 public class AppView {
     
     private Utente utente;
+    private TextIO textIO = TextIoFactory.getTextIO();
 
     public AppView() {
     }
@@ -283,10 +290,45 @@ public class AppView {
             } while (minPartecipante > maxPartecipante);
             bigliettoIngresso = yn("E' richiesto un biglietto d'ingresso? ");
 
-            //TODO: selezione giorni della settimana
-            //TODO: selezioni volontari dalla lista utenti di sessione
+            System.out.println("Inserire i giorni della settimana in cui si svolge la visita: ");
+            for (DayOfWeek giorno : DayOfWeek.values()) {
+                System.out.print((giorno.getValue() + 1) + ". " + traduciGiorno(giorno) + "\t");
+                if (yn("")) {
+                    giorniSettimana.add(giorno);
+                }
+            }
 
+            System.out.println("Inserire i volontari idonei alla visita: ");
+            while(volontariIdonei.isEmpty() || yn("Inserire un altro volontario?")) {
+                Volontario volontario = menuSelezioneVolontario();
+                if (volontario != null) {
+                    volontariIdonei.add(volontario);
+                } else if (volontariIdonei.isEmpty()) {
+                    System.out.println("Inserire almeno un volontario");
+                }
+            }
+
+            return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
+                    giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
+        }
+        else {
+            System.out.println("Permessi non sufficienti");
             return null;
+        }
+    }
+
+    private Volontario menuSelezioneVolontario(){
+        if (utente instanceof Configuratore) {
+            System.out.println("Selezionare un volontario: ");
+            int i = 1;
+            for (Utente user : utente.getSession().getUtenti()) {
+                if (user instanceof Volontario) {
+                    System.out.println(i + ". " + user.toString());
+                    i++;
+                }
+            }
+            int scelta = leggiIntero("Scegli un volontario: ", 0, i);
+            return scelta == 0 ? null : (Volontario) utente.getSession().getUtenti().toArray()[scelta-1];
         }
         else {
             System.out.println("Permessi non sufficienti");
