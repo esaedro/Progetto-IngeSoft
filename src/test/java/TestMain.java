@@ -1,11 +1,14 @@
 import application.Configuratore;
 import application.Session;
+import application.Utente;
+import application.Volontario;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.*;
 import java.util.Calendar;
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMain {
 
@@ -26,6 +29,15 @@ public class TestMain {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(Date.from(clock.instant()));
 
-        assertEquals(calendar.getTime().toString(), dateTimeExpected, "Skibidi toilet");
+        assertEquals(calendar.getTime().toString(), dateTimeExpected, "Cambio di data non funzionante");
+    }
+
+    @Test
+    void loginConfiguratoreTest() {
+        Utente utenteProvvisorio = new Utente(new Session());
+
+        Utente finale = utenteProvvisorio.login("C_Dilbert", "pallos");
+
+        assertInstanceOf(Configuratore.class, finale,"Login configuratore non restituisce i permessi");
     }
 }
