@@ -1,15 +1,19 @@
 package application;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Luogo implements Serializable {
     
     private static String parametroTerritoriale;
     private String nome;
-    //indirizzo
+    private String indirizzo;
+    private Set<TipoVisita> visite = new HashSet<>();
 
-    public Luogo(String nome) {
+    public Luogo(String nome, String indirizzo) {
         this.nome = nome;
+        this.indirizzo = indirizzo;
     }
 
     public static String getParametroTerritoriale() {
@@ -28,10 +32,22 @@ public class Luogo implements Serializable {
         this.nome = nome;
     }
 
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public Set<TipoVisita> getVisite() {
+        return visite;
+    }
+    
+    public void addVisite(Set<TipoVisita> visiteDaAggiungere) {
+        visite.addAll(visiteDaAggiungere);
+    }
+
     @Override
     public String toString() {
         return "Luogo{" +
-                "nome='" + nome + '\'' +
-                '}';
+                "nome='" + nome + '\'' + ", indirizzo='" + indirizzo + '\'' + '}';
     }
+
 }

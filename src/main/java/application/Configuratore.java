@@ -26,8 +26,12 @@ public class Configuratore extends Utente {
         TipoVisita.aggiungiDatePrecluse(datePrecluse); 
     }
 
-    public void inserisciLuoghiVisite(Set<Luogo> luogo) {
+    public void inserisciLuoghi(Set<Luogo> luogo) {
         super.session.luoghi.addAll(luogo);
+    }
+
+    public void inserisciVisite(Set<TipoVisita> visite) {
+        super.session.visite.addAll(visite);
     }
 
 }

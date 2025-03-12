@@ -23,7 +23,6 @@ public class TipoVisita implements Serializable {
     private int maxPartecipante;
 
     private Boolean bigliettoIngresso;
-    private Luogo luogo;
     private Set<Volontario> volontariIdonei;
 
     public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
@@ -40,7 +39,6 @@ public class TipoVisita implements Serializable {
         this.minPartecipante = minPartecipante;
         this.maxPartecipante = maxPartecipante;
         this.bigliettoIngresso = bigliettoIngresso;
-        this.luogo = luogo;
         this.volontariIdonei = volontariIdonei;
     }
     public static int getNumeroMassimoIscrittoPerFruitore() {
@@ -64,7 +62,6 @@ public class TipoVisita implements Serializable {
                 ", maxPartecipante=" + maxPartecipante +
                 ", minPartecipante=" + minPartecipante +
                 ", bigliettoIngresso=" + bigliettoIngresso +
-                ", luogo=" + luogo +
                 ", volontariIdonei=" + volontariIdonei +
                 '}';
     }
@@ -134,12 +131,6 @@ public class TipoVisita implements Serializable {
     }
     public void setBigliettoIngresso(Boolean bigliettoIngresso) {
         this.bigliettoIngresso = bigliettoIngresso;
-    }
-    public Luogo getLuogo() {
-        return luogo;
-    }
-    public void setLuogo(Luogo luogo) {
-        this.luogo = luogo;
     }
     public Set<Volontario> getVolontariIdonei() {
         return volontariIdonei;

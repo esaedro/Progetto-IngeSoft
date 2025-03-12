@@ -1,12 +1,18 @@
 package utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
+import org.beryx.textio.TextIO;
+import org.beryx.textio.TextIoFactory;
+
 import application.*;
 
 public class AppView {
@@ -189,7 +195,7 @@ public class AppView {
         if (utente instanceof Configuratore) {
             Month meseLavoro = CalendarManager.meseDiLavoro(3);
             Month meseLavoro2 = meseLavoro.plus(1);
-            System.out.println("\nInserire le date precluse per i giorni dal 16 " + meseLavoro.toString() + " al 15 " + meseLavoro2.toString() + ": ");
+            System.out.println("\nInserire le date precluse per i giorni dal 16 " + traduciMese(meseLavoro) + " al 15 " + traduciMese(meseLavoro2) + ": ");
 
             int dataInserita;
             Set<Calendar> datePrecluse = new HashSet<>();
@@ -221,14 +227,136 @@ public class AppView {
     luogo uno o più tipi di visita e almeno un volontario per ciascun tipo*/
     private void menuInserimentoLuoghi() {
         if (utente instanceof Configuratore) {
-            String nomeLuogo;
+            Set<Luogo> luoghi = new HashSet<>();
+            Set<TipoVisita> visite = new HashSet<>();
+            String nomeLuogo, indirizzoLuogo;
+            TipoVisita tipoVisita;
 
-            nomeLuogo = leggiStringa(nomeLuogo = "Inserire il nome del luogo da inserire: ");
-            Luogo luogo = new Luogo(nomeLuogo);
+            do {
+                do {
+                    nomeLuogo = leggiStringa("\nInserire il nome del luogo da inserire: ");
+                    indirizzoLuogo = leggiStringa("Inserire l'indirizzo del luogo da inserire: ");
+                } while(!conferma("Luogo inserito"));
 
+                Luogo luogo = new Luogo(nomeLuogo, indirizzoLuogo);
+
+                System.out.println("Inserire almeno un tipo di visita: ");
+                do {
+                    tipoVisita = menuInserimentoTipoVisita();
+                    if (tipoVisita != null) {
+                        visite.add(tipoVisita);
+                    }
+                    else break;
+                } while (yn("Inserire un altro tipo di visita?"));
+
+                luogo.addVisite(visite);
+                luoghi.add(luogo);
+                ((Configuratore) utente).inserisciVisite(visite); //Inserisce la/le visite nella session dell'utente
+            } while(yn("Inserire un altro luogo?"));
+
+            ((Configuratore) utente).inserisciLuoghi(luoghi); //Inserisce i luoghi nella session dell'utente
 
         }
         else System.out.println("Permessi non sufficienti");
+    }
+
+    private TipoVisita menuInserimentoTipoVisita() {
+        if (utente instanceof Configuratore) {
+            String titolo, descrizione, puntoIncontro;
+            Calendar dataInizio, dataFine, oraInizio;
+            int durata, minPartecipante, maxPartecipante;
+            Boolean bigliettoIngresso;
+            Set<DayOfWeek> giorniSettimana = new HashSet<>();
+            Set<Volontario> volontariIdonei = new HashSet<>();
+
+            titolo = leggiStringa("Inserire il titolo della visita: ");
+            descrizione = leggiStringa("Inserire la descrizione della visita: ");
+            puntoIncontro = leggiStringa("Inserire il punto di incontro della visita: ");
+            dataInizio = leggiData("Inserisci data inizio ");
+            dataFine = leggiData("Inserisci data fine ");
+            oraInizio = leggiOra("Inserisci ora inizio ");
+            durata = leggiIntero("Inserisci durata in minuti: ", 1, 600);
+            do {
+                minPartecipante = leggiIntero("Inserisci numero minimo partecipanti: ", 1, 1000);
+                maxPartecipante = leggiIntero("Inserisci numero massimo partecipanti: ", 1, 1000);
+                if (minPartecipante > maxPartecipante) System.out.println("Il numero minimo di partecipanti non puo' essere maggiore del numero massimo");
+            } while (minPartecipante > maxPartecipante);
+            bigliettoIngresso = yn("E' richiesto un biglietto d'ingresso? ");
+
+            //TODO: selezione giorni della settimana
+            //TODO: selezioni volontari dalla lista utenti di sessione
+
+            return null;
+        }
+        else {
+            System.out.println("Permessi non sufficienti");
+            return null;
+        }
+    }
+
+    private Calendar leggiData(String messaggio) {
+        Scanner lettore = new Scanner(System.in);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM");
+        formatter.setLenient(false); // Impedisce di accettare date non valide
+        
+        Calendar calendar = Calendar.getInstance();
+        boolean inputValido = false;
+
+        while (!inputValido) {
+            System.out.print(messaggio + "(dd/MM): ");
+            String input = lettore.nextLine();
+        
+            try {
+                Date data = formatter.parse(input); // Parsing della data
+                calendar.setTime(data);
+                //calendar.set(Calendar.YEAR, Calendar.YEAR); // Aggiungiamo l'anno corrente
+                                // Controllo per date impossibili (es. 30 febbraio, 31 aprile, ecc.)
+                int giornoInserito = calendar.get(Calendar.DAY_OF_MONTH);
+                if (giornoInserito != Integer.parseInt(input.split("/")[0])) {
+                    throw new ParseException("Data non valida", 0);
+                }
+                inputValido = true;
+            } catch (ParseException e) {
+                System.out.println("Formato non valido");
+            }
+        }
+        return calendar;
+    }
+
+    private Calendar leggiOra(String messaggio) {
+        Scanner lettore = new Scanner(System.in);
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
+        formatter.setLenient(false); // Impedisce di accettare date non valide
+        
+        Calendar calendar = Calendar.getInstance();
+        boolean inputValido = false;
+
+        while (!inputValido) {
+            System.out.print(messaggio + "(hh:mm): ");
+            String input = lettore.nextLine();
+        
+            try {
+                Date data = formatter.parse(input); // Parsing della data
+                calendar.setTime(data);
+
+                // Controllo per orari impossibili
+                int oraInserita = calendar.get(Calendar.HOUR_OF_DAY);
+                int minutiInseriti = calendar.get(Calendar.MINUTE);
+                String[] parti = input.split("\\.");
+                int oraDigitata = Integer.parseInt(parti[0]);
+                int minutiDigitati = Integer.parseInt(parti[1]);
+
+                if (oraInserita != oraDigitata || minutiInseriti != minutiDigitati) {
+                    throw new ParseException("Orario non valido", 0);
+                }
+
+                inputValido = true;
+
+            } catch (ParseException | NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                System.out.println("Formato non valido o orario inesistente");
+            }
+        }
+        return calendar;
     }
 
     private int leggiIntero(String msgInserimento, int min, int max) {
@@ -254,19 +382,6 @@ public class AppView {
         return valoreLetto;
     }
 
-
-    public Boolean conferma(String messaggio) {
-        String input;
-        input = leggiStringa("Confermare l'inserimento dei dati (y/n): ");
-        if (input.equalsIgnoreCase("y")) {
-            System.out.println("Confermato: " + messaggio);
-            return true;
-        } else {
-            System.out.println("Annullato");
-            return false;
-        }
-    }
-
     public static String leggiStringa(String messaggio) {
         Scanner lettore = new Scanner(System.in);
         // lettore.useDelimiter(System.getProperty("line.separator"));
@@ -286,6 +401,24 @@ public class AppView {
 
         return lettura;
      }
+
+    public Boolean conferma(String messaggio) {
+        String input;
+        input = leggiStringa("Confermare l'inserimento dei dati (y/n): ");
+        if (input.equalsIgnoreCase("y")) {
+            System.out.println("Confermato: " + messaggio);
+            return true;
+        } else {
+            System.out.println("Annullato");
+            return false;
+        }
+    }
+
+    public Boolean yn(String messaggio) {
+        String input = leggiStringa(messaggio + "(y/n): ");
+        if (input.equalsIgnoreCase("y")) return true;
+        else return false;
+    }
 
     public static String traduciGiorno(DayOfWeek giorno) {
         switch (giorno) {
