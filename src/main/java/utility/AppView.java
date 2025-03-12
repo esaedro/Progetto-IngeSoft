@@ -1,5 +1,6 @@
 package utility;
 
+import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -285,5 +286,57 @@ public class AppView {
 
         return lettura;
      }
+
+    public static String traduciGiorno(DayOfWeek giorno) {
+        switch (giorno) {
+            case MONDAY:
+                return "Lunedì";
+            case TUESDAY:
+                return "Martedì";
+            case WEDNESDAY:
+                return "Mercoledì";
+            case THURSDAY:
+                return "Giovedì";
+            case FRIDAY:
+                return "Venerdì";
+            case SATURDAY:
+                return "Sabato";
+            case SUNDAY:
+                return "Domenica";
+            default:
+                return "Giorno non valido";
+        }
+    }
+
+    public static String traduciMese(Month mese) {
+        switch (mese) {
+            case JANUARY:
+                return "Gennaio";
+            case FEBRUARY:
+                return "Febbraio";
+            case MARCH:
+                return "Marzo";
+            case APRIL:
+                return "Aprile";
+            case MAY:
+                return "Maggio";
+            case JUNE:
+                return "Giugno";
+            case JULY:
+                return "Luglio";
+            case AUGUST:
+                return "Agosto";
+            case SEPTEMBER:
+                return "Settembre";
+            case OCTOBER:
+                return "Ottobre";
+            case NOVEMBER:
+                return "Novembre";
+            case DECEMBER:
+                return "Dicembre";
+            default:
+                return "Mese non valido";
+        }
+    }
 
 }
