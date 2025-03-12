@@ -20,12 +20,12 @@ public class TestMain {
     @Test
     void timeTesting() {
 
-        String dateTimeExpected = "2014-12-22T10:15:30";
+        String dateTimeExpected = "Mon Dec 22 11:15:30 CET 2014";
 
         Clock clock = Clock.fixed(Instant.parse("2014-12-22T10:15:30.00Z"), ZoneId.of("GMT"));
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(Date.from(clock.instant()));
 
-        assertEquals(calendar.toString(), dateTimeExpected, "Skibidi toilet");
+        assertEquals(calendar.getTime().toString(), dateTimeExpected, "Skibidi toilet");
     }
 }

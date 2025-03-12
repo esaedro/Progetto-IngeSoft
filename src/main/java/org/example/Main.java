@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Session session = new Session();
         Configuratore configuratore = new Configuratore("C_Dilbert", "admin");
-        ArrayList<Utente> utenti = new ArrayList<Utente>();
+        ArrayList<Utente> utenti = new ArrayList<>();
         utenti.add(configuratore);
         session.setUtenti(utenti);
         session.salvaUtenti();
