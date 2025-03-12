@@ -2,6 +2,7 @@ package application;
 import utility.FileManager;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Session {
 
@@ -30,8 +31,8 @@ public class Session {
     }
 
     public void carica() {
-        visite = filemanager.carica(FileManager.fileUtenti, TipoVisita.class);
-        luoghi = filemanager.carica(FileManager.fileUtenti, Luogo.class);
+        visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class);
+        luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);
     }
 
     public void cambiaPassword(Utente utente, String newPassword) {
@@ -45,21 +46,12 @@ public class Session {
 
     public Utente login(String nomeUtente, String password) {
         utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
+
         for (Utente user: utenti) {
-                if (user.getNomeUtente().equals(nomeUtente)
-                        && user.getPassword().equals(password)) {
-                    user.session = this;
-                    if (nomeUtente.startsWith("C")) {
-                        utenti.remove(user);
-                        user = new Configuratore(user);
-                        utenti.add(user);
-                    } else if (nomeUtente.startsWith("V")) {
-                        utenti.remove(user);
-                        user = new Volontario(user);
-                        utenti.add(user);
-                    }
-                    return user;
-                }
+            if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
+                user.setSession(this);
+                return user;
+            }
         }
         return null;
     }
@@ -107,7 +99,7 @@ public class Session {
                 volontari.add((Volontario) utente);
             }
         }
-        return volontari;   
+        return volontari;
     }
 
 }

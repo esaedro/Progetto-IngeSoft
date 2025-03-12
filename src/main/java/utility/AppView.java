@@ -11,9 +11,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
-/* import org.beryx.textio.TextIO;
-import org.beryx.textio.TextIoFactory; */
-
 import application.Configuratore;
 import application.Luogo;
 import application.Session;
@@ -39,6 +36,7 @@ public class AppView {
         }
 
         utente = utenteProvvisorio;
+        System.out.println("asd");
         carica();
         
         System.out.println("\nBenvenuto " + utente.getNomeUtente());
@@ -61,6 +59,7 @@ public class AppView {
     }
 
     public void carica() {
+        System.out.println();
         utente.getSession().carica();
         System.out.println("\nSessione caricata");
     }
@@ -105,39 +104,17 @@ public class AppView {
 
             scelta = leggiIntero("Scegli un opzione: ", 0, 9);
             switch (scelta) {
-                case 1:
-                mostraLista(false, false, true);
-                break;
-                case 2:
-                mostraLista(false, true, false);
-                break;
-                case 3:
-                mostraLista(true, false, false);
-                break;
-                case 4:
-                salva();
-                break;
-                case 5:
-                carica();
-                break;
-                case 6:
-                menuInserimentoCredenziali(utente);
-                break;
-                case 7:
-                menuInserimentoLuoghi();
-                break;
-                case 8:
-                menuInserimentoMassimoIscritti();
-                break;
-                case 9:
-                menuInserimentoDate();
-                break;
-                case 0:
-                System.out.println("\nUscita dal programma.");
-                break;
-                default:
-                System.out.println("\nOpzione non valida.");
-                break;
+                case 1 -> mostraLista(false, false, true);
+                case 2 -> mostraLista(false, true, false);
+                case 3 -> mostraLista(true, false, false);
+                case 4 -> salva();
+                case 5 -> carica();
+                case 6 -> menuInserimentoCredenziali(utente);
+                case 7 -> menuInserimentoLuoghi();
+                case 8 -> menuInserimentoMassimoIscritti();
+                case 9 -> menuInserimentoDate();
+                case 0 -> System.out.println("\nUscita dal programma.");
+                default -> System.out.println("\nOpzione non valida.");
             }
         } while (scelta != 0);
     }
@@ -153,7 +130,7 @@ public class AppView {
             
             if (password.equals(Character.toString('0'))) return null;
 
-            return utente.login(nomeUtente, password);
+        return utente.login(nomeUtente, password);
     }
 
     public void menuCambioPassword() {
@@ -385,7 +362,7 @@ public class AppView {
         boolean inputValido = false;
 
         while (!inputValido) {
-            System.out.print(messaggio + "(HH/mm): ");
+            System.out.print(messaggio + "(HH:mm): ");
             String input = lettore.nextLine();
         
             try {
@@ -395,7 +372,7 @@ public class AppView {
                 // Controllo per orari impossibili
                 int oraInserita = calendar.get(Calendar.HOUR_OF_DAY);
                 int minutiInseriti = calendar.get(Calendar.MINUTE);
-                String[] parti = input.split("/");
+                String[] parti = input.split(":");
                 int oraDigitata = Integer.parseInt(parti[0]);
                 int minutiDigitati = Integer.parseInt(parti[1]);
 
@@ -445,7 +422,7 @@ public class AppView {
            System.out.print(messaggio);
            lettura = lettore.next();
            lettura = lettura.trim();
-           if (lettura.length() > 0) {
+           if (!lettura.isEmpty()) {
               finito = true;
            } else {
               System.out.println("Attenzione: non hai inserito alcun carattere");
@@ -469,60 +446,38 @@ public class AppView {
 
     public Boolean yn(String messaggio) {
         String input = leggiStringa(messaggio + "(y/n): ");
-        if (input.equalsIgnoreCase("y")) return true;
-        else return false;
+        return input.equalsIgnoreCase("y");
     }
 
     public static String traduciGiorno(DayOfWeek giorno) {
-        switch (giorno) {
-            case MONDAY:
-                return "Lunedì";
-            case TUESDAY:
-                return "Martedì";
-            case WEDNESDAY:
-                return "Mercoledì";
-            case THURSDAY:
-                return "Giovedì";
-            case FRIDAY:
-                return "Venerdì";
-            case SATURDAY:
-                return "Sabato";
-            case SUNDAY:
-                return "Domenica";
-            default:
-                return "Giorno non valido";
-        }
+        return switch (giorno) {
+            case MONDAY -> "Lunedì";
+            case TUESDAY -> "Martedì";
+            case WEDNESDAY -> "Mercoledì";
+            case THURSDAY -> "Giovedì";
+            case FRIDAY -> "Venerdì";
+            case SATURDAY -> "Sabato";
+            case SUNDAY -> "Domenica";
+            default -> "Giorno non valido";
+        };
     }
 
     public static String traduciMese(Month mese) {
-        switch (mese) {
-            case JANUARY:
-                return "Gennaio";
-            case FEBRUARY:
-                return "Febbraio";
-            case MARCH:
-                return "Marzo";
-            case APRIL:
-                return "Aprile";
-            case MAY:
-                return "Maggio";
-            case JUNE:
-                return "Giugno";
-            case JULY:
-                return "Luglio";
-            case AUGUST:
-                return "Agosto";
-            case SEPTEMBER:
-                return "Settembre";
-            case OCTOBER:
-                return "Ottobre";
-            case NOVEMBER:
-                return "Novembre";
-            case DECEMBER:
-                return "Dicembre";
-            default:
-                return "Mese non valido";
-        }
+        return switch (mese) {
+            case JANUARY -> "Gennaio";
+            case FEBRUARY -> "Febbraio";
+            case MARCH -> "Marzo";
+            case APRIL -> "Aprile";
+            case MAY -> "Maggio";
+            case JUNE -> "Giugno";
+            case JULY -> "Luglio";
+            case AUGUST -> "Agosto";
+            case SEPTEMBER -> "Settembre";
+            case OCTOBER -> "Ottobre";
+            case NOVEMBER -> "Novembre";
+            case DECEMBER -> "Dicembre";
+            default -> "Mese non valido";
+        };
     }
 
 }

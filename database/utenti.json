@@ -1,6 +1,7 @@
 [
   {
     "nomeUtente": "C_Dilbert",
-    "password": "pallos"
+    "password": "admin",
+    "type": "configuratore"
   }
 ]
