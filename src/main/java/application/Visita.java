@@ -15,7 +15,7 @@ public class Visita extends TipoVisita {
             Boolean bigliettoIngresso, Luogo luogo, Set<Volontario> volontariIdonei, Calendar dataVisita,
             StatoVisita stato, int numeroIscritti) {
         super(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata, giorniSettimana,
-                minPartecipante, maxPartecipante, bigliettoIngresso, luogo, volontariIdonei);
+                minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
         this.dataVisita = dataVisita;
         this.stato = stato;
         this.numeroIscritti = numeroIscritti;
