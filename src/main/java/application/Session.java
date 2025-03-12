@@ -100,4 +100,14 @@ public class Session {
         this.filemanager = filemanager;
     }
 
+    public ArrayList<Volontario> getVolontari() {
+        ArrayList<Volontario> volontari = new ArrayList<>();
+        for (Utente utente : utenti) {
+            if (utente instanceof Volontario) {
+                volontari.add((Volontario) utente);
+            }
+        }
+        return volontari;   
+    }
+
 }

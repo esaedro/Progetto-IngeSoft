@@ -11,8 +11,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.beryx.textio.TextIO;
-import org.beryx.textio.TextIoFactory;
+/* import org.beryx.textio.TextIO;
+import org.beryx.textio.TextIoFactory; */
 
 import application.Configuratore;
 import application.Luogo;
@@ -24,7 +24,7 @@ import application.Volontario;
 public class AppView {
     
     private Utente utente;
-    private TextIO textIO = TextIoFactory.getTextIO();
+//    private TextIO textIO = TextIoFactory.getTextIO();
 
     public AppView() {
     }
@@ -98,7 +98,7 @@ public class AppView {
             System.out.println("4. Salva sessione");
             System.out.println("5. Carica sessione");
             System.out.println("6. Inserisci credenziali");
-            System.out.println("7. Inserisci parametro territoriale");
+            System.out.println("7. Inserisci nuovi luoghi e visite");
             System.out.println("8. Inserisci massimo iscritti");
             System.out.println("9. Inserisci date precluse");
             System.out.println("0. Esci");
@@ -124,7 +124,7 @@ public class AppView {
                 menuInserimentoCredenziali(utente);
                 break;
                 case 7:
-                menuInserimentoParametroTerritoriale();
+                menuInserimentoLuoghi();
                 break;
                 case 8:
                 menuInserimentoMassimoIscritti();
@@ -281,7 +281,15 @@ public class AppView {
             puntoIncontro = leggiStringa("Inserire il punto di incontro della visita: ");
             dataInizio = leggiData("Inserisci data inizio ");
             dataFine = leggiData("Inserisci data fine ");
+            
             oraInizio = leggiOra("Inserisci ora inizio ");
+/*             int minuti, ora;
+            ora = leggiIntero("Inserire ora inizio ", 0, 23);
+            minuti = leggiIntero("Inserire minuti inizio ", 0, 59);
+            oraInizio = Calendar.getInstance();
+            oraInizio.set(Calendar.HOUR_OF_DAY, ora);
+            oraInizio.set(Calendar.MINUTE, minuti); */
+            
             durata = leggiIntero("Inserisci durata in minuti: ", 1, 600);
             do {
                 minPartecipante = leggiIntero("Inserisci numero minimo partecipanti: ", 1, 1000);
@@ -292,22 +300,26 @@ public class AppView {
 
             System.out.println("Inserire i giorni della settimana in cui si svolge la visita: ");
             for (DayOfWeek giorno : DayOfWeek.values()) {
-                System.out.print((giorno.getValue() + 1) + ". " + traduciGiorno(giorno) + "\t");
+                System.out.print((giorno.getValue()) + ". " + traduciGiorno(giorno) + "\t");
                 if (yn("")) {
                     giorniSettimana.add(giorno);
                 }
             }
 
-            System.out.println("Inserire i volontari idonei alla visita: ");
-            while(volontariIdonei.isEmpty() || yn("Inserire un altro volontario?")) {
-                Volontario volontario = menuSelezioneVolontario();
-                if (volontario != null) {
-                    volontariIdonei.add(volontario);
-                } else if (volontariIdonei.isEmpty()) {
-                    System.out.println("Inserire almeno un volontario");
+            System.out.println("Inserire i volontari idonei alla visita: ");  
+            if (utente.getSession().getVolontari().isEmpty()) {
+                System.out.println("Non ci sono volontari disponibili");
+            }
+            else {
+                while(volontariIdonei.isEmpty() || yn("Inserire un altro volontario?")) {
+                    Volontario volontario = menuSelezioneVolontario();
+                    if (volontario != null) {
+                        volontariIdonei.add(volontario);
+                    } else if (volontariIdonei.isEmpty()) {
+                        System.out.println("Inserire almeno un volontario / Non ci sono volontari");
+                    }
                 }
             }
-
             return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
                     giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
         }
@@ -319,16 +331,15 @@ public class AppView {
 
     private Volontario menuSelezioneVolontario(){
         if (utente instanceof Configuratore) {
+
             System.out.println("Selezionare un volontario: ");
             int i = 1;
-            for (Utente user : utente.getSession().getUtenti()) {
-                if (user instanceof Volontario) {
-                    System.out.println(i + ". " + user.toString());
+            for (Volontario volontario : utente.getSession().getVolontari()) {
+                    System.out.println(i + ". " + volontario.getNomeUtente());
                     i++;
-                }
             }
             int scelta = leggiIntero("Scegli un volontario: ", 0, i);
-            return scelta == 0 ? null : (Volontario) utente.getSession().getUtenti().toArray()[scelta-1];
+            return scelta == 0 ? null : (Volontario)utente.getSession().getVolontari().toArray()[scelta-1];
         }
         else {
             System.out.println("Permessi non sufficienti");
@@ -365,26 +376,26 @@ public class AppView {
         return calendar;
     }
 
-    private Calendar leggiOra(String messaggio) {
+     private Calendar leggiOra(String messaggio) {
         Scanner lettore = new Scanner(System.in);
-        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH/mm");
         formatter.setLenient(false); // Impedisce di accettare date non valide
         
         Calendar calendar = Calendar.getInstance();
         boolean inputValido = false;
 
         while (!inputValido) {
-            System.out.print(messaggio + "(hh:mm): ");
+            System.out.print(messaggio + "(HH/mm): ");
             String input = lettore.nextLine();
         
             try {
-                Date data = formatter.parse(input); // Parsing della data
+                Date data = formatter.parse(input); // ERRORE QUI PARSE EXCEPTION
                 calendar.setTime(data);
-
+ 
                 // Controllo per orari impossibili
                 int oraInserita = calendar.get(Calendar.HOUR_OF_DAY);
                 int minutiInseriti = calendar.get(Calendar.MINUTE);
-                String[] parti = input.split("\\.");
+                String[] parti = input.split("/");
                 int oraDigitata = Integer.parseInt(parti[0]);
                 int minutiDigitati = Integer.parseInt(parti[1]);
 
