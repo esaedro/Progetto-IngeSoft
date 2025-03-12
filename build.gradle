@@ -14,7 +14,6 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     dependencies {
         implementation 'com.google.code.gson:gson:2.12.1'
-        implementation 'org.beryx:text-io:3.4.1'
         implementation 'org.slf4j:slf4j-simple:2.0.9'
     }
 
