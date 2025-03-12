@@ -64,7 +64,7 @@ public class AppView {
             }
 
         } else if (visite) { //TODO: suddivisione in categorie
-            for(Visita visita : utente.getSession().getVisite()) {
+            for(TipoVisita visita : utente.getSession().getVisite()) {
                 System.out.println(visita.toString());
             }
         }
@@ -174,7 +174,7 @@ public class AppView {
     public void menuInserimentoMassimoIscritti() {
         if (utente instanceof Configuratore) {
 
-            int maxIscritti = Visita.getNumeroMassimoIscrittoPerFruitore();
+            int maxIscritti = TipoVisita.getNumeroMassimoIscrittoPerFruitore();
             do {
                 maxIscritti = leggiIntero("\nInserire il nuovo numero massimo di iscritti: ", 1, 1000);
             } while(!conferma("\nNuovo numero massimo di iscritti: " + maxIscritti));
@@ -212,6 +212,20 @@ public class AppView {
             } while (!conferma("Date inserite correttamente"));
             
             ((Configuratore) utente).impostaDatePrecluse(datePrecluse);
+        }
+        else System.out.println("Permessi non sufficienti");
+    }
+
+    /*introdurre un insieme di luoghi da destinare a visite guidate, associando a ciascun
+    luogo uno o più tipi di visita e almeno un volontario per ciascun tipo*/
+    private void menuInserimentoLuoghi() {
+        if (utente instanceof Configuratore) {
+            String nomeLuogo;
+
+            nomeLuogo = leggiStringa(nomeLuogo = "Inserire il nome del luogo da inserire: ");
+            Luogo luogo = new Luogo(nomeLuogo);
+
+
         }
         else System.out.println("Permessi non sufficienti");
     }

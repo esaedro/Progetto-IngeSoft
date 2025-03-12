@@ -7,14 +7,14 @@ public class Session {
 
     protected ArrayList<Utente> utenti;
     protected ArrayList<Luogo> luoghi;
-    protected ArrayList<Visita> visite;
+    protected ArrayList<TipoVisita> visite;
     private FileManager filemanager;
 
     public Session() {
         this.filemanager = new FileManager("database/");
     }
 
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, FileManager filemanager) {
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<TipoVisita> visite, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
@@ -30,7 +30,7 @@ public class Session {
     }
 
     public void carica() {
-        visite = filemanager.carica(FileManager.fileUtenti, Visita.class);
+        visite = filemanager.carica(FileManager.fileUtenti, TipoVisita.class);
         luoghi = filemanager.carica(FileManager.fileUtenti, Luogo.class);
     }
 
@@ -80,11 +80,15 @@ public class Session {
         this.luoghi = luoghi;
     }
 
-    public ArrayList<Visita> getVisite() {
+    public void addLuoghi (ArrayList<Luogo> luoghiDaAggiungere) {
+        this.luoghi.addAll(luoghiDaAggiungere);
+    } 
+
+    public ArrayList<TipoVisita> getVisite() {
         return visite;
     }
 
-    public void setVisite(ArrayList<Visita> visite) {
+    public void setVisite(ArrayList<TipoVisita> visite) {
         this.visite = visite;
     }
 

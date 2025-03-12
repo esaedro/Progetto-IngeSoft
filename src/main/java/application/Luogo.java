@@ -6,6 +6,7 @@ public class Luogo implements Serializable {
     
     private static String parametroTerritoriale;
     private String nome;
+    //indirizzo
 
     public Luogo(String nome) {
         this.nome = nome;
