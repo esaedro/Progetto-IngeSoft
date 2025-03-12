@@ -19,11 +19,11 @@ public class Configuratore extends Utente {
     } 
 
     public void setNumeroMassimoIscritti(int numeroMassimoIscritti) {
-        Visita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
+        TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
     }
 
     public void impostaDatePrecluse(Set<Calendar> datePrecluse) {
-        Visita.aggiungiDatePrecluse(datePrecluse); 
+        TipoVisita.aggiungiDatePrecluse(datePrecluse); 
     }
 
     public void inserisciLuoghiVisite(Set<Luogo> luogo) {
