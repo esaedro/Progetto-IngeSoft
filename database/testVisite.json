@@ -5,8 +5,8 @@
       "month": 2,
       "dayOfMonth": 13,
       "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
+      "minute": 10,
+      "second": 25
     },
     "stato": "PROPOSTA",
     "numeroIscritti": 6,
@@ -18,24 +18,24 @@
       "month": 2,
       "dayOfMonth": 13,
       "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
+      "minute": 10,
+      "second": 25
     },
     "dataFine": {
       "year": 2025,
       "month": 2,
       "dayOfMonth": 13,
       "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
+      "minute": 10,
+      "second": 25
     },
     "oraInizio": {
       "year": 2025,
       "month": 2,
       "dayOfMonth": 13,
       "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
+      "minute": 10,
+      "second": 25
     },
     "durata": 2,
     "giorniSettimana": [],

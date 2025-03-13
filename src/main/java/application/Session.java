@@ -3,12 +3,13 @@ import utility.FileManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
 
 public class Session {
 
-    protected ArrayList<Utente> utenti;
-    protected ArrayList<Luogo> luoghi;
-    protected ArrayList<TipoVisita> visite;
+    private ArrayList<Utente> utenti;
+    private ArrayList<Luogo> luoghi;
+    private ArrayList<TipoVisita> visite;
     private FileManager filemanager;
 
     public Session() {
@@ -23,16 +24,43 @@ public class Session {
     }
 
     public void salva() {
+        salvaStoricoVisite();
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
     }
+
     public void salvaUtenti() {
         filemanager.salva(FileManager.fileUtenti, utenti);
+    }
+
+    private void salvaStoricoVisite() {
+        Iterator<TipoVisita> iteratorVisita = visite.iterator();
+        ArrayList<TipoVisita> visiteDaSalvare = new ArrayList<>();
+        while(iteratorVisita.hasNext()) {
+            TipoVisita visita = iteratorVisita.next();
+            if (((Visita) visita).getStato() == StatoVisita.EFFETTUATA) {
+                visiteDaSalvare.add(visita);
+                iteratorVisita.remove();
+            }
+        }
+
+        if (!visiteDaSalvare.isEmpty()) {
+            ArrayList<TipoVisita> storicoVisite = filemanager.carica(FileManager.fileStorico, TipoVisita.class);
+            if (storicoVisite != null) {
+                visiteDaSalvare.addAll(storicoVisite);
+            }
+            filemanager.salva(FileManager.fileStorico, visiteDaSalvare);
+            visiteDaSalvare.clear();
+        }
     }
 
     public void carica() {
         visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class);
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);
+    }
+
+    public ArrayList<TipoVisita> getStoricoVisite() {
+        return filemanager.carica(FileManager.fileStorico, TipoVisita.class);
     }
 
     public void cambiaPassword(Utente utente, String newPassword) {
@@ -82,6 +110,10 @@ public class Session {
 
     public void setVisite(ArrayList<TipoVisita> visite) {
         this.visite = visite;
+    }
+
+    public void addVisita(TipoVisita visite) {
+        this.visite.add(visite);
     }
 
     public FileManager getFilemanager() {

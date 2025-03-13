@@ -1,24 +1,25 @@
-import application.Configuratore;
-import application.Session;
-import application.Utente;
-import application.Volontario;
+import application.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import utility.FileManager;
 
 import java.time.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMain {
 
-
-//
-//    public static void main(String[] args) {
-//        Session session = new Session();
-//        Configuratore configuratore = new Configuratore("C_Dilbert", "admin");
-//        session.salva();
-//    }
+    @BeforeAll
+    static void setup() {
+        System.setProperty("fileUtenti", "testUtenti.json");
+        System.setProperty("fileVisite", "testVisite.json");
+        System.setProperty("fileLuoghi", "testLuoghi.json");
+        System.setProperty("fileStorico", "testStorico.json");
+    }
 
     @Test
     void timeTesting() {
@@ -35,9 +36,34 @@ public class TestMain {
     @Test
     void loginConfiguratoreTest() {
         Utente utenteProvvisorio = new Utente(new Session());
+        ArrayList<Utente> utentiTest = new ArrayList<>();
+        utentiTest.add(new Configuratore("C_Dilbert", "admin"));
+        utenteProvvisorio.getSession().setUtenti(utentiTest);
+        utenteProvvisorio.getSession().salvaUtenti();
 
-        Utente finale = utenteProvvisorio.login("C_Dilbert", "pallos");
+        Utente finale = utenteProvvisorio.login("C_Dilbert", "admin");
 
         assertInstanceOf(Configuratore.class, finale,"Login configuratore non restituisce i permessi");
+    }
+
+    @Test
+    void backupStorico() {
+        Session session = new Session();
+        session.setVisite(new ArrayList<>());
+        session.getFilemanager().salva(FileManager.fileStorico, null);
+        session.addVisita(new Visita("Prova_effettuata", "Bellissima visita", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, new HashSet<>(), Calendar.getInstance(),
+                StatoVisita.EFFETTUATA, 6));
+        session.addVisita(new Visita("Prova_noneffettuata", "Bellissima visita", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, new HashSet<>(), Calendar.getInstance(),
+                StatoVisita.PROPOSTA, 6));
+
+        session.salva();
+        session.carica();
+
+        assertEquals(session.getStoricoVisite().size(), 1, "Problema nel salvataggio dello storico");
+
     }
 }

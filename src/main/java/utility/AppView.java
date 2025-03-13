@@ -73,11 +73,14 @@ public class AppView {
         } else if (volontari) {
             for(Utente user : utente.getSession().getUtenti()) {
                 if (user instanceof Volontario)
-                    System.out.println(user.toString());
+                    System.out.println(user);
             }
 
         } else if (visite) { //TODO: suddivisione in categorie
             for(TipoVisita visita : utente.getSession().getVisite()) {
+                System.out.println(visita.toString());
+            }
+            for(TipoVisita visita: utente.getSession().getStoricoVisite()) {
                 System.out.println(visita.toString());
             }
         }
