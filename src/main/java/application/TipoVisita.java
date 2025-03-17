@@ -7,7 +7,7 @@ import java.util.Set;
 
 public class TipoVisita implements Serializable {
     
-    private static int numeroMassimoIscrittoPerFruitore;
+    private static int numeroMassimoIscrittoPerFruitore = 0;
     private static Set<Calendar> datePrecluse;
     private String titolo;
     private String descrizione;
@@ -50,7 +50,7 @@ public class TipoVisita implements Serializable {
 
     @Override
     public String toString() {
-        return "TipoVisita{" +
+        return "TipoVisita{ " +
                 "titolo='" + titolo + '\'' +
                 ", descrizione='" + descrizione + '\'' +
                 ", puntoIncontro='" + puntoIncontro + '\'' +

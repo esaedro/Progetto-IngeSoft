@@ -80,6 +80,9 @@ public class Session {
                 user.setSession(this);
                 return user;
             }
+            else {
+                System.out.println("\nUtente non trovato. Nome utente o password errati.");
+            }
         }
         return null;
     }

@@ -36,19 +36,22 @@ public class AppView {
         }
 
         utente = utenteProvvisorio;
-        System.out.println("asd");
         carica();
+        System.out.println("----------------------\n" + "| Benvenuto " + utente.getNomeUtente() + " |\n----------------------");
+
+        if (utente.getPassword().startsWith("config")) 
+            menuCambioPassword();
+
+        if (Luogo.getParametroTerritoriale()==null) {
+            System.out.println("\nSi inizializzi il parametro territoriale a cui fa riferimento l'applicazione");
+            menuInserimentoParametroTerritoriale();
+        }
         
-        System.out.println("\nBenvenuto " + utente.getNomeUtente());
-
-        //se la password inizia con sequenza predefinita allora è da cambiare perchè questo è il primo accesso 
-        menuCambioPassword();
-
-        System.out.println("\nSi inizializzi il parametro territoriale a cui fa riferimento l'applicazione");
-        menuInserimentoParametroTerritoriale();
-        System.out.println("\nSi inizializzi il numero massimo di iscritti per visita");
-        menuInserimentoMassimoIscritti();
-
+        if (TipoVisita.getNumeroMassimoIscrittoPerFruitore()==0) {
+            System.out.println("\nSi inizializzi il numero massimo di iscritti per visita");
+            menuInserimentoMassimoIscritti();
+        }
+        
         mostraMenu(utente);
         salva();
     }
@@ -143,7 +146,10 @@ public class AppView {
             if (newPassword.equals(utente.getPassword())) {
                 System.out.println("\nLa nuova password non puo' essere uguale a quella attuale");
             }
-        } while (newPassword.equals(utente.getPassword()) || !conferma("Password accettata"));
+            if (newPassword.contains("config")) {
+                System.out.println("\nLa password non puo' contenere la parola 'config'");
+            }
+        } while (newPassword.equals(utente.getPassword()) || newPassword.contains("config") || !conferma("Password accettata"));
 
         utente.getSession().cambiaPassword(utente, newPassword);
     }

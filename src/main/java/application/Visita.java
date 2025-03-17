@@ -40,6 +40,12 @@ public class Visita extends TipoVisita {
         this.numeroIscritti = numeroIscritti;
     }
 
-    
+    public String toString() {
+        return ("Visita{ " +
+                "dataVisita=" + dataVisita.getTime() +
+                ", stato=" + stato +
+                ", numeroIscritti=" + numeroIscritti +
+                ", " + super.toString() +'}');
+    }
     
 }
