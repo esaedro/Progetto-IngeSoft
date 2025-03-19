@@ -70,21 +70,36 @@ public class AppView {
     public void mostraLista(Boolean visite, Boolean volontari, Boolean luoghi) { 
         //ipotizzo che sia vero un solo booleano quando viene chiamata
         if (luoghi) {
-            for(Luogo luogo : utente.getSession().getLuoghi()) {
-                System.out.println(luogo.toString());
+            if (utente.getSession().getLuoghi() == null || utente.getSession().getLuoghi().isEmpty()) {
+                System.out.println("Non ci sono luoghi disponibili");
+            } else {
+                for (Luogo luogo : utente.getSession().getLuoghi()) {
+                    System.out.println(luogo.toString());
+                }
             }
         } else if (volontari) {
-            for(Utente user : utente.getSession().getUtenti()) {
-                if (user instanceof Volontario)
+            if (utente.getSession().getVolontari() == null || utente.getSession().getVolontari().isEmpty()) {
+                System.out.println("Non ci sono volontari disponibili");
+            } else {
+                for (Volontario user : utente.getSession().getVolontari()) {
                     System.out.println(user);
+                }
             }
 
         } else if (visite) { //TODO: suddivisione in categorie
-            for(TipoVisita visita : utente.getSession().getVisite()) {
-                System.out.println(visita.toString());
+            if (utente.getSession().getVisite() == null || utente.getSession().getVisite().isEmpty()) {
+                if (utente.getSession().getStoricoVisite() == null || utente.getSession().getStoricoVisite().isEmpty()) {
+                    System.out.println("Non ci sono visite disponibili");
+                }
+            } else {
+                for(TipoVisita visita : utente.getSession().getVisite()) {
+                    System.out.println(visita.toString());
+                }
             }
-            for(TipoVisita visita: utente.getSession().getStoricoVisite()) {
-                System.out.println(visita.toString());
+            if (utente.getSession().getStoricoVisite() != null && !utente.getSession().getStoricoVisite().isEmpty()) {
+                for(TipoVisita visita: utente.getSession().getStoricoVisite()) {
+                    System.out.println(visita.toString());
+                }
             }
         }
         else {
@@ -102,10 +117,9 @@ public class AppView {
             System.out.println("3. Mostra lista visite");
             System.out.println("4. Salva sessione");
             System.out.println("5. Carica sessione");
-            System.out.println("6. Inserisci credenziali");
-            System.out.println("7. Inserisci nuovi luoghi e visite");
-            System.out.println("8. Inserisci massimo iscritti");
-            System.out.println("9. Inserisci date precluse");
+            System.out.println("6. Inserisci nuovi luoghi e visite");
+            System.out.println("7. Inserisci massimo iscritti");
+            System.out.println("8. Inserisci date precluse");
             System.out.println("0. Esci");
 
             scelta = leggiIntero("Scegli un opzione: ", 0, 9);
@@ -115,10 +129,9 @@ public class AppView {
                 case 3 -> mostraLista(true, false, false);
                 case 4 -> salva();
                 case 5 -> carica();
-                case 6 -> menuInserimentoCredenziali(utente);
-                case 7 -> menuInserimentoLuoghi();
-                case 8 -> menuInserimentoMassimoIscritti();
-                case 9 -> menuInserimentoDate();
+                case 6 -> menuInserimentoLuoghi();
+                case 7 -> menuInserimentoMassimoIscritti();
+                case 8 -> menuInserimentoDate();
                 case 0 -> System.out.println("\nUscita dal programma.");
                 default -> System.out.println("\nOpzione non valida.");
             }
@@ -365,7 +378,7 @@ public class AppView {
 
      private Calendar leggiOra(String messaggio) {
         Scanner lettore = new Scanner(System.in);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH/mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         formatter.setLenient(false); // Impedisce di accettare date non valide
         
         Calendar calendar = Calendar.getInstance();

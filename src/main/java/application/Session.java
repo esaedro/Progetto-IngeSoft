@@ -68,9 +68,12 @@ public class Session {
     }
 
     public void carica() {
-        visite = filemanager.carica(FileManager.fileVisite, Visita.class);
-        luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);
-        tipoVisite = filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class);
+        visite = filemanager.carica(FileManager.fileVisite, Visita.class) != null
+                ? filemanager.carica(FileManager.fileVisite, Visita.class) : new ArrayList<>();
+        luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
+                ? filemanager.carica(FileManager.fileLuoghi, Luogo.class) : new ArrayList<>();
+        tipoVisite = filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class) != null
+                ? filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class) : new ArrayList<>();
         caricaParametriGlobali();
     }
 
@@ -88,7 +91,8 @@ public class Session {
     }
 
     public Utente login(String nomeUtente, String password) {
-        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class);
+        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
+                ? filemanager.carica(FileManager.fileUtenti, Utente.class) : new ArrayList<>();
 
         for (Utente user: utenti) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {

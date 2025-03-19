@@ -3,12 +3,13 @@ package application;
 import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 public class TipoVisita implements Serializable {
     
     private static int numeroMassimoIscrittoPerFruitore = 0;
-    private static Set<Calendar> datePrecluse;
+    private static Set<Calendar> datePrecluse = new HashSet<>();
     private String titolo;
     private String descrizione;
     private String puntoIncontro;
