@@ -9,6 +9,6 @@ public class Volontario extends Utente {
 
     public Volontario(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
-        super.session = utente.session;
+        super.setSession(utente.getSession());
     }
 }

@@ -180,6 +180,7 @@ public class AppView {
             } while(!conferma("\nNuovo numero massimo di iscritti: " + maxIscritti));
             
             ((Configuratore) utente).setNumeroMassimoIscritti(maxIscritti);
+            ((Configuratore) utente).getSession().salvaParametriGlobali();
         }
         else System.out.println("\nPermessi non sufficienti");
     }

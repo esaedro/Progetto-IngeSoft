@@ -11,7 +11,7 @@ public class Configuratore extends Utente {
 
     public Configuratore(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
-        super.session = utente.session;
+        super.setSession(utente.getSession());
     }
 
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
@@ -27,11 +27,11 @@ public class Configuratore extends Utente {
     }
 
     public void inserisciLuoghi(Set<Luogo> luogo) {
-        super.session.getLuoghi().addAll(luogo);
+        super.getSession().getLuoghi().addAll(luogo);
     }
 
     public void inserisciVisite(Set<TipoVisita> visite) {
-        super.session.addAllTipoVisite(visite);
+        super.getSession().addAllTipoVisite(visite);
     }
 
 }

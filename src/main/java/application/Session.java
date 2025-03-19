@@ -31,6 +31,7 @@ public class Session {
         filemanager.salva(FileManager.fileTipoVisite, tipoVisite);
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
+        salvaParametriGlobali();
     }
 
     public void salvaUtenti() {
@@ -70,6 +71,7 @@ public class Session {
         visite = filemanager.carica(FileManager.fileVisite, Visita.class);
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);
         tipoVisite = filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class);
+        caricaParametriGlobali();
     }
 
     public ArrayList<TipoVisita> getStoricoVisite() {

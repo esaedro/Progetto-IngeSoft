@@ -6,7 +6,7 @@ public class Utente implements Serializable {
     
     private String nomeUtente;
     private String password;
-    protected transient Session session;
+    private transient Session session;
 
     public Utente(String nomeUtente, String password) {
         this.nomeUtente = nomeUtente;
