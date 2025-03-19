@@ -1,9 +1,7 @@
 package utility;
 
 import application.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -11,9 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FileManager {
     
@@ -62,11 +58,16 @@ public class FileManager {
         JsonObject jo = new JsonObject();
         jo.addProperty("parametro_territoriale", Luogo.getParametroTerritoriale());
         jo.addProperty("numero_massimo_iscritti", TipoVisita.getNumeroMassimoIscrittoPerFruitore());
+
+        JsonArray jsonArray = new JsonArray();
+        TipoVisita.getDatePrecluse().forEach((calendar) -> jsonArray.add(calendar.get(Calendar.DAY_OF_MONTH)));
+
+        jo.add("date_precluse", jsonArray);
+
         try (FileWriter writer = new FileWriter(percorsoFile + "parametriGlobali.json")) {
             gson.toJson(jo, writer);
-        } catch (IOException ignored) {
+        } catch (IOException ignored) {}
 
-        }
     }
 
     public void caricaParametriGlobali() {
@@ -77,12 +78,23 @@ public class FileManager {
                     parametri.get("parametro_territoriale").getAsString() : null;
             int numeroMassimoIscritti = parametri.has("numero_massimo_iscritti") ?
                     parametri.get("numero_massimo_iscritti").getAsInt() : 0;
+            JsonArray datePrecluse = parametri.has("date_precluse")?
+                    parametri.get("date_precluse").getAsJsonArray() : new JsonArray();
 
             Luogo.setParametroTerritoriale(parametroTerritoriale);
             TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
 
-        } catch (IOException ignored) {
+            Set<Calendar> datePrecluseLettete = new HashSet<>();
 
-        }
+            datePrecluse.forEach((jsonElement -> {
+                Calendar date = Calendar.getInstance();
+                date.set(Calendar.DAY_OF_MONTH, jsonElement.getAsInt());
+                date.set(Calendar.MONTH, 0);
+                datePrecluseLettete.add(date);
+            }));
+
+            TipoVisita.setDatePrecluse(datePrecluseLettete);
+
+        } catch (IOException ignored) {}
     }
 }

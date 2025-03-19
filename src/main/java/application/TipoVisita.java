@@ -146,4 +146,8 @@ public class TipoVisita implements Serializable {
         datePrecluse.addAll(datePrecluseDaAggiungere);
     }
 
+    public static void setDatePrecluse(Set<Calendar> datePrecluseDaAggiungere) {
+        TipoVisita.datePrecluse = datePrecluseDaAggiungere;
+    }
+
 }

@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import utility.FileManager;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -82,5 +79,23 @@ public class TestMain {
         assertEquals(TipoVisita.getNumeroMassimoIscrittoPerFruitore(), 20, "Errore nella lettura/scritta parametri globali");
     }
 
+    @Test
+    void letturaScritturaDatePrecluse() {
+        Session session = new Session();
 
+        Calendar dataDaInserire = Calendar.getInstance();
+        dataDaInserire.set(Calendar.DAY_OF_MONTH, 24);
+        dataDaInserire.set(Calendar.MONTH, 0);
+
+        Set<Calendar> testSetCalendar = new HashSet<>();
+        testSetCalendar.add(dataDaInserire);
+        TipoVisita.aggiungiDatePrecluse(testSetCalendar);
+
+        session.salvaParametriGlobali();
+        session.caricaParametriGlobali();
+
+        TipoVisita.getDatePrecluse().forEach((calendar) -> {
+            assertTrue(testSetCalendar.add(calendar));
+        });
+    }
 }
