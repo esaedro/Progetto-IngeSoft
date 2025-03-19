@@ -58,6 +58,14 @@ public class Session {
         }
     }
 
+    public void salvaParametriGlobali() {
+        filemanager.salvaParametriGlobali();
+    }
+
+    public void caricaParametriGlobali() {
+        filemanager.caricaParametriGlobali();
+    }
+
     public void carica() {
         visite = filemanager.carica(FileManager.fileVisite, Visita.class);
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);

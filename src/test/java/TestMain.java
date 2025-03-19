@@ -20,6 +20,7 @@ public class TestMain {
         System.setProperty("fileLuoghi", "testLuoghi.json");
         System.setProperty("fileStorico", "testStorico.json");
         System.setProperty("fileTipoVisite", "testTipoVisite.json");
+        System.setProperty("fileParametriGlobali", "testParametriGlobali.json");
     }
 
     @Test
@@ -67,4 +68,19 @@ public class TestMain {
         assertEquals(session.getStoricoVisite().size(), 1, "Problema nel salvataggio dello storico");
 
     }
+
+    @Test
+    void letturaScritturaParametriGlobali() {
+        Session session = new Session();
+        Luogo.setParametroTerritoriale("ParametroDiTest");
+        TipoVisita.setNumeroMassimoIscrittoPerFruitore(20);
+        session.salvaParametriGlobali();
+        Luogo.setParametroTerritoriale("FakeParametro");
+        TipoVisita.setNumeroMassimoIscrittoPerFruitore(10);
+        session.caricaParametriGlobali();
+        assertEquals(Luogo.getParametroTerritoriale(), "ParametroDiTest", "Errore nella lettura/scritta parametri globali");
+        assertEquals(TipoVisita.getNumeroMassimoIscrittoPerFruitore(), 20, "Errore nella lettura/scritta parametri globali");
+    }
+
+
 }
