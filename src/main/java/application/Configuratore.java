@@ -31,7 +31,7 @@ public class Configuratore extends Utente {
     }
 
     public void inserisciVisite(Set<TipoVisita> visite) {
-        super.session.getVisite().addAll(visite);
+        super.session.addAllTipoVisite(visite);
     }
 
 }

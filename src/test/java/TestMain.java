@@ -19,6 +19,7 @@ public class TestMain {
         System.setProperty("fileVisite", "testVisite.json");
         System.setProperty("fileLuoghi", "testLuoghi.json");
         System.setProperty("fileStorico", "testStorico.json");
+        System.setProperty("fileTipoVisite", "testTipoVisite.json");
     }
 
     @Test

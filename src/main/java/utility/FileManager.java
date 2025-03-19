@@ -19,6 +19,7 @@ public class FileManager {
     private final String percorsoFile;
     static public final String fileUtenti = getFileName("fileUtenti", "utenti.json");
     static public final String fileVisite = getFileName("fileVisite", "visite.json");
+    static public final String fileTipoVisite = getFileName("fileTipoVisite", "tipoVisite.json");
     static public final String fileLuoghi = getFileName("fileLuoghi", "luoghi.json");
     static public final String fileStorico = getFileName("fileStorico", "storico.json");
 

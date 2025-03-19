@@ -3,28 +3,32 @@ import utility.FileManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Timer;
 
 public class Session {
 
     private ArrayList<Utente> utenti;
     private ArrayList<Luogo> luoghi;
-    private ArrayList<TipoVisita> visite;
+    private ArrayList<Visita> visite;
+    private ArrayList<TipoVisita> tipoVisite;
     private FileManager filemanager;
 
     public Session() {
         this.filemanager = new FileManager("database/");
     }
 
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<TipoVisita> visite, FileManager filemanager) {
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, ArrayList<TipoVisita> tipoVisite, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
+        this.tipoVisite = tipoVisite;
         this.filemanager = filemanager;
     }
 
     public void salva() {
         salvaStoricoVisite();
+        filemanager.salva(FileManager.fileTipoVisite, tipoVisite);
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
     }
@@ -34,18 +38,18 @@ public class Session {
     }
 
     private void salvaStoricoVisite() {
-        Iterator<TipoVisita> iteratorVisita = visite.iterator();
-        ArrayList<TipoVisita> visiteDaSalvare = new ArrayList<>();
+        Iterator<Visita> iteratorVisita = visite.iterator();
+        ArrayList<Visita> visiteDaSalvare = new ArrayList<>();
         while(iteratorVisita.hasNext()) {
-            TipoVisita visita = iteratorVisita.next();
-            if (((Visita) visita).getStato() == StatoVisita.EFFETTUATA) {
+            Visita visita = iteratorVisita.next();
+            if (visita.getStato() == StatoVisita.EFFETTUATA) {
                 visiteDaSalvare.add(visita);
                 iteratorVisita.remove();
             }
         }
 
         if (!visiteDaSalvare.isEmpty()) {
-            ArrayList<TipoVisita> storicoVisite = filemanager.carica(FileManager.fileStorico, TipoVisita.class);
+            ArrayList<Visita> storicoVisite = filemanager.carica(FileManager.fileStorico, Visita.class);
             if (storicoVisite != null) {
                 visiteDaSalvare.addAll(storicoVisite);
             }
@@ -55,8 +59,9 @@ public class Session {
     }
 
     public void carica() {
-        visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class);
+        visite = filemanager.carica(FileManager.fileVisite, Visita.class);
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class);
+        tipoVisite = filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class);
     }
 
     public ArrayList<TipoVisita> getStoricoVisite() {
@@ -107,16 +112,20 @@ public class Session {
         this.luoghi.addAll(luoghiDaAggiungere);
     } 
 
-    public ArrayList<TipoVisita> getVisite() {
+    public ArrayList<Visita> getVisite() {
         return visite;
     }
 
-    public void setVisite(ArrayList<TipoVisita> visite) {
+    public void setVisite(ArrayList<Visita> visite) {
         this.visite = visite;
     }
 
-    public void addVisita(TipoVisita visite) {
+    public void addVisita(Visita visite) {
         this.visite.add(visite);
+    }
+
+    public void addAllVisite(Set<Visita> visite) {
+        visite.addAll(visite);
     }
 
     public FileManager getFilemanager() {
@@ -137,4 +146,7 @@ public class Session {
         return volontari;
     }
 
+    public void addAllTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {
+        tipoVisite.addAll(tipoVisiteToAdd);
+    }
 }
