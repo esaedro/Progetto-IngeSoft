@@ -9,7 +9,7 @@ import java.util.Set;
 public class TipoVisita implements Serializable {
     
     private static int numeroMassimoIscrittoPerFruitore = 0;
-    private static Set<Calendar> datePrecluse = new HashSet<>();
+    private static Set<Integer> datePrecluse = new HashSet<>();
     private String titolo;
     private String descrizione;
     private String puntoIncontro;
@@ -139,14 +139,14 @@ public class TipoVisita implements Serializable {
     public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
         this.volontariIdonei = volontariIdonei;
     }
-    public static Set<Calendar> getDatePrecluse() {
+    public static Set<Integer> getDatePrecluse() {
         return datePrecluse;
     }
-    public static void aggiungiDatePrecluse(Set<Calendar> datePrecluseDaAggiungere) {
+    public static void aggiungiDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
         datePrecluse.addAll(datePrecluseDaAggiungere);
     }
 
-    public static void setDatePrecluse(Set<Calendar> datePrecluseDaAggiungere) {
+    public static void setDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluse = datePrecluseDaAggiungere;
     }
 

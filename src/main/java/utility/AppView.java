@@ -205,22 +205,16 @@ public class AppView {
             System.out.println("\nInserire le date precluse per i giorni dal 16 " + traduciMese(meseLavoro) + " al 15 " + traduciMese(meseLavoro2) + ": ");
 
             int dataInserita;
-            Set<Calendar> datePrecluse = new HashSet<>();
+            Set<Integer> datePrecluse = new HashSet<>();
 
             do {
                 do {
                     dataInserita = leggiIntero("Inserire una data preclusa (0 per uscire): ", 0, meseLavoro.maxLength());
                     if (dataInserita > 15) {
-                        Calendar dataDaInserire = Calendar.getInstance();
-                        dataDaInserire.set(Calendar.DAY_OF_MONTH, dataInserita);
-                        dataDaInserire.set(Calendar.MONTH, meseLavoro.getValue()-1); // Month is 0-based in Calendar
-                        datePrecluse.add(dataDaInserire);
+                        datePrecluse.add(dataInserita);
                     }
                     else {
-                        Calendar dataDaInserire = Calendar.getInstance();
-                        dataDaInserire.set(Calendar.DAY_OF_MONTH, dataInserita);
-                        dataDaInserire.set(Calendar.MONTH, meseLavoro2.getValue()-1); 
-                        datePrecluse.add(dataDaInserire);
+                        datePrecluse.add(dataInserita);
                     }
                 } while (dataInserita!=0);
             } while (!conferma("Date inserite correttamente"));

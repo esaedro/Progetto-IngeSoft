@@ -83,19 +83,19 @@ public class TestMain {
     void letturaScritturaDatePrecluse() {
         Session session = new Session();
 
-        Calendar dataDaInserire = Calendar.getInstance();
-        dataDaInserire.set(Calendar.DAY_OF_MONTH, 24);
-        dataDaInserire.set(Calendar.MONTH, 0);
+        session.caricaParametriGlobali();
 
-        Set<Calendar> testSetCalendar = new HashSet<>();
-        testSetCalendar.add(dataDaInserire);
+        Set<Integer> testSetCalendar = new HashSet<>();
+        testSetCalendar.add(24);
+        testSetCalendar.add(21);
+        testSetCalendar.add(16);
         TipoVisita.aggiungiDatePrecluse(testSetCalendar);
 
         session.salvaParametriGlobali();
         session.caricaParametriGlobali();
 
         TipoVisita.getDatePrecluse().forEach((calendar) -> {
-            assertTrue(testSetCalendar.add(calendar));
+            assertFalse(testSetCalendar.add(calendar));
         });
     }
 }

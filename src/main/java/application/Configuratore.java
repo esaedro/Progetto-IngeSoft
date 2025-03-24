@@ -22,7 +22,7 @@ public class Configuratore extends Utente {
         TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
     }
 
-    public void impostaDatePrecluse(Set<Calendar> datePrecluse) {
+    public void impostaDatePrecluse(Set<Integer> datePrecluse) {
         TipoVisita.aggiungiDatePrecluse(datePrecluse); 
     }
 

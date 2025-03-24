@@ -60,7 +60,7 @@ public class FileManager {
         jo.addProperty("numero_massimo_iscritti", TipoVisita.getNumeroMassimoIscrittoPerFruitore());
 
         JsonArray jsonArray = new JsonArray();
-        TipoVisita.getDatePrecluse().forEach((calendar) -> jsonArray.add(calendar.get(Calendar.DAY_OF_MONTH)));
+        TipoVisita.getDatePrecluse().forEach(jsonArray::add);
 
         jo.add("date_precluse", jsonArray);
 
@@ -84,13 +84,10 @@ public class FileManager {
             Luogo.setParametroTerritoriale(parametroTerritoriale);
             TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
 
-            Set<Calendar> datePrecluseLettete = new HashSet<>();
+            Set<Integer> datePrecluseLettete = new HashSet<>();
 
             datePrecluse.forEach((jsonElement -> {
-                Calendar date = Calendar.getInstance();
-                date.set(Calendar.DAY_OF_MONTH, jsonElement.getAsInt());
-                date.set(Calendar.MONTH, 0);
-                datePrecluseLettete.add(date);
+                datePrecluseLettete.add(jsonElement.getAsInt());
             }));
 
             TipoVisita.setDatePrecluse(datePrecluseLettete);
