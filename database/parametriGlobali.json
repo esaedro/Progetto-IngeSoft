@@ -1,9 +1,11 @@
 {
   "parametro_territoriale": "asd",
-  "numero_massimo_iscritti": 45,
+  "numero_massimo_iscritti": 15,
   "date_precluse": [
     16,
+    18,
     21,
-    24
+    24,
+    12
   ]
 }
