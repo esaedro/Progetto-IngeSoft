@@ -5,5 +5,6 @@ public enum StatoVisita {
     COMPLETA,
     CONFERMATA,
     CANCELLATA,
-    EFFETTUATA;
+    EFFETTUATA,
+    NON_ISTANZIATA;
 }

@@ -3,10 +3,10 @@
     "dataVisita": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 19,
-      "hourOfDay": 12,
-      "minute": 50,
-      "second": 1
+      "dayOfMonth": 25,
+      "hourOfDay": 18,
+      "minute": 26,
+      "second": 55
     },
     "stato": "PROPOSTA",
     "numeroIscritti": 6,
@@ -16,26 +16,26 @@
     "dataInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 19,
-      "hourOfDay": 12,
-      "minute": 50,
-      "second": 1
+      "dayOfMonth": 25,
+      "hourOfDay": 18,
+      "minute": 26,
+      "second": 55
     },
     "dataFine": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 19,
-      "hourOfDay": 12,
-      "minute": 50,
-      "second": 1
+      "dayOfMonth": 25,
+      "hourOfDay": 18,
+      "minute": 26,
+      "second": 55
     },
     "oraInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 19,
-      "hourOfDay": 12,
-      "minute": 50,
-      "second": 1
+      "dayOfMonth": 25,
+      "hourOfDay": 18,
+      "minute": 26,
+      "second": 55
     },
     "durata": 2,
     "giorniSettimana": [],

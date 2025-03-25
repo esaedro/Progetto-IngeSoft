@@ -11,24 +11,21 @@ public class Session {
     private ArrayList<Utente> utenti;
     private ArrayList<Luogo> luoghi;
     private ArrayList<Visita> visite;
-    private ArrayList<TipoVisita> tipoVisite;
     private FileManager filemanager;
 
     public Session() {
         this.filemanager = new FileManager("database/");
     }
 
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, ArrayList<TipoVisita> tipoVisite, FileManager filemanager) {
+    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<Visita> visite, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
-        this.tipoVisite = tipoVisite;
         this.filemanager = filemanager;
     }
 
     public void salva() {
         salvaStoricoVisite();
-        filemanager.salva(FileManager.fileTipoVisite, tipoVisite);
         filemanager.salva(FileManager.fileVisite, visite);
         filemanager.salva(FileManager.fileLuoghi, luoghi);
         salvaParametriGlobali();
@@ -72,8 +69,6 @@ public class Session {
                 ? filemanager.carica(FileManager.fileVisite, Visita.class) : new ArrayList<>();
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
                 ? filemanager.carica(FileManager.fileLuoghi, Luogo.class) : new ArrayList<>();
-        tipoVisite = filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class) != null
-                ? filemanager.carica(FileManager.fileTipoVisite, TipoVisita.class) : new ArrayList<>();
         caricaParametriGlobali();
     }
 
@@ -160,7 +155,7 @@ public class Session {
         return volontari;
     }
 
-    public void addAllTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {
-        tipoVisite.addAll(tipoVisiteToAdd);
+    public void addAllTipoVisite(Set<Visita> tipoVisiteToAdd) {
+        visite.addAll(tipoVisiteToAdd);
     }
 }

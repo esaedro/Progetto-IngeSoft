@@ -1,46 +1,43 @@
 [
   {
-    "dataVisita": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 13,
-      "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
-    },
-    "stato": "PROPOSTA",
-    "numeroIscritti": 6,
-    "titolo": "Prova_noneffettuata",
-    "descrizione": "Bellissima visita",
-    "puntoIncontro": "Disneyland",
+    "stato": "NON_ISTANZIATA",
+    "numeroIscritti": 0,
+    "titolo": "Skibidizi",
+    "descrizione": "Skibidi",
+    "puntoIncontro": "Rizz",
     "dataInizio": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 13,
-      "hourOfDay": 19,
+      "year": 1970,
+      "month": 3,
+      "dayOfMonth": 12,
+      "hourOfDay": 0,
       "minute": 0,
-      "second": 6
+      "second": 0
     },
     "dataFine": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 13,
-      "hourOfDay": 19,
+      "year": 1970,
+      "month": 3,
+      "dayOfMonth": 27,
+      "hourOfDay": 0,
       "minute": 0,
-      "second": 6
+      "second": 0
     },
     "oraInizio": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 13,
-      "hourOfDay": 19,
-      "minute": 0,
-      "second": 6
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 15,
+      "minute": 15,
+      "second": 0
     },
-    "durata": 2,
-    "giorniSettimana": [],
-    "minPartecipante": 5,
-    "maxPartecipante": 10,
+    "durata": 156,
+    "giorniSettimana": [
+      "SATURDAY",
+      "TUESDAY",
+      "MONDAY",
+      "SUNDAY"
+    ],
+    "minPartecipante": 67,
+    "maxPartecipante": 80,
     "bigliettoIngresso": true,
     "volontariIdonei": []
   }

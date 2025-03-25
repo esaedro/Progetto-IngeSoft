@@ -42,7 +42,7 @@ public class Visita extends TipoVisita {
 
     public String toString() {
         return ("Visita{ " +
-                "dataVisita=" + dataVisita.getTime() +
+                "dataVisita=" + (dataVisita != null? dataVisita.getTime() : "nessuna") +
                 ", stato=" + stato +
                 ", numeroIscritti=" + numeroIscritti +
                 ", " + super.toString() +'}');

@@ -1,0 +1,9 @@
+{
+  "parametro_territoriale": "ParametroDiTest",
+  "numero_massimo_iscritti": 20,
+  "date_precluse": [
+    16,
+    21,
+    24
+  ]
+}

@@ -11,12 +11,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Set;
 
-import application.Configuratore;
-import application.Luogo;
-import application.Session;
-import application.TipoVisita;
-import application.Utente;
-import application.Volontario;
+import application.*;
 
 public class AppView {
     
@@ -229,9 +224,9 @@ public class AppView {
     private void menuInserimentoLuoghi() {
         if (utente instanceof Configuratore) {
             Set<Luogo> luoghi = new HashSet<>();
-            Set<TipoVisita> visite = new HashSet<>();
+            Set<Visita> visite = new HashSet<>();
             String nomeLuogo, indirizzoLuogo;
-            TipoVisita tipoVisita;
+            Visita tipoVisita;
 
             do {
                 do {
@@ -261,7 +256,7 @@ public class AppView {
         else System.out.println("Permessi non sufficienti");
     }
 
-    private TipoVisita menuInserimentoTipoVisita() {
+    private Visita menuInserimentoTipoVisita() {
         if (utente instanceof Configuratore) {
             String titolo, descrizione, puntoIncontro;
             Calendar dataInizio, dataFine, oraInizio;
@@ -314,8 +309,9 @@ public class AppView {
                     }
                 }
             }
-            return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
-                    giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
+            return new Visita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
+                    giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei,
+                    null, StatoVisita.NON_ISTANZIATA, 0);
         }
         else {
             System.out.println("Permessi non sufficienti");
