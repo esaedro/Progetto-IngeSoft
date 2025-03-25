@@ -174,7 +174,7 @@ public class AppView {
             if (utente instanceof Configuratore) {    
                 String parametro;
                 do {
-                    parametro = leggiStringa("\nInserire il parametro territoriale: ");
+                    parametro = leggiStringa("Inserire il parametro territoriale: ");
                 } while (!conferma("Parametro inserito correttamente"));
 
                 ((Configuratore) utente).inizializzaParametroTerritoriale(parametro);
@@ -189,7 +189,7 @@ public class AppView {
 
             int maxIscritti = TipoVisita.getNumeroMassimoIscrittoPerFruitore();
             do {
-                maxIscritti = leggiIntero("\nInserire il nuovo numero massimo di iscritti: ", 1, 1000);
+                maxIscritti = leggiIntero("Inserire il nuovo numero massimo di iscritti: ", 1, 1000);
             } while(!conferma("\nNuovo numero massimo di iscritti: " + maxIscritti));
             
             ((Configuratore) utente).setNumeroMassimoIscritti(maxIscritti);
@@ -213,7 +213,7 @@ public class AppView {
                     if (dataInserita > 15) {
                         datePrecluse.add(dataInserita);
                     }
-                    else {
+                    else if (dataInserita > 0 && dataInserita <= 15) {
                         datePrecluse.add(dataInserita);
                     }
                 } while (dataInserita!=0);

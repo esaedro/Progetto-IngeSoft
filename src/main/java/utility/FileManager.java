@@ -64,14 +64,14 @@ public class FileManager {
 
         jo.add("date_precluse", jsonArray);
 
-        try (FileWriter writer = new FileWriter(percorsoFile + "parametriGlobali.json")) {
+        try (FileWriter writer = new FileWriter(percorsoFile + fileParametriGlobali)) {
             gson.toJson(jo, writer);
         } catch (IOException ignored) {}
 
     }
 
     public void caricaParametriGlobali() {
-        try (FileReader writer = new FileReader(percorsoFile + "parametriGlobali.json")) {
+        try (FileReader writer = new FileReader(percorsoFile + fileParametriGlobali)) {
             JsonObject parametri = gson.fromJson(writer, JsonObject.class);
 
             String parametroTerritoriale = parametri.has("parametro_territoriale") ?
