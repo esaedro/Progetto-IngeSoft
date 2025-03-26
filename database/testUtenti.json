@@ -1,7 +1,12 @@
 [
   {
-    "nomeUtente": "C_Dilbert",
-    "password": "admin",
-    "type": "configuratore"
+    "nomeUtente": "V_Jhonny",
+    "password": "volontario",
+    "type": "volontario",
+    "disponibilita": [
+      3,
+      4,
+      8
+    ]
   }
 ]
