@@ -1,7 +1,7 @@
 package utility;
 
 import java.util.Map.Entry;
-import java.util.SortedMap;
+import java.util.LinkedHashMap;
 import static utility.BelleStringhe.ANSI_RESET;
 import static utility.BelleStringhe.ANSI_YELLOW;
 import static utility.BelleStringhe.ANSI_RED;
@@ -11,20 +11,20 @@ Questa classe rappresenta un menu testuale generico a piu' voci
 Si suppone che la voce per uscire sia sempre associata alla scelta 0 
 e sia presentata in fondo al menu
 */
-public abstract class CliMenu <T, U> {
-    public static final String VOCE_USCITA = ANSI_YELLOW + "q\t" + ANSI_RESET + "per uscire";
+public class CliMenu <T, U> {
+    public static final String VOCE_USCITA = ANSI_YELLOW + "q  " + ANSI_RESET + "per uscire";
     public static final String RICHIESTA_INSERIMENTO = "Digita il numero dell'opzione desiderata > ";
     public static final String ERRORE_INSERIMENTO = ANSI_RED + "Scelta non valida" + ANSI_RESET;
 
     private String titolo;
-    protected SortedMap<T, U> voci;
+    protected LinkedHashMap<T, U> voci;
 
     /**
      * Costruttore per il menu
      * @param titolo
      * @param voci
      */
-    public CliMenu(String titolo, SortedMap<T, U> voci) {
+    public CliMenu(String titolo, LinkedHashMap<T, U> voci) {
         this.titolo = titolo;
         this.voci = voci;
     }
@@ -36,9 +36,8 @@ public abstract class CliMenu <T, U> {
             i++;
             System.out.println(ANSI_YELLOW + i + ") " + ANSI_RESET + entry.getKey());
         }
-        System.out.println();
-        System.out.println(VOCE_USCITA);
-        System.out.println();
+        System.out.println("\n" + VOCE_USCITA + "\n");
+
     }
 
     protected U scegli() {

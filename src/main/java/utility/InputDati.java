@@ -577,7 +577,7 @@ public class InputDati {
 	 * @return true se l'utente ha inserito 's' o 'S', false altrimenti
 	 */
 	public static boolean conferma(String messaggioInserimento) {
-		String nuovoMessaggio = ANSI_RESET + messaggioInserimento + ANSI_GREEN + "\n[" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2]
+		String nuovoMessaggio = ANSI_RESET + messaggioInserimento + ANSI_GREEN + " [" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2]
 				+ "]: ";
 		char valoreLetto = leggiUpperChar(nuovoMessaggio, CARATTERI_AMMISSIBILI, "Risposta non valida");
 

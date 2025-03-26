@@ -40,7 +40,7 @@ public class BelleStringhe {
 		StringBuffer res = new StringBuffer();
 
 		res.append(generaCornice(s.length()));
-		res.append('|' + SPAZIO + s + SPAZIO + '|');
+		res.append("\n|" + SPAZIO + s + SPAZIO + "|\n");
 		res.append(generaCornice(s.length()));
 
 		return res.toString();
