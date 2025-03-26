@@ -1,7 +1,8 @@
 {
   "parametro_territoriale": "ParametroDiTest",
   "numero_massimo_iscritti": 20,
-  "date_precluse": [
+  "date_precluse_future": [],
+  "date_precluse_attuali": [
     16,
     21,
     24

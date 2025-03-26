@@ -1,6 +1,5 @@
 import application.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import utility.FileManager;
 
 import java.time.*;
@@ -8,6 +7,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestMain {
 
     @BeforeAll
@@ -79,22 +79,43 @@ public class TestMain {
     }
 
     @Test
+    @Order(1)
     void letturaScritturaDatePrecluse() {
         Session session = new Session();
 
-        session.caricaParametriGlobali();
-
-        Set<Integer> testSetCalendar = new HashSet<>();
-        testSetCalendar.add(24);
-        testSetCalendar.add(21);
-        testSetCalendar.add(16);
-        TipoVisita.aggiungiDatePrecluse(testSetCalendar);
+        Set<Integer> testCalendarDatePrecluse = new HashSet<>();
+        testCalendarDatePrecluse.add(24);
+        testCalendarDatePrecluse.add(21);
+        testCalendarDatePrecluse.add(16);
+        TipoVisita.aggiungiDatePrecluseFuture(testCalendarDatePrecluse);
 
         session.salvaParametriGlobali();
         session.caricaParametriGlobali();
 
-        TipoVisita.getDatePrecluse().forEach((calendar) -> {
-            assertFalse(testSetCalendar.add(calendar));
+        TipoVisita.getDatePrecluseFuture().forEach((calendar) -> {
+            assertFalse(testCalendarDatePrecluse.add(calendar), "problema lettura/scrittura date precluse i+2");
         });
     }
+
+    @Test
+    @Order(2)
+    void salvataggioDatePrecluseCambioMese() {
+        Session session = new Session();
+        session.caricaParametriGlobali();
+
+        Set<Integer> testCalendarDatePrecluse = new HashSet<>(TipoVisita.getDatePrecluseFuture());
+
+        session.salvataggioDatePrecluseFutureInAttuali();
+
+        TipoVisita.clearDatePrecluseFuture();
+        TipoVisita.getDatePrecluseAttuali().clear();
+
+        session.caricaParametriGlobali();
+
+        TipoVisita.getDatePrecluseAttuali().forEach((calendar) -> assertFalse(testCalendarDatePrecluse.add(calendar),
+                "problema lettura/scrittura date precluse i+1"));
+
+        assertTrue(TipoVisita.getDatePrecluseFuture().isEmpty(), "problema lettura/scrittura date precluse i+1");
+    }
+
 }

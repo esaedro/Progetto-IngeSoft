@@ -9,7 +9,7 @@ import java.util.Set;
 public class TipoVisita implements Serializable {
     
     private static int numeroMassimoIscrittoPerFruitore = 0;
-    private static Set<Integer> datePrecluse = new HashSet<>();
+    private static Set<Integer> datePrecluseFuture = new HashSet<>(), datePrecluseAttuali = new HashSet<>();
     private String titolo;
     private String descrizione;
     private String puntoIncontro;
@@ -139,15 +139,32 @@ public class TipoVisita implements Serializable {
     public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
         this.volontariIdonei = volontariIdonei;
     }
-    public static Set<Integer> getDatePrecluse() {
-        return datePrecluse;
-    }
-    public static void aggiungiDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
-        datePrecluse.addAll(datePrecluseDaAggiungere);
+
+    public static Set<Integer> getDatePrecluseFuture() {
+        return datePrecluseFuture;
     }
 
-    public static void setDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
-        TipoVisita.datePrecluse = datePrecluseDaAggiungere;
+    public static void aggiungiDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
+        datePrecluseFuture.addAll(datePrecluseDaAggiungere);
     }
 
+    public static void setDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
+        TipoVisita.datePrecluseFuture = datePrecluseDaAggiungere;
+    }
+
+    public static void clearDatePrecluseFuture() {
+        datePrecluseFuture.clear();
+    }
+
+    public static Set<Integer> getDatePrecluseAttuali() {
+        return datePrecluseAttuali;
+    }
+
+    public static void aggiungiDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
+        datePrecluseAttuali.addAll(datePrecluseDaAggiungere);
+    }
+
+    public static void setDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
+        TipoVisita.datePrecluseAttuali = datePrecluseDaAggiungere;
+    }
 }

@@ -4,7 +4,6 @@ import utility.FileManager;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Timer;
 
 public class Session {
 
@@ -157,5 +156,11 @@ public class Session {
 
     public void addAllTipoVisite(Set<Visita> tipoVisiteToAdd) {
         visite.addAll(tipoVisiteToAdd);
+    }
+
+    public void salvataggioDatePrecluseFutureInAttuali() {
+        TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
+        TipoVisita.clearDatePrecluseFuture();
+        salvaParametriGlobali();
     }
 }

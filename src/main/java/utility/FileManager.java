@@ -3,7 +3,6 @@ package utility;
 import application.*;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import org.junit.jupiter.api.BeforeAll;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -58,10 +57,13 @@ public class FileManager {
         jo.addProperty("parametro_territoriale", Luogo.getParametroTerritoriale());
         jo.addProperty("numero_massimo_iscritti", TipoVisita.getNumeroMassimoIscrittoPerFruitore());
 
-        JsonArray jsonArray = new JsonArray();
-        TipoVisita.getDatePrecluse().forEach(jsonArray::add);
+        JsonArray jsonArraydatePrecluseFuture = new JsonArray();
+        TipoVisita.getDatePrecluseFuture().forEach(jsonArraydatePrecluseFuture::add);
+        jo.add("date_precluse_future", jsonArraydatePrecluseFuture);
 
-        jo.add("date_precluse", jsonArray);
+        JsonArray jsonArraydateAttuali = new JsonArray();
+        TipoVisita.getDatePrecluseAttuali().forEach(jsonArraydateAttuali::add);
+        jo.add("date_precluse_attuali", jsonArraydateAttuali);
 
         try (FileWriter writer = new FileWriter(percorsoFile + fileParametriGlobali)) {
             gson.toJson(jo, writer);
@@ -77,19 +79,21 @@ public class FileManager {
                     parametri.get("parametro_territoriale").getAsString() : null;
             int numeroMassimoIscritti = parametri.has("numero_massimo_iscritti") ?
                     parametri.get("numero_massimo_iscritti").getAsInt() : 0;
-            JsonArray datePrecluse = parametri.has("date_precluse")?
-                    parametri.get("date_precluse").getAsJsonArray() : new JsonArray();
+            JsonArray datePrecluseFuture = parametri.has("date_precluse_future")?
+                    parametri.get("date_precluse_future").getAsJsonArray() : new JsonArray();
+            JsonArray datePrecluseAttuali = parametri.has("date_precluse_attuali")?
+                    parametri.get("date_precluse_attuali").getAsJsonArray() : new JsonArray();
 
             Luogo.setParametroTerritoriale(parametroTerritoriale);
             TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
 
-            Set<Integer> datePrecluseLettete = new HashSet<>();
+            Set<Integer> datePrecluseFutureLette = new HashSet<>();
+            datePrecluseFuture.forEach((jsonElement -> datePrecluseFutureLette.add(jsonElement.getAsInt())));
+            TipoVisita.setDatePrecluseFuture(datePrecluseFutureLette);
 
-            datePrecluse.forEach((jsonElement -> {
-                datePrecluseLettete.add(jsonElement.getAsInt());
-            }));
-
-            TipoVisita.setDatePrecluse(datePrecluseLettete);
+            Set<Integer> datePrecluseAttualiLette = new HashSet<>();
+            datePrecluseAttuali.forEach((jsonElement -> datePrecluseAttualiLette.add(jsonElement.getAsInt())));
+            TipoVisita.setDatePrecluseAttuali(datePrecluseAttualiLette);
 
         } catch (IOException ignored) {}
     }
