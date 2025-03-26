@@ -4,9 +4,9 @@
       "year": 2025,
       "month": 2,
       "dayOfMonth": 26,
-      "hourOfDay": 11,
-      "minute": 31,
-      "second": 20
+      "hourOfDay": 12,
+      "minute": 15,
+      "second": 26
     },
     "stato": "EFFETTUATA",
     "numeroIscritti": 6,
@@ -17,25 +17,25 @@
       "year": 2025,
       "month": 2,
       "dayOfMonth": 26,
-      "hourOfDay": 11,
-      "minute": 31,
-      "second": 20
+      "hourOfDay": 12,
+      "minute": 15,
+      "second": 26
     },
     "dataFine": {
       "year": 2025,
       "month": 2,
       "dayOfMonth": 26,
-      "hourOfDay": 11,
-      "minute": 31,
-      "second": 20
+      "hourOfDay": 12,
+      "minute": 15,
+      "second": 26
     },
     "oraInizio": {
       "year": 2025,
       "month": 2,
       "dayOfMonth": 26,
-      "hourOfDay": 11,
-      "minute": 31,
-      "second": 20
+      "hourOfDay": 12,
+      "minute": 15,
+      "second": 26
     },
     "durata": 2,
     "giorniSettimana": [],

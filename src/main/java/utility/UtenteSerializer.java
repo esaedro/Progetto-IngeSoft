@@ -1,6 +1,7 @@
 package utility;
 
 import application.Configuratore;
+import application.TipoVisita;
 import application.Utente;
 import application.Volontario;
 import com.google.gson.*;
@@ -19,6 +20,9 @@ class UtenteSerializer implements JsonSerializer<Utente> {
             jsonObject.addProperty("type", "configuratore");
         } else if (utente instanceof Volontario) {
             jsonObject.addProperty("type", "volontario");
+            JsonArray jsonArraydateDisponiblita = new JsonArray();
+            ((Volontario) utente).getDisponibilita().forEach(jsonArraydateDisponiblita::add);
+            jsonObject.add("disponibilita", jsonArraydateDisponiblita);
         }
 
         return jsonObject;

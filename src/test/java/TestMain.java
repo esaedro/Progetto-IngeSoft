@@ -32,6 +32,7 @@ public class TestMain {
     }
 
     @Test
+    @Order(1)
     void loginConfiguratoreTest() {
         Utente utenteProvvisorio = new Utente(new Session());
         ArrayList<Utente> utentiTest = new ArrayList<>();
@@ -42,6 +43,29 @@ public class TestMain {
         Utente finale = utenteProvvisorio.login("C_Dilbert", "admin");
 
         assertInstanceOf(Configuratore.class, finale,"Login configuratore non restituisce i permessi");
+    }
+
+    @Test
+    @Order(2)
+    void disponibilitaVolontari() {
+        Utente utenteProvvisorio = new Utente(new Session());
+        Set<Integer> disp = new HashSet<>();
+        disp.add(3);
+        disp.add(4);
+        disp.add(8);
+
+        ArrayList<Utente> utentiTest = new ArrayList<>();
+        utentiTest.add(new Volontario("V_Jhonny", "volontario", disp));
+
+        utenteProvvisorio.getSession().setUtenti(utentiTest);
+        utenteProvvisorio.getSession().salvaUtenti();
+
+        Utente finale = utenteProvvisorio.login("V_Jhonny", "volontario");
+        assertInstanceOf(Volontario.class, finale,"Login volontario non restituisce i permessi");
+
+        ((Volontario)finale).getDisponibilita().forEach(giorno ->
+                assertFalse(disp.add(giorno), "errore lettura/scrittura disponibilità volontario"));
+
     }
 
     @Test
@@ -79,7 +103,7 @@ public class TestMain {
     }
 
     @Test
-    @Order(1)
+    @Order(11)
     void letturaScritturaDatePrecluse() {
         Session session = new Session();
 
@@ -98,7 +122,7 @@ public class TestMain {
     }
 
     @Test
-    @Order(2)
+    @Order(12)
     void salvataggioDatePrecluseCambioMese() {
         Session session = new Session();
         session.caricaParametriGlobali();
@@ -117,5 +141,7 @@ public class TestMain {
 
         assertTrue(TipoVisita.getDatePrecluseFuture().isEmpty(), "problema lettura/scrittura date precluse i+1");
     }
+
+
 
 }
