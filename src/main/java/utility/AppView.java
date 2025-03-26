@@ -11,7 +11,6 @@ import application.*;
 public class AppView {
     
     private Utente utente;
-//    private TextIO textIO = TextIoFactory.getTextIO();
 
     public AppView() {
     }
