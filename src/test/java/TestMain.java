@@ -69,6 +69,47 @@ public class TestMain {
     }
 
     @Test
+    @Order(3)
+    void getDisponibilitaVolontario() {
+        Utente utenteProvvisorio = new Utente(new Session());
+        ArrayList<Utente> utentiTest = new ArrayList<>();
+        utentiTest.add(new Volontario("V_Jhonny", "volontario"));
+        utenteProvvisorio.getSession().setUtenti(utentiTest);
+        utenteProvvisorio.getSession().salvaUtenti();
+
+        Utente finale = utenteProvvisorio.login("V_Jhonny", "volontario");
+
+        finale.getSession().setVisite(new ArrayList<>());
+
+        Set<Volontario> volontari = new HashSet<>();
+        volontari.add((Volontario) finale);
+
+        Visita associata = new Visita("Jhonny_visita", "Bellissima visita", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, volontari, Calendar.getInstance(),
+                StatoVisita.PROPOSTA, 6);
+
+        Visita nonAssociata = new Visita("Non_Jhonny", "Bellissima visita", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, new HashSet<>(), Calendar.getInstance(),
+                StatoVisita.PROPOSTA, 6);
+
+        utenteProvvisorio.getSession().addVisita(associata);
+        utenteProvvisorio.getSession().addVisita(nonAssociata);
+
+        finale.getSession().salva();
+        finale.getSession().getVisite().clear();
+        finale.getSession().carica();
+
+        System.out.println(((Volontario) finale).getDisponibilita());
+        ArrayList<Visita> visiteAssociate = ((Volontario) finale).getVisiteAssociate();
+
+        assertTrue(visiteAssociate.get(0).getVolontariIdonei().contains(finale), "Problema nel filtro visite associate");
+        assertFalse(visiteAssociate.contains(nonAssociata), "Problema nel filtro visite non associate");
+
+    }
+
+    @Test
     void backupStorico() {
         Session session = new Session();
         session.setVisite(new ArrayList<>());

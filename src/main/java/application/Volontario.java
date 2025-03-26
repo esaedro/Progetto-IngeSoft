@@ -1,7 +1,6 @@
 package application;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Volontario extends Utente {
 
@@ -28,5 +27,32 @@ public class Volontario extends Utente {
 
     public void setDisponibilita(Set<Integer> disponibilita) {
         this.disponibilita = disponibilita;
+    }
+
+    public void addDisponibilita(Set<Integer> disponibilita) {
+        this.disponibilita.addAll(disponibilita);
+    }
+
+    public void removeDisponibilita(Set<Integer> disponibilita) {
+        this.disponibilita.removeAll(disponibilita);
+    }
+
+    public ArrayList<Visita> getVisiteAssociate() {
+        ArrayList<Visita> visite = super.getSession().getVisite();
+        visite.removeIf(visita -> !visita.getVolontariIdonei().contains(this));
+        return visite;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Volontario that = (Volontario) obj;
+        return this.getNomeUtente().equals(that.getNomeUtente());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNomeUtente());
     }
 }
