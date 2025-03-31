@@ -11,6 +11,7 @@ import java.time.Month;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1223,23 +1224,53 @@ public class InputDati {
         System.out.print(ANSI_RESET);
         return ora;
     }
-    // public static Set<Calendar> selezionaDateDaMese(
-    //     Year anno,
-    //     Month mese,
-    //     int giornoMinimo,
-    //     int giornoMassimo
-    // ) {
-    //     Set<Calendar> dateSelezionate = new HashSet<>();
-    //     Calendar data = Calendar.getInstance();
-    //     data.set(Calendar.YEAR, anno.getValue());
-    //     data.set(Calendar.MONTH, mese.getValue());
-    //     data.set(Calendar.DAY_OF_MONTH, giornoMinimo);
 
-    //     while (data.get(Calendar.DAY_OF_MONTH) <= giornoMassimo) {
-    //         dateSelezionate.add((Calendar) data.clone());
-    //         data.add(Calendar.DAY_OF_MONTH, 1);
-    //     }
+    public static Set<Integer> selezionaDateDaMese(
+        Year anno,
+        Month mese,
+        Collection<Integer> nonSelezionabili
+    ) {
+        Set<Integer> giorniSelezionati = new HashSet<>();
+        Calendar data = Calendar.getInstance();
+        data.set(Calendar.YEAR, anno.getValue());
+        data.set(Calendar.MONTH, mese.getValue());
+        BelleStringhe.stampaCalendario(mese, anno, nonSelezionabili, giorniSelezionati);
 
-    //     return dateSelezionate;
-    // }
+        boolean finito = false;
+        String inserimento;
+        while (!finito) {
+            inserimento = leggiStringa("('q' per terminare) > ");
+            Calendar dataBase = Calendar.getInstance();
+            dataBase.set(Calendar.YEAR, anno.getValue());
+            dataBase.set(Calendar.MONTH, mese.getValue());
+            try {
+                if (inserimento.equals("q")) {
+                    finito = true;
+                } else {
+                    int giornoSelezionato = Integer.parseInt(inserimento);
+                    if (
+                        giornoSelezionato > 0 &&
+                        giornoSelezionato <= dataBase.getActualMaximum(Calendar.DAY_OF_MONTH) &&
+                        !nonSelezionabili.contains(giornoSelezionato)
+                    ) {
+                        if (giorniSelezionati.contains(giornoSelezionato)) {
+                            giorniSelezionati.remove(giornoSelezionato);
+                        } else {
+                            giorniSelezionati.add(giornoSelezionato);
+                        }
+                        BelleStringhe.stampaCalendario(
+                            mese,
+                            anno,
+                            nonSelezionabili,
+                            giorniSelezionati
+                        );
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println(ERRORE_FORMATO);
+            }
+        }
+
+        return giorniSelezionati;
+    }
 }
