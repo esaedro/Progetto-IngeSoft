@@ -9,7 +9,6 @@ public class Luogo implements Serializable {
     private static String parametroTerritoriale;
     private String nome;
     private String indirizzo;
-    private Set<TipoVisita> visite = new HashSet<>();
     private Set<String> visiteIds = new HashSet<>();
 
     public Luogo(String nome, String indirizzo) {
@@ -37,12 +36,8 @@ public class Luogo implements Serializable {
         return indirizzo;
     }
 
-    public Set<TipoVisita> getVisite() {
-        return visite;
-    }
-    
-    public void addVisite(Set<TipoVisita> visiteDaAggiungere) {
-        visite.addAll(visiteDaAggiungere);
+    public void addVisite(String visiteDaAggiungere) {
+        visiteIds.add(visiteDaAggiungere);
     }
 
     public Set<String> getVisiteIds() {
@@ -56,7 +51,10 @@ public class Luogo implements Serializable {
     @Override
     public String toString() {
         return "Luogo{" +
-                "nome='" + nome + '\'' + ", indirizzo='" + indirizzo + '\'' + '}';
+                "nome='" + nome + '\'' + 
+                ", indirizzo='" + indirizzo + '\'' + 
+                ", visiteIds=" + visiteIds +
+                '}';
     }
 
 }

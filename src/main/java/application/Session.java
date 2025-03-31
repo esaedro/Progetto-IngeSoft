@@ -95,11 +95,9 @@ public class Session {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
                 user.setSession(this);
                 return user;
-            }
-            else {
-                System.out.println("\nUtente non trovato. Nome utente o password errati.");
-            }
+            }    
         }
+        
         return null;
     }
 

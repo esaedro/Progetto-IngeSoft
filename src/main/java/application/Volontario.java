@@ -25,16 +25,16 @@ public class Volontario extends Utente {
         return disponibilita;
     }
 
-    public void setDisponibilita(Set<Integer> disponibilita) {
-        this.disponibilita = disponibilita;
+    public void setDisponibilita(Set<Integer> disponibilitaNuova) {
+        this.disponibilita = disponibilitaNuova;
     }
 
-    public void addDisponibilita(Set<Integer> disponibilita) {
-        this.disponibilita.addAll(disponibilita);
+    public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {
+        this.disponibilita.addAll(disponibilitaDaAggiungere);
     }
 
-    public void removeDisponibilita(Set<Integer> disponibilita) {
-        this.disponibilita.removeAll(disponibilita);
+    public void removeDisponibilita(Set<Integer> disponibilitaDaRimuovere) {
+        this.disponibilita.removeAll(disponibilitaDaRimuovere);
     }
 
     public ArrayList<TipoVisita> getVisiteAssociate() {

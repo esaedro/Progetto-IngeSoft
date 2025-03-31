@@ -54,20 +54,30 @@ public class TipoVisita implements Serializable {
 
     @Override
     public String toString() {
+        StringBuilder volontari = new StringBuilder();
+        if (volontariIdonei != null) {
+            for (Volontario volontario : volontariIdonei) {
+            volontari.append(volontario.getNomeUtente()).append(", ");
+            }
+            if (volontari.length() > 0) {
+            volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
+            }
+        }
         return "TipoVisita{ " +
-                "titolo='" + titolo + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", puntoIncontro='" + puntoIncontro + '\'' +
-                ", dataInizio=" + dataInizio.getTime() +
-                ", dataFine=" + dataFine.getTime() +
-                ", oraInizio=" + oraInizio.getTime() +
-                ", durata=" + durata +
-                ", giorniSettimana=" + giorniSettimana +
-                ", maxPartecipante=" + maxPartecipante +
-                ", minPartecipante=" + minPartecipante +
-                ", bigliettoIngresso=" + bigliettoIngresso +
-                ", volontariIdonei=" + volontariIdonei +
-                '}';
+            "titolo='" + titolo + '\'' +
+            ", descrizione='" + descrizione + '\'' +
+            ", puntoIncontro='" + puntoIncontro + '\'' +
+            ", dataInizio=" + dataInizio.getTime() +
+            ", dataFine=" + dataFine.getTime() +
+            ", oraInizio=" + oraInizio.getTime() +
+            ", durata=" + durata +
+            ", giorniSettimana=" + giorniSettimana +
+            ", maxPartecipante=" + maxPartecipante +
+            ", minPartecipante=" + minPartecipante +
+            ", bigliettoIngresso=" + bigliettoIngresso +
+            ", volontariIdonei=[" + volontari + "]" +
+            ", visiteAssociate=" + visiteAssociate.toString() +
+            '}';
     }
 
     public String getTitolo() {

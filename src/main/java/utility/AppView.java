@@ -2,6 +2,7 @@ package utility;
 
 import java.time.DayOfWeek;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -18,18 +19,18 @@ public class AppView {
     public void start() { //Prima impostazione password
         System.out.println(BelleStringhe.incornicia("Benvenuto nel sistema di gestione delle visite guidate"));
         System.out.println("Per uscire scrivere '0' nella password");
-        Utente utenteProvvisorio = null;
+        CliMenu<String, Runnable> myMenu = null;
 
-        while (utenteProvvisorio == null) {
-            utenteProvvisorio = menuInserimentoCredenziali(new Utente(new Session()));
-        }
-
-        utente = utenteProvvisorio;
         carica();
-        
+
         System.out.println(BelleStringhe.incornicia("Benvenuto " + utente.getNomeUtente()));
-        if (utente.getPassword().startsWith("config")) 
+        if (utente.getPassword().startsWith("config")) {
             menuCambioPassword();
+            System.out.println("Password cambiata con successo");
+            
+            System.out.println("Si inseriscano luoghi e visite da includere nell'applicazione");
+            menuInserimentoLuoghi(); 
+        }
 
         if (Luogo.getParametroTerritoriale()==null) {
             System.out.println("\nSi inizializzi il parametro territoriale a cui fa riferimento l'applicazione");
@@ -40,35 +41,62 @@ public class AppView {
             System.out.println("\nSi inizializzi il numero massimo di iscritti per visita");
             menuInserimentoMassimoIscritti();
         }
-        
-        CliMenu<String, Runnable> myMenu = creaMenu();
+
+        if (utente instanceof Configuratore) {
+            myMenu = creaMenuConfiguratore();
+        }
+        else if (utente instanceof Volontario) {
+            myMenu = creaMenuVolontario();
+        }
+
         stampaMenu(myMenu);
         salva();
     }
 
     public void salva() {
         utente.getSession().salva();
+        utente.getSession().salvaParametriGlobali();
+        utente.getSession().salvaUtenti();
         System.out.println("\nSessione salvata");
     }
 
     public void carica() {
+        Utente utenteProvvisorio = null;
         System.out.println();
+    
+        while (utenteProvvisorio == null) {
+            utenteProvvisorio = menuInserimentoCredenziali(new Utente(new Session()));
+            if (utenteProvvisorio == null) System.out.println("\nUtente non trovato. Nome utente o password errati.");
+        }
+
+        utente = utenteProvvisorio;
+        
         utente.getSession().carica();
         System.out.println("\nSessione caricata");
     }
 
-    public CliMenu<String, Runnable> creaMenu() {
+    public CliMenu<String, Runnable> creaMenuConfiguratore() {
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Salva sessione", () -> salva());
         voci.put("Carica sessione", () -> carica());
         voci.put("Mostra lista luoghi", () -> mostraLista(false, false, true));
         voci.put("Mostra lista volontari", () -> mostraLista(false, true, false));
         voci.put("Mostra lista visite", () -> mostraLista(true, false, false));
-        voci.put("Inserisci nuovi luoghi e visite", () -> menuInserimentoLuoghi());
+        //voci.put("Inserisci nuovi luoghi e visite", () -> menuInserimentoLuoghi());
         voci.put("Inserisci massimo iscritti", () -> menuInserimentoMassimoIscritti());
         voci.put("Inserisci date precluse", () -> menuInserimentoDate());
 
-        return new CliMenu<String, Runnable>("Menu", voci);
+        return new CliMenu<String, Runnable>("Menu Configuratore", voci);
+    }
+
+    public CliMenu<String, Runnable> creaMenuVolontario() {
+        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+        voci.put("Salva sessione", () -> salva());
+        voci.put("Carica sessione", () -> carica());
+        voci.put("Mostra lista visite a cui sei associato ", () -> mostraVisiteAssociateAlVolontario());
+        voci.put("Inserisci disponibilita'", () -> menuInserimentoDisponibilita());
+
+        return new CliMenu<String, Runnable>("Menu Volontario", voci);
     }
 
     public void stampaMenu(CliMenu<String,Runnable> myMenu) {
@@ -118,6 +146,17 @@ public class AppView {
         }
         else {
             System.out.println("Nessuna lista selezionata");
+        }
+    }
+
+    public void mostraVisiteAssociateAlVolontario() {
+        ArrayList<TipoVisita> visiteAssociate = ((Volontario) utente).getVisiteAssociate();
+        if (visiteAssociate.isEmpty()) {
+            System.out.println("Non ci sono visite associate al volontario " + utente.getNomeUtente());
+        } else {
+            for (TipoVisita visita : visiteAssociate) {
+                System.out.println(visita.toString());
+            }
         }
     }
 
@@ -181,7 +220,7 @@ public class AppView {
         else System.out.println("\nPermessi non sufficienti");
     }
 
-     public void menuInserimentoDate() {
+    public void menuInserimentoDate() {
         if (utente instanceof Configuratore) {
             int dataInserita;
             Set<Integer> datePrecluse = new HashSet<>();
@@ -219,16 +258,17 @@ public class AppView {
 
                 Luogo luogo = new Luogo(nomeLuogo, indirizzoLuogo);
 
-                System.out.println("\n" + BelleStringhe.ANSI_YELLOW + "Inserire almeno un tipo di visita");
+                System.out.println("\nInserire almeno un tipo di visita");
                 do {
                     tipoVisita = menuInserimentoTipoVisita();
                     if (tipoVisita != null) {
                         visite.add(tipoVisita);
+                        luogo.addVisite(tipoVisita.getTitolo());
                     }
                     else break;
                 } while (InputDati.conferma("Inserire un altro tipo di visita?"));
 
-                luogo.addVisite(visite);
+               
                 luoghi.add(luogo);
                 ((Configuratore) utente).inserisciVisite(visite); //Inserisce la/le visite nella session dell'utente
             } while(InputDati.conferma("Inserire un altro luogo?"));
@@ -247,6 +287,7 @@ public class AppView {
             Boolean bigliettoIngresso;
             Set<DayOfWeek> giorniSettimana = new HashSet<>();
             Set<Volontario> volontariIdonei = new HashSet<>();
+            ArrayList<Volontario> volontari = utente.getSession().getVolontari();
 
             titolo = InputDati.leggiStringaNonVuota("Inserire il titolo della visita: ", "Il titolo della visita non puo' essere vuoto");
             descrizione = InputDati.leggiStringaNonVuota("Inserire la descrizione della visita: ", "La descrizione della visita non puo' essere vuota");
@@ -273,26 +314,34 @@ public class AppView {
             }
 
             System.out.println("Inserire i volontari idonei alla visita: ");  
-            if (utente.getSession().getVolontari().isEmpty()) {
+            if (volontari.isEmpty()) {
                 System.out.println("Non ci sono volontari disponibili");
             }
             else {
-                while(volontariIdonei.isEmpty() || InputDati.conferma("Inserire un altro volontario?")) {
-                    Volontario volontario = InputDati.selezionaUnoDaLista("Selezionare tra i volontari", utente.getSession().getVolontari(), Volontario::getNomeUtente);
-                    //menuSelezioneVolontario();
-                    if (volontario != null) {
-                        volontariIdonei.add(volontario);
-                    } else if (volontariIdonei.isEmpty()) {
-                        System.out.println("Inserire almeno un volontario, Non ci sono volontari");
-                    }
-                }
+                volontariIdonei = InputDati.selezionaPiuDaLista("Selezionare tra i volontari", volontari, Volontario::getNomeUtente, 1, volontari.size());
             }
+            
             return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
                     giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
         }
         else {
             System.out.println("Permessi non sufficienti");
             return null;
+        }
+    }
+
+    public void menuInserimentoDisponibilita() {
+        Month meseDiLavoro = CalendarManager.meseDiLavoro(2);
+        Set<Integer> disponibilita = new HashSet<>();
+        
+        disponibilita = InputDati.selezionaDateDaMese(CalendarManager.annoCorrente(), meseDiLavoro, TipoVisita.getDatePrecluseFuture());
+        if (disponibilita.isEmpty()) {
+            System.out.println("Nessuna disponibilita' selezionata");
+            return;
+        }   
+        if (disponibilita != null) {
+            ((Volontario)utente).addDisponibilita(disponibilita);
+            return;
         }
     }
 

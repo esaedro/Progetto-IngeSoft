@@ -119,7 +119,7 @@ public class BelleStringhe {
         return result.toString();
     }
 
-    public static String stampaCalendario(
+    public static void stampaCalendario(
         Month mese,
         Year anno,
         Collection<Integer> giorniOccupati,
@@ -127,19 +127,19 @@ public class BelleStringhe {
     ) {
         StringBuffer result = new StringBuffer();
         result.append(incornicia(mese.toString() + " " + anno.toString()));
-        result.append("LUN MAR MER GIO VEN SAB DOM\n");
+        result.append("\nLUN MAR MER GIO VEN SAB DOM\n");
         int giornoSettimana = 1;
 
         for (int i = 1; i <= mese.length(anno.isLeap()); i++) {
             if (giornoSettimana == 1) {
-                result.append(incolonna("", 4));
+                result.append(incolonna("", 6));
             }
             if (giorniOccupati.contains(i)) {
-                result.append(incolonna("x" + String.valueOf(i) + "x", 4));
+                result.append(incolonna("x" + String.valueOf(i) + "x", 6));
             } else if (giorniSelezionati.contains(i)) {
-                result.append(incolonna("@" + String.valueOf(i) + "@", 4));
+                result.append(incolonna("@" + String.valueOf(i) + "@", 6));
             } else {
-                result.append(incolonna(String.valueOf(i), 4));
+                result.append(incolonna(String.valueOf(i), 6));
             }
             if (giornoSettimana == 7) {
                 result.append("\n");
@@ -149,6 +149,7 @@ public class BelleStringhe {
             }
         }
         result.append("\n");
-        return result.toString();
+
+        System.out.println(result.toString());
     }
 }
