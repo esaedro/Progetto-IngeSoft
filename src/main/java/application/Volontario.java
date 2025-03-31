@@ -37,8 +37,8 @@ public class Volontario extends Utente {
         this.disponibilita.removeAll(disponibilita);
     }
 
-    public ArrayList<Visita> getVisiteAssociate() {
-        ArrayList<Visita> visite = super.getSession().getVisite();
+    public ArrayList<TipoVisita> getVisiteAssociate() {
+        ArrayList<TipoVisita> visite = super.getSession().getVisite();
         visite.removeIf(visita -> !visita.getVolontariIdonei().contains(this));
         return visite;
     }

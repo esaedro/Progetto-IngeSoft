@@ -1,99 +1,100 @@
 [
   {
-    "dataVisita": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
-    },
-    "stato": "PROPOSTA",
-    "numeroIscritti": 6,
-    "titolo": "Jhonny_visita",
-    "descrizione": "Bellissima visita",
-    "puntoIncontro": "Disneyland",
+    "titolo": "Visita1",
+    "descrizione": "Disneyland",
+    "puntoIncontro": "",
     "dataInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "dataFine": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "oraInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "durata": 2,
     "giorniSettimana": [],
     "minPartecipante": 5,
     "maxPartecipante": 10,
     "bigliettoIngresso": true,
-    "volontariIdonei": [
+    "volontariIdonei": [],
+    "visiteAssociate": [
       {
-        "nomeUtente": "V_Jhonny",
-        "password": "volontario",
-        "type": "volontario",
-        "disponibilita": []
+        "dataVisita": {
+          "year": 2025,
+          "month": 2,
+          "dayOfMonth": 31,
+          "hourOfDay": 16,
+          "minute": 22,
+          "second": 43
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 6
       }
     ]
   },
   {
-    "dataVisita": {
-      "year": 2025,
-      "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
-    },
-    "stato": "PROPOSTA",
-    "numeroIscritti": 6,
-    "titolo": "Non_Jhonny",
-    "descrizione": "Bellissima visita",
-    "puntoIncontro": "Disneyland",
+    "titolo": "Visita2",
+    "descrizione": "Disneyland",
+    "puntoIncontro": "",
     "dataInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "dataFine": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "oraInizio": {
       "year": 2025,
       "month": 2,
-      "dayOfMonth": 26,
-      "hourOfDay": 13,
-      "minute": 9,
-      "second": 44
+      "dayOfMonth": 31,
+      "hourOfDay": 16,
+      "minute": 22,
+      "second": 43
     },
     "durata": 2,
     "giorniSettimana": [],
     "minPartecipante": 5,
     "maxPartecipante": 10,
     "bigliettoIngresso": true,
-    "volontariIdonei": []
+    "volontariIdonei": [],
+    "visiteAssociate": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 2,
+          "dayOfMonth": 31,
+          "hourOfDay": 16,
+          "minute": 22,
+          "second": 43
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 8
+      }
+    ]
   }
 ]

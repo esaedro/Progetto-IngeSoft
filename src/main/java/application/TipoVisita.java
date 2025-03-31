@@ -2,6 +2,7 @@ package application;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +26,8 @@ public class TipoVisita implements Serializable {
 
     private Boolean bigliettoIngresso;
     private Set<Volontario> volontariIdonei;
+
+    private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
     public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
             Calendar oraInizio, int durata, Set<DayOfWeek> giorniSettimana, int minPartecipante, int maxPartecipante,
@@ -70,72 +73,95 @@ public class TipoVisita implements Serializable {
     public String getTitolo() {
         return titolo;
     }
+
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
+
     public String getDescrizione() {
         return descrizione;
     }
+
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
     public String getPuntoIncontro() {
         return puntoIncontro;
     }
+
     public void setPuntoIncontro(String puntoIncontro) {
         this.puntoIncontro = puntoIncontro;
     }
+
     public Calendar getDataInizio() {
         return dataInizio;
     }
+
     public void setDataInizio(Calendar dataInizio) {
         this.dataInizio = dataInizio;
     }
+
     public Calendar getDataFine() {
         return dataFine;
     }
+
     public void setDataFine(Calendar dataFine) {
         this.dataFine = dataFine;
     }
+
     public Calendar getOraInizio() {
         return oraInizio;
     }
+
     public void setOraInizio(Calendar oraInizio) {
         this.oraInizio = oraInizio;
     }
+
     public int getDurata() {
         return durata;
     }
+
     public void setDurata(int durata) {
         this.durata = durata;
     }
+
     public Set<DayOfWeek> getGiorniSettimana() {
         return giorniSettimana;
     }
+
     public void setGiorniSettimana(Set<DayOfWeek> giorniSettimana) {
         this.giorniSettimana = giorniSettimana;
     }
+
     public int getMaxPartecipante() {
         return maxPartecipante;
     }
+
     public void setMaxPartecipante(int maxPartecipante) {
         this.maxPartecipante = maxPartecipante;
     }
+
     public int getMinPartecipante() {
         return minPartecipante;
     }
+
     public void setMinPartecipante(int minPartecipante) {
         this.minPartecipante = minPartecipante;
     }
+
     public Boolean getBigliettoIngresso() {
         return bigliettoIngresso;
     }
+
     public void setBigliettoIngresso(Boolean bigliettoIngresso) {
         this.bigliettoIngresso = bigliettoIngresso;
     }
+
     public Set<Volontario> getVolontariIdonei() {
         return volontariIdonei;
     }
+
     public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
         this.volontariIdonei = volontariIdonei;
     }
@@ -166,5 +192,17 @@ public class TipoVisita implements Serializable {
 
     public static void setDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluseAttuali = datePrecluseDaAggiungere;
+    }
+
+    public ArrayList<Visita> getVisiteAssociate() {
+        return visiteAssociate;
+    }
+
+    public void setVisiteAssociate(ArrayList<Visita> visiteAssociate) {
+        this.visiteAssociate = visiteAssociate;
+    }
+
+    public void addVisita(Visita visita) {
+        visiteAssociate.add(visita);
     }
 }

@@ -9,7 +9,8 @@ public class Luogo implements Serializable {
     private static String parametroTerritoriale;
     private String nome;
     private String indirizzo;
-    private Set<Visita> visite = new HashSet<>();
+    private Set<TipoVisita> visite = new HashSet<>();
+    private Set<String> visiteIds = new HashSet<>();
 
     public Luogo(String nome, String indirizzo) {
         this.nome = nome;
@@ -36,12 +37,20 @@ public class Luogo implements Serializable {
         return indirizzo;
     }
 
-    public Set<Visita> getVisite() {
+    public Set<TipoVisita> getVisite() {
         return visite;
     }
     
-    public void addVisite(Set<Visita> visiteDaAggiungere) {
+    public void addVisite(Set<TipoVisita> visiteDaAggiungere) {
         visite.addAll(visiteDaAggiungere);
+    }
+
+    public Set<String> getVisiteIds() {
+        return visiteIds;
+    }
+
+    public void setVisiteIds(Set<String> visiteIds) {
+        this.visiteIds = visiteIds;
     }
 
     @Override

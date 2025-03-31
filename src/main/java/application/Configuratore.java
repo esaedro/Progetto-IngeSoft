@@ -29,7 +29,7 @@ public class Configuratore extends Utente {
         super.getSession().getLuoghi().addAll(luogo);
     }
 
-    public void inserisciVisite(Set<Visita> visite) {
+    public void inserisciVisite(Set<TipoVisita> visite) {
         super.getSession().addAllTipoVisite(visite);
     }
 
