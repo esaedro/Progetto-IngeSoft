@@ -11,7 +11,6 @@ import application.*;
 public class AppView {
     
     private Utente utente;
-//    private TextIO textIO = TextIoFactory.getTextIO();
 
     public AppView() {
     }
@@ -208,9 +207,9 @@ public class AppView {
     private void menuInserimentoLuoghi() {
         if (utente instanceof Configuratore) {
             Set<Luogo> luoghi = new HashSet<>();
-            Set<Visita> visite = new HashSet<>();
+            Set<TipoVisita> visite = new HashSet<>();
             String nomeLuogo, indirizzoLuogo;
-            Visita tipoVisita;
+            TipoVisita tipoVisita;
 
             do {
                 do {
@@ -240,7 +239,7 @@ public class AppView {
         else System.out.println("Permessi non sufficienti");
     }
 
-    private Visita menuInserimentoTipoVisita() {
+    private TipoVisita menuInserimentoTipoVisita() {
         if (utente instanceof Configuratore) {
             String titolo, descrizione, puntoIncontro;
             Calendar dataInizio, dataFine, oraInizio;
@@ -288,9 +287,8 @@ public class AppView {
                     }
                 }
             }
-            return new Visita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
-                    giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei,
-                    null, StatoVisita.NON_ISTANZIATA, 0);
+            return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
+                    giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
         }
         else {
             System.out.println("Permessi non sufficienti");

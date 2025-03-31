@@ -69,23 +69,68 @@ public class TestMain {
     }
 
     @Test
+    @Order(3)
+    void getDisponibilitaVolontario() {
+        Utente utenteProvvisorio = new Utente(new Session());
+        ArrayList<Utente> utentiTest = new ArrayList<>();
+        utentiTest.add(new Volontario("V_Jhonny", "volontario"));
+        utenteProvvisorio.getSession().setUtenti(utentiTest);
+        utenteProvvisorio.getSession().salvaUtenti();
+
+        Utente finale = utenteProvvisorio.login("V_Jhonny", "volontario");
+
+        finale.getSession().setVisite(new ArrayList<>());
+
+        Set<Volontario> volontari = new HashSet<>();
+        volontari.add((Volontario) finale);
+
+        TipoVisita associata = new TipoVisita("Jhonny_visita", "Bellissima visita", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, volontari);
+
+        TipoVisita nonAssociata = new TipoVisita("Non_Jhonny", "Disneyland", "Disneyland",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
+                5, 10, true, new HashSet<>());
+
+        utenteProvvisorio.getSession().addVisita(associata);
+        utenteProvvisorio.getSession().addVisita(nonAssociata);
+
+        finale.getSession().salva();
+        finale.getSession().getVisite().clear();
+        finale.getSession().carica();
+
+        System.out.println(((Volontario) finale).getDisponibilita());
+        ArrayList<TipoVisita> visiteAssociate = ((Volontario) finale).getVisiteAssociate();
+
+        assertTrue(visiteAssociate.get(0).getVolontariIdonei().contains(finale), "Problema nel filtro visite associate");
+        assertFalse(visiteAssociate.contains(nonAssociata), "Problema nel filtro visite non associate");
+
+    }
+
+    @Test
     void backupStorico() {
         Session session = new Session();
         session.setVisite(new ArrayList<>());
         session.getFilemanager().salva(FileManager.fileStorico, null);
-        session.addVisita(new Visita("Prova_effettuata", "Bellissima visita", "Disneyland",
+
+        TipoVisita visita1 = new TipoVisita("Visita1", "Disneyland", "",
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
-                5, 10, true, new HashSet<>(), Calendar.getInstance(),
-                StatoVisita.EFFETTUATA, 6));
-        session.addVisita(new Visita("Prova_noneffettuata", "Bellissima visita", "Disneyland",
+                5, 10, true, new HashSet<>());
+        visita1.addVisita(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6));
+        visita1.addVisita(new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7));
+        session.addVisita(visita1);
+
+        TipoVisita visita2 = new TipoVisita("Visita2", "Disneyland", "",
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
-                5, 10, true, new HashSet<>(), Calendar.getInstance(),
-                StatoVisita.PROPOSTA, 6));
+                5, 10, true, new HashSet<>());
+        visita2.addVisita(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8));
+        visita2.addVisita(new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9));
+        session.addVisita(visita2);
 
         session.salva();
         session.carica();
 
-        assertEquals(session.getStoricoVisite().size(), 1, "Problema nel salvataggio dello storico");
+        assertEquals(session.getStoricoVisite().size(), 2, "Problema nel salvataggio dello storico");
 
     }
 
@@ -141,7 +186,4 @@ public class TestMain {
 
         assertTrue(TipoVisita.getDatePrecluseFuture().isEmpty(), "problema lettura/scrittura date precluse i+1");
     }
-
-
-
 }

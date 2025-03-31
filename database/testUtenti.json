@@ -3,10 +3,6 @@
     "nomeUtente": "V_Jhonny",
     "password": "volontario",
     "type": "volontario",
-    "disponibilita": [
-      3,
-      4,
-      8
-    ]
+    "disponibilita": []
   }
 ]
