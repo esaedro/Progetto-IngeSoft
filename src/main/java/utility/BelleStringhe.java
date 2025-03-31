@@ -1,5 +1,11 @@
 package utility;
 
+import java.time.Month;
+import java.time.Year;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Set;
+
 public class BelleStringhe {
 	public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -117,6 +123,34 @@ public class BelleStringhe {
 			}
 			result.append("\n");
 		}
+		return result.toString();
+	}
+
+	public static String stampaCalendario(Month mese, Year anno, Set<Calendar> giorniOccupati) {
+
+		StringBuffer result = new StringBuffer();
+		result.append(incornicia(mese.toString() + " " + anno.toString()));
+		result.append("LUN MAR MER GIO VEN SAB DOM\n");
+		int giornoSettimana = 1;
+
+		for (int i = 1; i <= mese.length(anno.isLeap()); i++) {
+			if (giornoSettimana == 1) {
+				result.append(incolonna("", 4));
+			}
+			if (giorniOccupati.contains(new GregorianCalendar(anno.getValue(), mese.ordinal(), i))) {
+				result.append(incolonna("x" + String.valueOf(i) + "x", 4));
+				// result.append(ANSI_RED + incolonna(String.valueOf(i), 4) + ANSI_RESET);
+			} else {
+				result.append(incolonna(String.valueOf(i), 4));
+			}
+			if (giornoSettimana == 7) {
+				result.append("\n");
+				giornoSettimana = 1;
+			} else {
+				giornoSettimana++;
+			}
+		}
+		result.append("\n");
 		return result.toString();
 	}
 
