@@ -17,9 +17,18 @@ public class AppView {
     }
 
     public void start() { //Prima impostazione password
+        Utente utenteProvvisorio = null;
+        CliMenu<String, Runnable> myMenu = null;
+
         System.out.println(BelleStringhe.incornicia("Benvenuto nel sistema di gestione delle visite guidate"));
         System.out.println("Per uscire scrivere '0' nella password");
-        CliMenu<String, Runnable> myMenu = null;
+    
+        while (utenteProvvisorio == null) {
+            utenteProvvisorio = menuInserimentoCredenziali(new Utente(new Session()));
+            if (utenteProvvisorio == null) System.out.println("\nUtente non trovato. Nome utente o password errati.");
+        }
+
+        utente = utenteProvvisorio;
 
         carica();
 
@@ -60,17 +69,7 @@ public class AppView {
         System.out.println("\nSessione salvata");
     }
 
-    public void carica() {
-        Utente utenteProvvisorio = null;
-        System.out.println();
-    
-        while (utenteProvvisorio == null) {
-            utenteProvvisorio = menuInserimentoCredenziali(new Utente(new Session()));
-            if (utenteProvvisorio == null) System.out.println("\nUtente non trovato. Nome utente o password errati.");
-        }
-
-        utente = utenteProvvisorio;
-        
+    public void carica() {       
         utente.getSession().carica();
         System.out.println("\nSessione caricata");
     }
@@ -155,8 +154,9 @@ public class AppView {
             System.out.println("Non ci sono visite associate al volontario " + utente.getNomeUtente());
         } else {
             for (TipoVisita visita : visiteAssociate) {
-                System.out.println(visita.toString());
+                System.out.println("\n" + visita.toString());
             }
+            System.out.println();
         }
     }
 
