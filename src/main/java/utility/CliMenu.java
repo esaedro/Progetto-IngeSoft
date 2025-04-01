@@ -18,7 +18,7 @@ public class CliMenu <T, U> {
     public static final String ERRORE_INSERIMENTO = "Scelta non valida";
     // public static final String ERRORE_INSERIMENTO = ANSI_RED + "Scelta non valida" + ANSI_RESET;
 
-    private String titolo;
+    private final String titolo;
     protected LinkedHashMap<T, U> voci;
 
     /**

@@ -10,7 +10,6 @@ public class Configuratore extends Utente {
 
     public Configuratore(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
-        super.setSession(utente.getSession());
     }
 
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
@@ -23,14 +22,6 @@ public class Configuratore extends Utente {
 
     public void impostaDatePrecluse(Set<Integer> datePrecluse) {
         TipoVisita.aggiungiDatePrecluseFuture(datePrecluse);
-    }
-
-    public void inserisciLuoghi(Set<Luogo> luogo) {
-        super.getSession().getLuoghi().addAll(luogo);
-    }
-
-    public void inserisciVisite(Set<TipoVisita> visite) {
-        super.getSession().addAllTipoVisite(visite);
     }
 
 }

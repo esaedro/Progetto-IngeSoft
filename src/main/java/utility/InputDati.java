@@ -44,7 +44,7 @@ public class InputDati {
 
     private static Scanner creaScanner() {
         Scanner creato = new Scanner(System.in);
-        creato.useDelimiter(System.getProperty("line.separator"));
+        creato.useDelimiter("\n");
         return creato;
     }
 
@@ -89,11 +89,11 @@ public class InputDati {
     public static String leggiStringaNonVuota(String messaggioInserimento, String messaggioErrore) {
         // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
-        String lettura = null;
+        String lettura;
         do {
             lettura = leggiStringa(messaggioInserimento);
             lettura = lettura.trim();
-            if (lettura.length() > 0) finito = true;
+            if (!lettura.isEmpty()) finito = true;
             else System.out.println(messaggioErrore);
         } while (!finito);
 

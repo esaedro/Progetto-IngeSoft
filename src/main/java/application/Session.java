@@ -2,21 +2,24 @@ package application;
 import utility.FileManager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class Session {
 
-    private ArrayList<Utente> utenti;
-    private ArrayList<Luogo> luoghi;
-    private ArrayList<TipoVisita> visite;
+    private Set<Utente> utenti;
+    private Set<Luogo> luoghi;
+    private Set<TipoVisita> visite;
     private FileManager filemanager;
+
+    private Utente utenteAttivo;
 
     public Session() {
         this.filemanager = new FileManager("database/");
     }
 
-    public Session(ArrayList<Utente> utenti, ArrayList<Luogo> luoghi, ArrayList<TipoVisita> visite, FileManager filemanager) {
+    public Session(Set<Utente> utenti, Set<Luogo> luoghi, Set<TipoVisita> visite, FileManager filemanager) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
@@ -49,7 +52,7 @@ public class Session {
         }
 
         if (!visiteDaSalvare.isEmpty()) {
-            ArrayList<Visita> storicoVisite = filemanager.carica(FileManager.fileStorico, Visita.class);
+            Set<Visita> storicoVisite = filemanager.carica(FileManager.fileStorico, Visita.class);
             if (storicoVisite != null) {
                 visiteDaSalvare.addAll(storicoVisite);
             }
@@ -68,13 +71,13 @@ public class Session {
 
     public void carica() {
         visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class) != null
-                ? filemanager.carica(FileManager.fileVisite, TipoVisita.class) : new ArrayList<>();
+                ? filemanager.carica(FileManager.fileVisite, TipoVisita.class) : new HashSet<>();
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
-                ? filemanager.carica(FileManager.fileLuoghi, Luogo.class) : new ArrayList<>();
+                ? filemanager.carica(FileManager.fileLuoghi, Luogo.class) : new HashSet<>();
         caricaParametriGlobali();
     }
 
-    public ArrayList<TipoVisita> getStoricoVisite() {
+    public Set<TipoVisita> getStoricoVisite() {
         return filemanager.carica(FileManager.fileStorico, TipoVisita.class);
     }
 
@@ -89,11 +92,10 @@ public class Session {
 
     public Utente login(String nomeUtente, String password) {
         utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
-                ? filemanager.carica(FileManager.fileUtenti, Utente.class) : new ArrayList<>();
+                ? filemanager.carica(FileManager.fileUtenti, Utente.class) : new HashSet<>();
 
         for (Utente user: utenti) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
-                user.setSession(this);
                 return user;
             }    
         }
@@ -101,31 +103,39 @@ public class Session {
         return null;
     }
 
-    public ArrayList<Utente> getUtenti() {
+    public Set<Utente> getUtenti() {
         return utenti;
     }
 
-    public void setUtenti(ArrayList<Utente> utenti) {
+    public void setUtenti(Set<Utente> utenti) {
         this.utenti = utenti;
     }
 
-    public ArrayList<Luogo> getLuoghi() {
+    public Utente getUtenteAttivo() {
+        return utenteAttivo;
+    }
+
+    public void setUtenteAttivo(Utente utenteAttivo) {
+        this.utenteAttivo = utenteAttivo;
+    }
+
+    public Set<Luogo> getLuoghi() {
         return luoghi;
     }
 
-    public void setLuoghi(ArrayList<Luogo> luoghi) {
+    public void setLuoghi(Set<Luogo> luoghi) {
         this.luoghi = luoghi;
     }
 
-    public void addLuoghi (ArrayList<Luogo> luoghiDaAggiungere) {
+    public void addLuoghi (Set<Luogo> luoghiDaAggiungere) {
         this.luoghi.addAll(luoghiDaAggiungere);
     } 
 
-    public ArrayList<TipoVisita> getVisite() {
+    public Set<TipoVisita> getVisite() {
         return visite;
     }
 
-    public void setVisite(ArrayList<TipoVisita> visite) {
+    public void setVisite(Set<TipoVisita> visite) {
         this.visite = visite;
     }
 
@@ -145,8 +155,8 @@ public class Session {
         this.filemanager = filemanager;
     }
 
-    public ArrayList<Volontario> getVolontari() {
-        ArrayList<Volontario> volontari = new ArrayList<>();
+    public Set<Volontario> getVolontari() {
+        Set<Volontario> volontari = new HashSet<>();
         for (Utente utente : utenti) {
             if (utente instanceof Volontario) {
                 volontari.add((Volontario) utente);

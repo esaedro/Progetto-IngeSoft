@@ -43,12 +43,12 @@ public class FileManager {
         }
     }
 
-    public <T> ArrayList<T> carica (String nomeFile, Class<T> classToLoad) {
-        Type arrayType = TypeToken.getParameterized(ArrayList.class, classToLoad).getType();
+    public <T> Set<T> carica (String nomeFile, Class<T> classToLoad) {
+        Type arrayType = TypeToken.getParameterized(Set.class, classToLoad).getType();
         try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
             return gson.fromJson(reader, arrayType);
         } catch (IOException e) {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
     }
 

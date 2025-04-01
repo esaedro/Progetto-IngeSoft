@@ -18,7 +18,6 @@ public class Volontario extends Utente {
 
     public Volontario(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
-        super.setSession(utente.getSession());
     }
 
     public Set<Integer> getDisponibilita() {
@@ -37,8 +36,8 @@ public class Volontario extends Utente {
         this.disponibilita.removeAll(disponibilitaDaRimuovere);
     }
 
-    public ArrayList<TipoVisita> getVisiteAssociate() {
-        ArrayList<TipoVisita> visite = super.getSession().getVisite();
+    public Set<TipoVisita> getVisiteAssociate(Session session) {
+        Set<TipoVisita> visite = session.getVisite();
         visite.removeIf(visita -> !visita.getVolontariIdonei().contains(this));
         return visite;
     }

@@ -36,7 +36,7 @@ public class Luogo implements Serializable {
         return indirizzo;
     }
 
-    public void addVisite(String visiteDaAggiungere) {
+    public void addVisita(String visiteDaAggiungere) {
         visiteIds.add(visiteDaAggiungere);
     }
 
