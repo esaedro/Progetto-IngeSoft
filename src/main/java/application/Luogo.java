@@ -9,7 +9,7 @@ public class Luogo implements Serializable {
     private static String parametroTerritoriale;
     private String nome;
     private String indirizzo;
-    private Set<String> visiteIds = new HashSet<>();
+    private Set<Visita> visite = new HashSet<>();
 
     public Luogo(String nome, String indirizzo) {
         this.nome = nome;
@@ -36,25 +36,18 @@ public class Luogo implements Serializable {
         return indirizzo;
     }
 
-    public void addVisite(String visiteDaAggiungere) {
-        visiteIds.add(visiteDaAggiungere);
+    public Set<Visita> getVisite() {
+        return visite;
     }
-
-    public Set<String> getVisiteIds() {
-        return visiteIds;
-    }
-
-    public void setVisiteIds(Set<String> visiteIds) {
-        this.visiteIds = visiteIds;
+    
+    public void addVisite(Set<Visita> visiteDaAggiungere) {
+        visite.addAll(visiteDaAggiungere);
     }
 
     @Override
     public String toString() {
         return "Luogo{" +
-                "nome='" + nome + '\'' + 
-                ", indirizzo='" + indirizzo + '\'' + 
-                ", visiteIds=" + visiteIds +
-                '}';
+                "nome='" + nome + '\'' + ", indirizzo='" + indirizzo + '\'' + '}';
     }
 
 }

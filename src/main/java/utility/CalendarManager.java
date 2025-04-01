@@ -1,9 +1,7 @@
 package utility;
 
 import java.time.Month;
-import java.time.MonthDay;
 import java.util.Calendar;
-import java.time.Year;
 
 public class CalendarManager {
     protected static Month meseAttuale = Month.of(Calendar.getInstance().get(Calendar.MONTH) + 1);
@@ -13,11 +11,7 @@ public class CalendarManager {
         if (giornoDelMese > 15 && offset > 0) {
             return meseAttuale.plus(offset);
         } else {
-            return meseAttuale.plus(offset - 1);
+            return meseAttuale.plus(offset-1);
         }
-    }
-
-    public static Year annoCorrente() {
-        return Year.of(Calendar.getInstance().get(Calendar.YEAR));
     }
 }

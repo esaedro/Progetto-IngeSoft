@@ -2,7 +2,6 @@ package application;
 
 import java.io.Serializable;
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +9,7 @@ import java.util.Set;
 public class TipoVisita implements Serializable {
     
     private static int numeroMassimoIscrittoPerFruitore = 0;
-    private static Set<Integer> datePrecluseFuture = new HashSet<>(), datePrecluseAttuali = new HashSet<>();
+    private static Set<Integer> datePrecluse = new HashSet<>();
     private String titolo;
     private String descrizione;
     private String puntoIncontro;
@@ -26,8 +25,6 @@ public class TipoVisita implements Serializable {
 
     private Boolean bigliettoIngresso;
     private Set<Volontario> volontariIdonei;
-
-    private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
     public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
             Calendar oraInizio, int durata, Set<DayOfWeek> giorniSettimana, int minPartecipante, int maxPartecipante,
@@ -54,165 +51,103 @@ public class TipoVisita implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder volontari = new StringBuilder();
-        if (volontariIdonei != null) {
-            for (Volontario volontario : volontariIdonei) {
-            volontari.append(volontario.getNomeUtente()).append(", ");
-            }
-            if (volontari.length() > 0) {
-            volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
-            }
-        }
         return "TipoVisita{ " +
-            "titolo='" + titolo + '\'' +
-            ", descrizione='" + descrizione + '\'' +
-            ", puntoIncontro='" + puntoIncontro + '\'' +
-            ", dataInizio=" + dataInizio.getTime() +
-            ", dataFine=" + dataFine.getTime() +
-            ", oraInizio=" + oraInizio.getTime() +
-            ", durata=" + durata +
-            ", giorniSettimana=" + giorniSettimana +
-            ", maxPartecipante=" + maxPartecipante +
-            ", minPartecipante=" + minPartecipante +
-            ", bigliettoIngresso=" + bigliettoIngresso +
-            ", volontariIdonei=[" + volontari + "]" +
-            ", visiteAssociate=" + visiteAssociate.toString() +
-            '}';
+                "titolo='" + titolo + '\'' +
+                ", descrizione='" + descrizione + '\'' +
+                ", puntoIncontro='" + puntoIncontro + '\'' +
+                ", dataInizio=" + dataInizio.getTime() +
+                ", dataFine=" + dataFine.getTime() +
+                ", oraInizio=" + oraInizio.getTime() +
+                ", durata=" + durata +
+                ", giorniSettimana=" + giorniSettimana +
+                ", maxPartecipante=" + maxPartecipante +
+                ", minPartecipante=" + minPartecipante +
+                ", bigliettoIngresso=" + bigliettoIngresso +
+                ", volontariIdonei=" + volontariIdonei +
+                '}';
     }
 
     public String getTitolo() {
         return titolo;
     }
-
     public void setTitolo(String titolo) {
         this.titolo = titolo;
     }
-
     public String getDescrizione() {
         return descrizione;
     }
-
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
-
     public String getPuntoIncontro() {
         return puntoIncontro;
     }
-
     public void setPuntoIncontro(String puntoIncontro) {
         this.puntoIncontro = puntoIncontro;
     }
-
     public Calendar getDataInizio() {
         return dataInizio;
     }
-
     public void setDataInizio(Calendar dataInizio) {
         this.dataInizio = dataInizio;
     }
-
     public Calendar getDataFine() {
         return dataFine;
     }
-
     public void setDataFine(Calendar dataFine) {
         this.dataFine = dataFine;
     }
-
     public Calendar getOraInizio() {
         return oraInizio;
     }
-
     public void setOraInizio(Calendar oraInizio) {
         this.oraInizio = oraInizio;
     }
-
     public int getDurata() {
         return durata;
     }
-
     public void setDurata(int durata) {
         this.durata = durata;
     }
-
     public Set<DayOfWeek> getGiorniSettimana() {
         return giorniSettimana;
     }
-
     public void setGiorniSettimana(Set<DayOfWeek> giorniSettimana) {
         this.giorniSettimana = giorniSettimana;
     }
-
     public int getMaxPartecipante() {
         return maxPartecipante;
     }
-
     public void setMaxPartecipante(int maxPartecipante) {
         this.maxPartecipante = maxPartecipante;
     }
-
     public int getMinPartecipante() {
         return minPartecipante;
     }
-
     public void setMinPartecipante(int minPartecipante) {
         this.minPartecipante = minPartecipante;
     }
-
     public Boolean getBigliettoIngresso() {
         return bigliettoIngresso;
     }
-
     public void setBigliettoIngresso(Boolean bigliettoIngresso) {
         this.bigliettoIngresso = bigliettoIngresso;
     }
-
     public Set<Volontario> getVolontariIdonei() {
         return volontariIdonei;
     }
-
     public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
         this.volontariIdonei = volontariIdonei;
     }
-
-    public static Set<Integer> getDatePrecluseFuture() {
-        return datePrecluseFuture;
+    public static Set<Integer> getDatePrecluse() {
+        return datePrecluse;
+    }
+    public static void aggiungiDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
+        datePrecluse.addAll(datePrecluseDaAggiungere);
     }
 
-    public static void aggiungiDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
-        datePrecluseFuture.addAll(datePrecluseDaAggiungere);
+    public static void setDatePrecluse(Set<Integer> datePrecluseDaAggiungere) {
+        TipoVisita.datePrecluse = datePrecluseDaAggiungere;
     }
 
-    public static void setDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
-        TipoVisita.datePrecluseFuture = datePrecluseDaAggiungere;
-    }
-
-    public static void clearDatePrecluseFuture() {
-        datePrecluseFuture.clear();
-    }
-
-    public static Set<Integer> getDatePrecluseAttuali() {
-        return datePrecluseAttuali;
-    }
-
-    public static void aggiungiDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
-        datePrecluseAttuali.addAll(datePrecluseDaAggiungere);
-    }
-
-    public static void setDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
-        TipoVisita.datePrecluseAttuali = datePrecluseDaAggiungere;
-    }
-
-    public ArrayList<Visita> getVisiteAssociate() {
-        return visiteAssociate;
-    }
-
-    public void setVisiteAssociate(ArrayList<Visita> visiteAssociate) {
-        this.visiteAssociate = visiteAssociate;
-    }
-
-    public void addVisita(Visita visita) {
-        visiteAssociate.add(visita);
-    }
 }

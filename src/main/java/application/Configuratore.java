@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Calendar;
 import java.util.Set;
 
 public class Configuratore extends Utente {
@@ -22,14 +23,14 @@ public class Configuratore extends Utente {
     }
 
     public void impostaDatePrecluse(Set<Integer> datePrecluse) {
-        TipoVisita.aggiungiDatePrecluseFuture(datePrecluse);
+        TipoVisita.aggiungiDatePrecluse(datePrecluse); 
     }
 
     public void inserisciLuoghi(Set<Luogo> luogo) {
         super.getSession().getLuoghi().addAll(luogo);
     }
 
-    public void inserisciVisite(Set<TipoVisita> visite) {
+    public void inserisciVisite(Set<Visita> visite) {
         super.getSession().addAllTipoVisite(visite);
     }
 
