@@ -1,0 +1,14 @@
+[
+  {
+    "dataVisita": {
+      "year": 2023,
+      "month": 9,
+      "dayOfMonth": 1,
+      "hourOfDay": 10,
+      "minute": 0,
+      "second": 0
+    },
+    "stato": "EFFETTUATA",
+    "numeroIscritti": 15
+  }
+]

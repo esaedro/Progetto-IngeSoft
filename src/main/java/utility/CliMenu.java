@@ -74,4 +74,23 @@ public class CliMenu <T, U> {
         }
         } while (true);
     }
+
+    protected void addVoce(Entry<T, U> voce) {
+        voci.putIfAbsent(voce.getKey(), voce.getValue());
+    }
+
+    protected void addVoci(LinkedHashMap<T, U> vociDaAggiungere) {
+        vociDaAggiungere.forEach((voce, runnable) -> voci.putIfAbsent(voce, runnable));
+    }
+
+    protected void removeVoce(Entry<T, U> voce) {
+        voci.remove(voce.getKey(), voce.getValue());
+    }
+
+    protected void removeVoci(LinkedHashMap<T, U> vociDaRimuovere) {
+        vociDaRimuovere.forEach((voce, runnable) -> voci.remove(voce, runnable));
+    }
+
+
+
 }

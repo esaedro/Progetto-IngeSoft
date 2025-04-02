@@ -43,19 +43,8 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": [{
-        "dataVisita": {
-          "year": 2023,
-          "month": 9,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 0,
-          "second": 0
-        },
-        "stato": "EFFETTUATA",
-        "numeroIscritti": 15
-    },
-    {
+    "visiteAssociate": [
+      {
         "dataVisita": {
           "year": 2023,
           "month": 9,
@@ -66,7 +55,8 @@
         },
         "stato": "CONFERMATA",
         "numeroIscritti": 20
-    }]
+      }
+    ]
   },
   {
     "titolo": "Visita1",
@@ -117,7 +107,8 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": [{
+    "visiteAssociate": [
+      {
         "dataVisita": {
           "year": 2023,
           "month": 9,
@@ -128,8 +119,8 @@
         },
         "stato": "COMPLETA",
         "numeroIscritti": 12
-    },
-    {
+      },
+      {
         "dataVisita": {
           "year": 2023,
           "month": 9,
@@ -140,7 +131,8 @@
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 5
-    }]
+      }
+    ]
   },
   {
     "titolo": "Visita3",
@@ -189,7 +181,8 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": [{
+    "visiteAssociate": [
+      {
         "dataVisita": {
           "year": 2023,
           "month": 9,
@@ -200,6 +193,7 @@
         },
         "stato": "COMPLETA",
         "numeroIscritti": 12
-    }]
+      }
+    ]
   }
 ]

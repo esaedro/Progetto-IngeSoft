@@ -155,19 +155,45 @@ public class AppView {
 
     }
 
-    public void creaMenu(Utente utente) {
-        if (utente instanceof Configuratore) {
-            myMenu = creaMenuConfiguratore();
-        }
-        else if (utente instanceof Volontario) {
-            myMenu = creaMenuVolontario();
-        }
+    public void menuConfiguratoreStart() {
+        stampaMenu(creaMenuConfiguratore());
+    }
+
+    public void menuVolontarioStart() {
+        stampaMenu(creaMenuVolontario());
+    }
+
+    public void menuConfiguratoreGestioneRaccoltaDisponibilitaStart() {
+        Controller controller = Controller.getIstance();
+        CliMenu<String, Runnable> menu = creaMenuConfiguratore();
+        Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
+                controller::inizializzaPianoViste);
+        menu.addVoce(voce);
         stampaMenu(myMenu);
+    }
+
+    public void menuConfiguratoreEditorStart() {
+        Controller controller = Controller.getIstance();
+        CliMenu<String, Runnable> menu = creaMenuConfiguratore();
+        Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
+                controller::inizializzaPianoViste);
+        menu.removeVoce(voce);
+
+        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+        voci.put("Aggiungi un luogo", controller::creaLuoghi);
+        voci.put("Aggiungi un tipo visita ad un luogo", controller::aggiungiTipoVisita);
+        voci.put("Aggiungi un volontario a un tipo visita", controller::aggiungiVolontario);
+        voci.put("Elimina un luogo", controller::rimuoviLuogo);
+        voci.put("Elimina un tipo visita", controller::rimuoviTipoVisita);
+        voci.put("Elimina un volontario", controller::rimuoviVolontario);
+        voci.put("Apri raccolta disponibilità", controller::riapriDisponibilita);
+        myMenu.addVoci(voci);
     }
 
     private CliMenu<String, Runnable> creaMenuConfiguratore() {
         Controller controller = Controller.getIstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+
         voci.put("Salva sessione", controller::salva);
         voci.put("Carica sessione", controller::carica);
         voci.put("Mostra lista luoghi", controller::mostraLuoghi);
@@ -180,6 +206,7 @@ public class AppView {
         return new CliMenu<>("Menu Configuratore", voci);
     }
 
+
     private CliMenu<String, Runnable> creaMenuVolontario() {
         Controller controller = Controller.getIstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
@@ -191,7 +218,7 @@ public class AppView {
         return new CliMenu<>("Menu Volontario", voci);
     }
 
-    private void stampaMenu(CliMenu<String,Runnable> myMenu) {
+    public void stampaMenu(CliMenu<String,Runnable> myMenu) {
         Runnable scelta;
         do {
             scelta = myMenu.scegli();

@@ -2,13 +2,7 @@ package utility;
 
 import application.*;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Controller {
 
@@ -69,7 +63,7 @@ public class Controller {
         session.salvaParametriGlobali();
     }
 
-    private void creaLuoghi() {
+    public void creaLuoghi() {
         if (session.getUtenteAttivo() instanceof Configuratore && session.getLuoghi().isEmpty()) {
             Set<Luogo> luoghi = new HashSet<>();
             Set<TipoVisita> visite;
@@ -102,7 +96,16 @@ public class Controller {
         }
     }
     private void esecuzione() {
-        appview.creaMenu(session.getUtenteAttivo());
+        if (session.getUtenteAttivo() instanceof Configuratore) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 2) {
+                appview.menuConfiguratoreStart();
+            } else {
+                appview.menuConfiguratoreGestioneRaccoltaDisponibilitaStart();
+            }
+        }
+        else if (session.getUtenteAttivo() instanceof Volontario) {
+            appview.menuVolontarioStart();
+        }
     }
 
     public void inserisciDatePrecluse() {
@@ -161,4 +164,42 @@ public class Controller {
         Volontario volontario = (Volontario) session.getUtenteAttivo();
         volontario.addDisponibilita(appview.menuInserimentoDisponibilita(volontario.getDisponibilita())); 
     }
+
+    public void inizializzaPianoViste() {
+
+
+        appview.menuConfiguratoreEditorStart();
+    }
+
+    public void aggiungiVolontario() {
+
+    }
+
+    public void aggiungiTipoVisita() {
+
+    }
+
+    public void rimuoviLuogo() {
+
+        gestisciEffettiCollaterali();
+    }
+
+    public void rimuoviTipoVisita() {
+
+        gestisciEffettiCollaterali();
+    }
+
+    public void rimuoviVolontario() {
+
+        gestisciEffettiCollaterali();
+    }
+
+    public void gestisciEffettiCollaterali() {
+
+    }
+
+    public void riapriDisponibilita() {
+
+    }
+
 }
