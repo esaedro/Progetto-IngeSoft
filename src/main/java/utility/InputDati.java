@@ -599,6 +599,7 @@ public class InputDati {
      */
     public static boolean conferma(String messaggioInserimento) {
         // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN + " [" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2] + "]: ";
+        messaggioInserimento = messaggioInserimento + " [" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2] + "]: ";
         char valoreLetto = leggiUpperChar(
             messaggioInserimento,
             CARATTERI_AMMISSIBILI,
