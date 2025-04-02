@@ -89,7 +89,7 @@ public class AppView {
             String titolo, descrizione, puntoIncontro;
             Calendar dataInizio, dataFine, oraInizio;
             int durata, minPartecipante, maxPartecipante;
-            Boolean bigliettoIngresso;
+            boolean bigliettoIngresso;
             Set<DayOfWeek> giorniSettimana = new HashSet<>();
             Set<Volontario> volontariIdonei = new HashSet<>();
 
@@ -177,7 +177,7 @@ public class AppView {
         voci.put("Inserisci date precluse", controller::inserisciDatePrecluse);
         voci.put("Mostra visite separate per stato", controller::mostraVisite);
 
-        return new CliMenu<String, Runnable>("Menu Configuratore", voci);
+        return new CliMenu<>("Menu Configuratore", voci);
     }
 
     private CliMenu<String, Runnable> creaMenuVolontario() {
@@ -188,7 +188,7 @@ public class AppView {
         voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
-        return new CliMenu<String, Runnable>("Menu Volontario", voci);
+        return new CliMenu<>("Menu Volontario", voci);
     }
 
     private void stampaMenu(CliMenu<String,Runnable> myMenu) {

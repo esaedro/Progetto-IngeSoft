@@ -59,7 +59,7 @@ public class TipoVisita implements Serializable {
             for (Volontario volontario : volontariIdonei) {
             volontari.append(volontario.getNomeUtente()).append(", ");
             }
-            if (volontari.length() > 0) {
+            if (!volontari.isEmpty()) {
             volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
             }
         }

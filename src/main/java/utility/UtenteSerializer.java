@@ -1,7 +1,6 @@
 package utility;
 
 import application.Configuratore;
-import application.TipoVisita;
 import application.Utente;
 import application.Volontario;
 import com.google.gson.*;

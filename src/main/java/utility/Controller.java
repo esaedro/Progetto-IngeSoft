@@ -12,7 +12,7 @@ import java.util.TreeMap;
 
 public class Controller {
 
-    private static Controller controller = new Controller();
+    private static final Controller controller = new Controller();
     Session session = new Session();
     AppView appview = new AppView();
 
@@ -123,15 +123,13 @@ public class Controller {
 
     public void mostraVisite() {
         Set<Visita> visite = new HashSet<>();
-        if (session.getVisite() == null) {}
-        else {
+        if (session.getVisite() != null) {
             for (TipoVisita tipoVisita : session.getVisite()) {
                 visite.addAll(tipoVisita.getVisiteAssociate());
             }
         }
         
-        if (session.getStoricoVisite() == null) {}
-        else {
+        if (session.getStoricoVisite() != null) {
             for (TipoVisita visita : session.getStoricoVisite()) {
                 visite.addAll(visita.getVisiteAssociate());
             }

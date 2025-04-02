@@ -165,9 +165,9 @@ public class TestMain {
         session.salvaParametriGlobali();
         session.caricaParametriGlobali();
 
-        TipoVisita.getDatePrecluseFuture().forEach((calendar) -> {
-            assertFalse(testCalendarDatePrecluse.add(calendar), "problema lettura/scrittura date precluse i+2");
-        });
+        TipoVisita.getDatePrecluseFuture().forEach((calendar) ->
+                assertFalse(testCalendarDatePrecluse.add(calendar),
+                        "problema lettura/scrittura date precluse i+2"));
     }
 
     @Test
