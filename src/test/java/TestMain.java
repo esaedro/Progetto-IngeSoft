@@ -101,7 +101,7 @@ public class TestMain {
         session.carica();
 
         System.out.println(((Volontario) finale).getDisponibilita());
-        Set<TipoVisita> visiteAssociate = ((Volontario) finale).getVisiteAssociate(session);
+        Set<TipoVisita> visiteAssociate = ((Volontario) finale).getVisiteAssociate(session.getVisite());
 
         visiteAssociate.forEach(
                 (visita) -> assertTrue(visita.getVolontariIdonei().contains(finale),

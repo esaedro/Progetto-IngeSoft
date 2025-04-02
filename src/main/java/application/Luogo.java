@@ -48,6 +48,10 @@ public class Luogo implements Serializable {
         this.visiteIds = visiteIds;
     }
 
+    public boolean haVisiteAssociate() {
+        return !visiteIds.isEmpty();
+    }
+
     @Override
     public String toString() {
         return "Luogo{" +

@@ -153,7 +153,8 @@ public class Controller {
     }
 
     public void mostraVisiteAssociate() {
-        appview.mostraVisiteAssociateAlVolontario(((Volontario) session.getUtenteAttivo()).getVisiteAssociate(session));
+        appview.mostraVisiteAssociateAlVolontario(((Volontario) session.getUtenteAttivo())
+                .getVisiteAssociate(session.getVisite()));
     }
 
     public void inserisciDisponibilita() {

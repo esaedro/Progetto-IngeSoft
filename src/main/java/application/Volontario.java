@@ -36,10 +36,13 @@ public class Volontario extends Utente {
         this.disponibilita.removeAll(disponibilitaDaRimuovere);
     }
 
-    public Set<TipoVisita> getVisiteAssociate(Session session) {
-        Set<TipoVisita> visite = session.getVisite();
+    public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
         visite.removeIf(visita -> !visita.getVolontariIdonei().contains(this));
         return visite;
+    }
+
+    public boolean haVisiteAssociate(Set<TipoVisita> visite) {
+        return !getVisiteAssociate(visite).isEmpty();
     }
 
     @Override

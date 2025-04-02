@@ -45,11 +45,26 @@ public class TipoVisita implements Serializable {
         this.bigliettoIngresso = bigliettoIngresso;
         this.volontariIdonei = volontariIdonei;
     }
+
     public static int getNumeroMassimoIscrittoPerFruitore() {
         return numeroMassimoIscrittoPerFruitore;
     }
+
     public static void setNumeroMassimoIscrittoPerFruitore(int numeroMassimoIscrittoPerFruitore) {
         TipoVisita.numeroMassimoIscrittoPerFruitore = numeroMassimoIscrittoPerFruitore;
+    }
+
+    public boolean haVolontariAssociati() {
+        return !volontariIdonei.isEmpty();
+    }
+
+    public Set<Luogo> getLuoghiAssociati(Set<Luogo> luoghi) {
+        luoghi.removeIf(luogo -> !luogo.getVisiteIds().contains(titolo));
+        return luoghi;
+    }
+
+    public boolean haLuoghiAssociati(Set<Luogo> luoghi) {
+        return !getLuoghiAssociati(luoghi).isEmpty();
     }
 
     @Override
