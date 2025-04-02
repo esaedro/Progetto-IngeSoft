@@ -8,7 +8,7 @@ import java.util.*;
 
 public class AppView {
 
-    CliMenu<String, Runnable> myMenu = null;
+    CliMenu<String, Runnable> myMenu = new CliMenu<>();
 
     public void benvenutoMsg(Utente utenteAttivo) {
         System.out.println(BelleStringhe.incornicia(
@@ -155,29 +155,43 @@ public class AppView {
 
     }
 
-    public void menuConfiguratoreStart() {
-        stampaMenu(creaMenuConfiguratore());
-    }
-
-    public void menuVolontarioStart() {
-        stampaMenu(creaMenuVolontario());
-    }
-
-    public void menuConfiguratoreGestioneRaccoltaDisponibilitaStart() {
+    public void setMenuConfiguratore() {
+        myMenu.removeAllVoci();
+        myMenu.setTitolo("Menu configuratore");
         Controller controller = Controller.getIstance();
-        CliMenu<String, Runnable> menu = creaMenuConfiguratore();
+        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+
+        voci.put("Salva sessione", controller::salva);
+        voci.put("Carica sessione", controller::carica);
+        voci.put("Mostra lista luoghi", controller::mostraLuoghi);
+        voci.put("Mostra lista volontari", controller::mostraVolontari);
+        voci.put("Mostra lista visite", controller::mostraTipiVisite);
+        voci.put("Inserisci massimo iscritti", controller::dichiaraMassimoNumeroFruitori);
+        voci.put("Inserisci date precluse", controller::inserisciDatePrecluse);
+        voci.put("Mostra visite separate per stato", controller::mostraVisite);
+        myMenu.addVoci(voci);
+    }
+
+    public void setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart() {
+        myMenu.removeAllVoci();
+        setMenuConfiguratore();
+
+        Controller controller = Controller.getIstance();
         Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
                 controller::inizializzaPianoViste);
-        menu.addVoce(voce);
-        stampaMenu(myMenu);
+        myMenu.addVoce(voce);
+
     }
 
-    public void menuConfiguratoreEditorStart() {
+    public void setMenuConfiguratoreEditor() {
+        myMenu.removeAllVoci();
+        setMenuConfiguratore();
+
         Controller controller = Controller.getIstance();
-        CliMenu<String, Runnable> menu = creaMenuConfiguratore();
+
         Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
                 controller::inizializzaPianoViste);
-        menu.removeVoce(voce);
+        myMenu.removeVoce(voce);
 
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Aggiungi un luogo", controller::creaLuoghi);
@@ -190,24 +204,10 @@ public class AppView {
         myMenu.addVoci(voci);
     }
 
-    private CliMenu<String, Runnable> creaMenuConfiguratore() {
-        Controller controller = Controller.getIstance();
-        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
 
-        voci.put("Salva sessione", controller::salva);
-        voci.put("Carica sessione", controller::carica);
-        voci.put("Mostra lista luoghi", controller::mostraLuoghi);
-        voci.put("Mostra lista volontari", controller::mostraVolontari);
-        voci.put("Mostra lista visite", controller::mostraTipiVisite);
-        voci.put("Inserisci massimo iscritti", controller::dichiaraMassimoNumeroFruitori);
-        voci.put("Inserisci date precluse", controller::inserisciDatePrecluse);
-        voci.put("Mostra visite separate per stato", controller::mostraVisite);
-
-        return new CliMenu<>("Menu Configuratore", voci);
-    }
-
-
-    private CliMenu<String, Runnable> creaMenuVolontario() {
+    public void setMenuVolontario() {
+        myMenu.removeAllVoci();
+        myMenu.setTitolo("Menu volontario");
         Controller controller = Controller.getIstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Salva sessione", controller::salva);
@@ -215,10 +215,10 @@ public class AppView {
         voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
-        return new CliMenu<>("Menu Volontario", voci);
+        myMenu.addVoci(voci);
     }
 
-    public void stampaMenu(CliMenu<String,Runnable> myMenu) {
+    public void stampaMenu() {
         Runnable scelta;
         do {
             scelta = myMenu.scegli();

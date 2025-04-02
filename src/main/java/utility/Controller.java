@@ -98,14 +98,16 @@ public class Controller {
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
             if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 2) {
-                appview.menuConfiguratoreStart();
+                appview.setMenuConfiguratore();
             } else {
-                appview.menuConfiguratoreGestioneRaccoltaDisponibilitaStart();
+                appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart();
             }
         }
         else if (session.getUtenteAttivo() instanceof Volontario) {
-            appview.menuVolontarioStart();
+            appview.setMenuVolontario();
         }
+
+        appview.stampaMenu();
     }
 
     public void inserisciDatePrecluse() {
@@ -168,7 +170,7 @@ public class Controller {
     public void inizializzaPianoViste() {
 
 
-        appview.menuConfiguratoreEditorStart();
+        appview.setMenuConfiguratoreEditor();
     }
 
     public void aggiungiVolontario() {
@@ -200,6 +202,7 @@ public class Controller {
 
     public void riapriDisponibilita() {
 
+        appview.setMenuConfiguratore();
     }
 
 }

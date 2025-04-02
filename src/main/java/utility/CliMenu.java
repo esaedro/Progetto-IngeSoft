@@ -18,8 +18,13 @@ public class CliMenu <T, U> {
     public static final String ERRORE_INSERIMENTO = "Scelta non valida";
     // public static final String ERRORE_INSERIMENTO = ANSI_RED + "Scelta non valida" + ANSI_RESET;
 
-    private final String titolo;
+    private String titolo;
     protected LinkedHashMap<T, U> voci;
+
+    public CliMenu() {
+        voci = new LinkedHashMap<>();
+    }
+
 
     /**
      * Costruttore per il menu
@@ -91,6 +96,11 @@ public class CliMenu <T, U> {
         vociDaRimuovere.forEach((voce, runnable) -> voci.remove(voce, runnable));
     }
 
+    protected void removeAllVoci() {
+        voci.clear();
+    }
 
-
+    protected void setTitolo(String titolo) {
+        this.titolo = titolo;
+    }
 }
