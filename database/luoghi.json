@@ -1,95 +1,17 @@
 [
   {
-    "nome": "a",
-    "indirizzo": "b",
-    "visite": [
-      {
-        "numeroIscritti": 0,
-        "titolo": "a",
-        "descrizione": "b",
-        "puntoIncontro": "c",
-        "dataInizio": {
-          "year": 1970,
-          "month": 0,
-          "dayOfMonth": 10,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "dataFine": {
-          "year": 1970,
-          "month": 0,
-          "dayOfMonth": 20,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "oraInizio": {
-          "year": 1970,
-          "month": 0,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 10,
-          "second": 0
-        },
-        "durata": 100,
-        "giorniSettimana": [
-          "THURSDAY",
-          "MONDAY"
-        ],
-        "minPartecipante": 20,
-        "maxPartecipante": 25,
-        "bigliettoIngresso": true,
-        "volontariIdonei": []
-      }
+    "nome": "Iseo",
+    "indirizzo": "asd",
+    "visiteIds": [
+      "Visita1",
+      "Visita2"
     ]
   },
   {
-    "nome": "Skibidi",
-    "indirizzo": "Rizz",
-    "visite": [
-      {
-        "stato": "NON_ISTANZIATA",
-        "numeroIscritti": 0,
-        "titolo": "Skibidizi",
-        "descrizione": "Skibidi",
-        "puntoIncontro": "Rizz",
-        "dataInizio": {
-          "year": 1970,
-          "month": 3,
-          "dayOfMonth": 12,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "dataFine": {
-          "year": 1970,
-          "month": 3,
-          "dayOfMonth": 27,
-          "hourOfDay": 0,
-          "minute": 0,
-          "second": 0
-        },
-        "oraInizio": {
-          "year": 1970,
-          "month": 0,
-          "dayOfMonth": 1,
-          "hourOfDay": 15,
-          "minute": 15,
-          "second": 0
-        },
-        "durata": 156,
-        "giorniSettimana": [
-          "SATURDAY",
-          "TUESDAY",
-          "MONDAY",
-          "SUNDAY"
-        ],
-        "minPartecipante": 67,
-        "maxPartecipante": 80,
-        "bigliettoIngresso": true,
-        "volontariIdonei": []
-      }
+    "nome": "Provaglio",
+    "indirizzo": "as",
+    "visiteIds": [
+      "Visita3"
     ]
   }
 ]

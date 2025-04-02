@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.util.Calendar;
 import java.util.Set;
 
-public class Visita  {
+public class Visita {
     
     private Calendar dataVisita;
     private StatoVisita stato;
@@ -36,11 +36,11 @@ public class Visita  {
     }
 
     public String toString() {
-        return ("Visita{ " +
+        return ("Visita{" +
                 "dataVisita=" + (dataVisita != null? dataVisita.getTime() : "nessuna") +
                 ", stato=" + stato +
                 ", numeroIscritti=" + numeroIscritti +
-                ", " + super.toString() +'}');
+                '}');
     }
     
 }

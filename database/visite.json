@@ -1,0 +1,205 @@
+[
+  {
+    "titolo": "Visita2",
+    "descrizione": "qw",
+    "puntoIncontro": "qwe",
+    "dataInizio": {
+      "year": 1970,
+      "month": 8,
+      "dayOfMonth": 9,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 1970,
+      "month": 11,
+      "dayOfMonth": 9,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 8,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 80,
+    "giorniSettimana": [
+      "SATURDAY",
+      "SUNDAY"
+    ],
+    "minPartecipante": 34,
+    "maxPartecipante": 345,
+    "bigliettoIngresso": false,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V01",
+        "password": "volo",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": [{
+        "dataVisita": {
+          "year": 2023,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "EFFETTUATA",
+        "numeroIscritti": 15
+    },
+    {
+        "dataVisita": {
+          "year": 2023,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "CONFERMATA",
+        "numeroIscritti": 20
+    }]
+  },
+  {
+    "titolo": "Visita1",
+    "descrizione": "asdas",
+    "puntoIncontro": "adssd",
+    "dataInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 1970,
+      "month": 11,
+      "dayOfMonth": 12,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 9,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 90,
+    "giorniSettimana": [
+      "FRIDAY",
+      "TUESDAY",
+      "MONDAY",
+      "SATURDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "SUNDAY"
+    ],
+    "minPartecipante": 9,
+    "maxPartecipante": 90,
+    "bigliettoIngresso": true,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V01",
+        "password": "volo",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": [{
+        "dataVisita": {
+          "year": 2023,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "COMPLETA",
+        "numeroIscritti": 12
+    },
+    {
+        "dataVisita": {
+          "year": 2023,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 5
+    }]
+  },
+  {
+    "titolo": "Visita3",
+    "descrizione": "asd",
+    "puntoIncontro": "qwe",
+    "dataInizio": {
+      "year": 1970,
+      "month": 6,
+      "dayOfMonth": 7,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 1970,
+      "month": 6,
+      "dayOfMonth": 8,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 12,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 120,
+    "giorniSettimana": [
+      "TUESDAY",
+      "MONDAY",
+      "SATURDAY",
+      "WEDNESDAY",
+      "SUNDAY"
+    ],
+    "minPartecipante": 1,
+    "maxPartecipante": 12,
+    "bigliettoIngresso": true,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V01",
+        "password": "volo",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": [{
+        "dataVisita": {
+          "year": 2023,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "COMPLETA",
+        "numeroIscritti": 12
+    }]
+  }
+]

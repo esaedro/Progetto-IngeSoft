@@ -3,8 +3,12 @@ package utility;
 import application.*;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Controller {
 
@@ -77,12 +81,11 @@ public class Controller {
                     luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
                 }
                 luoghi.add(luogoDaAggiungere);
-
+                session.addAllTipoVisite(visite);
             } while(appview.confermaLuoghi());
 
             session.addLuoghi(luoghi);
         }
-
     }
 
     private void istanziaParametroTerritoriale() {
@@ -93,7 +96,7 @@ public class Controller {
     }
 
     public void dichiaraMassimoNumeroFruitori() {
-        if (session.getUtenteAttivo() instanceof Configuratore) {
+        if (session.getUtenteAttivo() instanceof Configuratore && TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) {
             ((Configuratore) session.getUtenteAttivo())
                     .setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
         }
@@ -114,8 +117,41 @@ public class Controller {
         appview.mostraVolontari(session.getVolontari());
     }
 
+    public void mostraTipiVisite() {
+        appview.mostraTipiVisite(session.getVisite(), session.getStoricoVisite());
+    }
+
     public void mostraVisite() {
-        appview.mostraVisite(session.getVisite(), session.getStoricoVisite());
+        Set<Visita> visite = new HashSet<>();
+        if (session.getVisite() == null) {}
+        else {
+            for (TipoVisita tipoVisita : session.getVisite()) {
+                visite.addAll(tipoVisita.getVisiteAssociate());
+            }
+        }
+        
+        if (session.getStoricoVisite() == null) {}
+        else {
+            for (TipoVisita visita : session.getStoricoVisite()) {
+                visite.addAll(visita.getVisiteAssociate());
+            }
+        }
+
+        appview.mostraVisite(separaVisitePerStato(visite));
+    }
+
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
+        Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
+
+        for (Visita visita : visite) {
+            visitePerStato.computeIfAbsent(visita.getStato(), k -> new ArrayList<>()).add(visita);
+        }
+        for (StatoVisita stato : StatoVisita.values()) {
+            if (!visitePerStato.containsKey(stato)) {
+                visitePerStato.put(stato, new ArrayList<>());
+            }
+        }
+        return visitePerStato;
     }
 
     public void mostraVisiteAssociate() {

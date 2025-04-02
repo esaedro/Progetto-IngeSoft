@@ -172,9 +172,10 @@ public class AppView {
         voci.put("Carica sessione", controller::carica);
         voci.put("Mostra lista luoghi", controller::mostraLuoghi);
         voci.put("Mostra lista volontari", controller::mostraVolontari);
-        voci.put("Mostra lista visite", controller::mostraVisite);
+        voci.put("Mostra lista visite", controller::mostraTipiVisite);
         voci.put("Inserisci massimo iscritti", controller::dichiaraMassimoNumeroFruitori);
         voci.put("Inserisci date precluse", controller::inserisciDatePrecluse);
+        voci.put("Mostra visite separate per stato", controller::mostraVisite);
 
         return new CliMenu<String, Runnable>("Menu Configuratore", voci);
     }
@@ -238,7 +239,7 @@ public class AppView {
         }
     }
 
-    public void mostraVisite(Set<TipoVisita> tipiVisita, Set<TipoVisita> storicoVisite) {
+    public void mostraTipiVisite(Set<TipoVisita> tipiVisita, Set<TipoVisita> storicoVisite) {
         if ((tipiVisita == null || tipiVisita.isEmpty()) && (storicoVisite == null || storicoVisite.isEmpty())) {
             System.out.println("Non ci sono visite disponibili");
             return;
@@ -254,6 +255,24 @@ public class AppView {
             }
         }
     }
+
+    public void mostraVisite(Map<StatoVisita, List<Visita>> visitePerStato) {
+        if (visitePerStato.isEmpty()) {
+            System.out.println("Non ci sono visite");
+        } else {
+            for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
+                System.out.println("\nStato: " + entry.getKey());
+                if (entry.getValue().isEmpty()) {
+                    System.out.println("Nessuna visita associata a questo stato");
+                } else {
+                    for (Visita visita : entry.getValue()) {
+                        System.out.println(visita.toString());
+                    }
+                }
+            }
+        }
+    }
+
 
     public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
         if (visiteAssociate.isEmpty()) {

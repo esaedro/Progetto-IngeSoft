@@ -3,5 +3,11 @@
     "nomeUtente": "C01",
     "password": "nuova",
     "type": "configuratore"
+  },
+  {
+    "nomeUtente": "V01",
+    "password": "volo",
+    "type": "volontario",
+    "disponibilita": []
   }
 ]
