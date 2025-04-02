@@ -273,7 +273,6 @@ public class AppView {
         }
     }
 
-
     public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
         if (visiteAssociate.isEmpty()) {
             System.out.println("Non ci sono visite associate al volontario");
@@ -285,16 +284,15 @@ public class AppView {
         }
     }
 
-    public Set<Integer> menuInserimentoDisponibilita() {
+    public Set<Integer> menuInserimentoDisponibilita(Set<Integer> disponibilita) {
         Month meseDiLavoro = CalendarManager.meseDiLavoro(2);
-        Set<Integer> disponibilita = InputDati.selezionaDateDaMese(CalendarManager.annoCorrente(), meseDiLavoro, TipoVisita.getDatePrecluseFuture());
+        Set<Integer> nuoveDisponibilita = InputDati.selezionaDateDaMese
+            (CalendarManager.annoCorrente(), meseDiLavoro, TipoVisita.getDatePrecluseFuture(), disponibilita);
 
-        if (disponibilita.isEmpty()) {
+        if (nuoveDisponibilita.isEmpty()) {
             System.out.println("Nessuna disponibilita' selezionata");
         }
-        return disponibilita;
+        return nuoveDisponibilita;
     }
-
-
 
 }

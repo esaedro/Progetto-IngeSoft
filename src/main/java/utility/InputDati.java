@@ -1229,9 +1229,10 @@ public class InputDati {
     public static Set<Integer> selezionaDateDaMese(
         Year anno,
         Month mese,
-        Collection<Integer> nonSelezionabili
+        Collection<Integer> nonSelezionabili,
+        Collection<Integer> giaSelezionati
     ) {
-        Set<Integer> giorniSelezionati = new HashSet<>();
+        Set<Integer> giorniSelezionati = (Set<Integer>) giaSelezionati;
         Calendar data = Calendar.getInstance();
         data.set(Calendar.YEAR, anno.getValue());
         data.set(Calendar.MONTH, mese.getValue());
@@ -1251,7 +1252,7 @@ public class InputDati {
                     int giornoSelezionato = Integer.parseInt(inserimento);
                     if (
                         giornoSelezionato > 0 &&
-                        giornoSelezionato <= dataBase.getActualMaximum(Calendar.DAY_OF_MONTH) &&
+                        giornoSelezionato <= dataBase.getActualMaximum(Calendar.DAY_OF_MONTH) + 1 &&
                         !nonSelezionabili.contains(giornoSelezionato)
                     ) {
                         if (giorniSelezionati.contains(giornoSelezionato)) {

@@ -158,21 +158,7 @@ public class Controller {
     }
 
     public void inserisciDisponibilita() {
-        ((Volontario) session.getUtenteAttivo()).addDisponibilita(appview.menuInserimentoDisponibilita());
+        Volontario volontario = (Volontario) session.getUtenteAttivo();
+        volontario.addDisponibilita(appview.menuInserimentoDisponibilita(volontario.getDisponibilita())); 
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
