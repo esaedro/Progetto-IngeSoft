@@ -2,25 +2,25 @@
   {
     "dataVisita": {
       "year": 2025,
-      "month": 2,
-      "dayOfMonth": 31,
-      "hourOfDay": 18,
-      "minute": 38,
-      "second": 29
+      "month": 3,
+      "dayOfMonth": 2,
+      "hourOfDay": 11,
+      "minute": 4,
+      "second": 21
     },
     "stato": "EFFETTUATA",
-    "numeroIscritti": 7
+    "numeroIscritti": 9
   },
   {
     "dataVisita": {
       "year": 2025,
-      "month": 2,
-      "dayOfMonth": 31,
-      "hourOfDay": 18,
-      "minute": 38,
-      "second": 29
+      "month": 3,
+      "dayOfMonth": 2,
+      "hourOfDay": 11,
+      "minute": 4,
+      "second": 21
     },
     "stato": "EFFETTUATA",
-    "numeroIscritti": 9
+    "numeroIscritti": 7
   }
 ]
