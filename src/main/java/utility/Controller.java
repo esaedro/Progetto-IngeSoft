@@ -25,6 +25,8 @@ public class Controller {
 
         while (utenteProvvisorio == null) {
             AbstractMap.SimpleEntry<String, String> valoriUtente = appview.menuInserimentoCredenziali();
+            if (valoriUtente == null) return;   //uscita dal programma se utente scrive '0' nella password
+            
             utenteProvvisorio = session.login(valoriUtente.getKey(), valoriUtente.getValue());
             if (utenteProvvisorio == null) appview.erroreLogin();
         }
@@ -92,9 +94,7 @@ public class Controller {
     public void dichiaraMassimoNumeroFruitori() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
             ((Configuratore) session.getUtenteAttivo())
-                    .setNumeroMassimoIscritti(
-                            appview.menuInserimentoMassimoIscritti()
-                    );
+                    .setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
         }
     }
     private void esecuzione() {

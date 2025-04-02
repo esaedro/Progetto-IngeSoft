@@ -3,6 +3,7 @@ package org.example;
 import application.Configuratore;
 import application.Session;
 import application.Utente;
+import application.Volontario;
 import utility.Controller;
 
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class Main {
         Session session = new Session();
         Set<Utente> uten = new HashSet<>();
         uten.add(new Configuratore("C01", "nuova"));
+        uten.add(new Volontario("V01", "volo"));
         session.setUtenti(uten);
         session.salvaUtenti();
         Controller controller = Controller.getIstance();

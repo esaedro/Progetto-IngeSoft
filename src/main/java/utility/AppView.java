@@ -11,10 +11,8 @@ public class AppView {
     CliMenu<String, Runnable> myMenu = null;
 
     public void benvenutoMsg(Utente utenteAttivo) {
-        System.out.println(BelleStringhe.incornicia("Benvenuto " + utenteAttivo.getNomeUtente()));
-
-        System.out.println(BelleStringhe.incornicia("Benvenuto nel sistema di gestione delle visite guidate"));
-        System.out.println("Per uscire scrivere '0' nella password");
+        System.out.println(BelleStringhe.incornicia(
+            "Benvenuto nel sistema di gestione delle visite guidate, utente: " + utenteAttivo.getNomeUtente()));
     }
 
     public AbstractMap.SimpleEntry<String, String> menuInserimentoCredenziali() {
@@ -22,7 +20,7 @@ public class AppView {
         String nomeUtente, password;
 
         do {
-            System.out.println("\nInserire le credenziali del configuratore: ");
+            System.out.println("\nInserire le credenziali (inserire '0' nel campo password per uscire dal programma)");
             nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente: ", "Il nome utente non puo' essere vuoto");
             password = InputDati.leggiStringaNonVuota("Inserire la password: ", "La password non puo' essere vuota");
         } while (!(password.equals(Character.toString('0'))) && !(InputDati.conferma("Confermare le credenziali?")));
@@ -113,7 +111,7 @@ public class AppView {
 
             System.out.println("Inserire i giorni della settimana in cui si svolge la visita: ");
             for (DayOfWeek giorno : DayOfWeek.values()) {
-                System.out.print((giorno.getValue()) + ". " + traduciGiorno(giorno) + "\t");
+                System.out.print((giorno.getValue()) + ". " + BelleStringhe.traduciGiorno(giorno) + "\t");
                 if (InputDati.conferma("")) {
                     giorniSettimana.add(giorno);
                 }
@@ -136,7 +134,7 @@ public class AppView {
         }
     }
 
-    public String menuInserimentoParametroTerritoriale() { //chiamo poi il metodo di configuratore passandogli il parametro da tastiera
+    public String menuInserimentoParametroTerritoriale() { 
         String parametro;
         do {
             parametro = InputDati.leggiStringaNonVuota("Inserire il parametro territoriale: ", "Il parametro territoriale non puo' essere vuoto");
@@ -190,7 +188,7 @@ public class AppView {
         voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
-        return new CliMenu<>("Menu Volontario", voci);
+        return new CliMenu<String, Runnable>("Menu Volontario", voci);
     }
 
     private void stampaMenu(CliMenu<String,Runnable> myMenu) {
@@ -208,7 +206,7 @@ public class AppView {
         Set<Integer> datePrecluse = new HashSet<>();
         Month meseLavoro = CalendarManager.meseDiLavoro(3);
 
-        System.out.println("\nInserire le date precluse per i giorni dal 1 al " + meseLavoro.maxLength() + " " + traduciMese(meseLavoro) + ": ");
+        System.out.println("\nInserire le date precluse per i giorni dal 1 al " + meseLavoro.maxLength() + " " + BelleStringhe.traduciMese(meseLavoro) + ": ");
         do {
             do {
                 dataInserita = InputDati.leggiInteroMinMax("Inserire una data preclusa (0 per uscire): ", 0, meseLavoro.maxLength(), "Data non valida");
@@ -280,34 +278,5 @@ public class AppView {
     }
 
 
-    public static String traduciGiorno(DayOfWeek giorno) {
-        return switch (giorno) {
-            case MONDAY -> "Lunedì";
-            case TUESDAY -> "Martedì";
-            case WEDNESDAY -> "Mercoledì";
-            case THURSDAY -> "Giovedì";
-            case FRIDAY -> "Venerdì";
-            case SATURDAY -> "Sabato";
-            case SUNDAY -> "Domenica";
-            default -> "Giorno non valido";
-        };
-    }
 
-    public static String traduciMese(Month mese) {
-        return switch (mese) {
-            case JANUARY -> "Gennaio";
-            case FEBRUARY -> "Febbraio";
-            case MARCH -> "Marzo";
-            case APRIL -> "Aprile";
-            case MAY -> "Maggio";
-            case JUNE -> "Giugno";
-            case JULY -> "Luglio";
-            case AUGUST -> "Agosto";
-            case SEPTEMBER -> "Settembre";
-            case OCTOBER -> "Ottobre";
-            case NOVEMBER -> "Novembre";
-            case DECEMBER -> "Dicembre";
-            default -> "Mese non valido";
-        };
-    }
 }

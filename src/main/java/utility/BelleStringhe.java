@@ -1,5 +1,6 @@
 package utility;
 
+import java.time.DayOfWeek;
 import java.time.Month;
 import java.time.Year;
 import java.util.Calendar;
@@ -126,13 +127,13 @@ public class BelleStringhe {
         Collection<Integer> giorniSelezionati
     ) {
         StringBuffer result = new StringBuffer();
-        result.append(incornicia(mese.toString() + " " + anno.toString()));
-        result.append("\nLUN MAR MER GIO VEN SAB DOM\n");
+        result.append(incornicia(traduciMese(mese) + " " + anno.toString()));
+        result.append("\nLUN   MAR   MER   GIO   VEN   SAB   DOM\n");
         int giornoSettimana = 1;
 
         for (int i = 1; i <= mese.length(anno.isLeap()); i++) {
             if (giornoSettimana == 1) {
-                result.append(incolonna("", 6));
+                //result.append(incolonna("", 6));
             }
             if (giorniOccupati.contains(i)) {
                 result.append(incolonna("x" + String.valueOf(i) + "x", 6));
@@ -151,5 +152,36 @@ public class BelleStringhe {
         result.append("\n");
 
         System.out.println(result.toString());
+    }
+
+        public static String traduciGiorno(DayOfWeek giorno) {
+        return switch (giorno) {
+            case MONDAY -> "Lunedì";
+            case TUESDAY -> "Martedì";
+            case WEDNESDAY -> "Mercoledì";
+            case THURSDAY -> "Giovedì";
+            case FRIDAY -> "Venerdì";
+            case SATURDAY -> "Sabato";
+            case SUNDAY -> "Domenica";
+            default -> "Giorno non valido";
+        };
+    }
+
+    public static String traduciMese(Month mese) {
+        return switch (mese) {
+            case JANUARY -> "Gennaio";
+            case FEBRUARY -> "Febbraio";
+            case MARCH -> "Marzo";
+            case APRIL -> "Aprile";
+            case MAY -> "Maggio";
+            case JUNE -> "Giugno";
+            case JULY -> "Luglio";
+            case AUGUST -> "Agosto";
+            case SEPTEMBER -> "Settembre";
+            case OCTOBER -> "Ottobre";
+            case NOVEMBER -> "Novembre";
+            case DECEMBER -> "Dicembre";
+            default -> "Mese non valido";
+        };
     }
 }
