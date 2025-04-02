@@ -186,7 +186,6 @@ public class AppView {
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Salva sessione", controller::salva);
         voci.put("Carica sessione", controller::carica);
-        //TODO this
         voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
