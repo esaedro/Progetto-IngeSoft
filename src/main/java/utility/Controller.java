@@ -48,6 +48,7 @@ public class Controller {
 
     public void carica() {
         session.carica();
+        session.caricaParametriGlobali();
         System.out.println("\nSessione caricata");
     }
 
