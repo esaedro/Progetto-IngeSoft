@@ -171,6 +171,7 @@ public class Controller {
         volontario.addDisponibilita(appview.menuInserimentoDisponibilita(volontario.getDisponibilita())); 
     }
 
+    //Esaedro
     public void inizializzaPianoViste() {
 
 
@@ -178,34 +179,50 @@ public class Controller {
     }
 
     public void aggiungiVolontario() {
+        //check utenteAttivo instanceof Configuratore?
+        Set<Volontario> nuoviVolontari = new HashSet<>();
 
+        nuoviVolontari = appview.menuInserimentoVolontari(/*parametri?*/);
+
+        session.addVolontari(nuoviVolontari);    //aggiungi a session (addVolontari è nuovo metodo)
     }
 
     public void aggiungiTipoVisita() {
+        //check utenteAttivo instanceof Configuratore?
+        Set<TipoVisita> nuoveVisite = new HashSet<>();
 
+        nuoveVisite = appview.menuInserimentoTipiVisita(session.getUtenteAttivo(), session.getVolontari());
+
+        session.addAllTipoVisite(nuoveVisite);
     }
 
     public void rimuoviLuogo() {
+        /* Set<Luogo> luoghiDaEliminare = new HashSet<>();
+        //check utenteAttivo instanceof Configuratore?
+        luoghiDaEliminare = appview.menuRimozioneLuoghi(session.getLuoghi());
+        session.rimuoviLuoghi(luoghiDaEliminare); */
 
+        session.rimuoviLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviTipoVisita() {
-
+        session.rimuoviTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviVolontario() {
-
+        if (!session.getVolontari().isEmpty())
+        session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();
     }
 
     public void gestisciEffettiCollaterali() {
-
+        //TODO: esegue i check di session?
     }
 
     public void riapriDisponibilita() {
-
+        //TODO
         appview.setMenuConfiguratore();
     }
 

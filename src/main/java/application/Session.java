@@ -135,6 +135,10 @@ public class Session {
         this.luoghi.add(luogo);
     }
 
+    public void rimuoviLuoghi(Set<Luogo> luoghidaRimuovere) {
+        this.luoghi.removeAll(luoghidaRimuovere);
+    }
+
     public Set<TipoVisita> getVisite() {
         return visite;
     }
@@ -145,6 +149,10 @@ public class Session {
 
     public void addVisita(TipoVisita visite) {
         this.visite.add(visite);
+    }
+
+    public void rimuoviTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
+        this.visite.removeAll(visiteDaRimuovere);
     }
 
     public void addAllVisite(Set<Visita> visite) {
@@ -167,6 +175,14 @@ public class Session {
             }
         }
         return volontari;
+    }
+
+    public void addVolontari(Set<Volontario> nuoviVolontari) {
+        utenti.addAll(nuoviVolontari);
+    }
+
+    public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
+        utenti.removeAll(volontariDaRimuovere);
     }
 
     public void addAllTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {

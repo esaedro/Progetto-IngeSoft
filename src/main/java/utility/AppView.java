@@ -68,6 +68,17 @@ public class AppView {
         return InputDati.conferma("Inserire un altro luogo?");
     }
 
+    public Set<Luogo> menuRimozioneLuoghi(Set<Luogo> luoghiPresenti) {
+        Set<Luogo> luoghiDaRimuovere = new HashSet<>();
+        if (!luoghiPresenti.isEmpty()) {
+            luoghiDaRimuovere = InputDati.selezionaPiuDaLista("Selezionare uno o più luoghi da eliminare", 
+                                    luoghiPresenti, Luogo::getNome, 1, luoghiPresenti.size());
+        } else {
+            System.out.println("Impossibile eliminare, non ci sono luoghi nel database");
+        }
+        return luoghiDaRimuovere;
+    }
+
     public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Volontario> volontari) {
         TipoVisita tipoVisita;
         Set<TipoVisita> visite = new HashSet<>();
@@ -134,6 +145,50 @@ public class AppView {
         }
     }
 
+    public Set<TipoVisita> menuRimozioneTipoVisita(Set<TipoVisita> tipiVisitaPresenti) {
+        Set<TipoVisita> tipiVisitaDaRimuovere = new HashSet<>();
+        if (!tipiVisitaPresenti.isEmpty()) {
+            tipiVisitaDaRimuovere = InputDati.selezionaPiuDaLista("Selezionare uno o più tipi di visita da eliminare", 
+                                        tipiVisitaPresenti, TipoVisita::getTitolo, 1, tipiVisitaPresenti.size());            
+        } else {
+            System.out.println("Impossibile eliminare, non ci sono tipi di visita nel database");
+        }
+        return tipiVisitaDaRimuovere;
+    }
+
+    public Set<Volontario> menuInserimentoVolontari() {
+        String nomeUtente, password;
+        Volontario volontario;
+        Set<Volontario> volontari = new HashSet<>();
+
+        System.out.println("\nInserire almeno un nuovo volontario");
+        do {
+            nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente del volontario: ", "Il nome utente non puo' essere vuoto");
+            password = "config" + nomeUtente;
+
+            volontario = new Volontario(nomeUtente, password, new HashSet<>());
+
+            if (volontario != null) {
+                volontari.add(volontario);
+            }
+            else break;
+        } while (InputDati.conferma("Inserire un altro volontario?"));
+
+        return volontari;
+        }
+
+    public Set<Volontario> menuRimozioneVolontario(Set<Volontario> volontariPresenti) {
+        Set<Volontario> volontariDaRimuovere = new HashSet<>();
+        if (volontariPresenti.isEmpty()) {
+            volontariDaRimuovere = InputDati.selezionaPiuDaLista("Selezionare uno o più volontari da eliminare", 
+                                        volontariPresenti, Volontario::getNomeUtente, 1, volontariPresenti.size());
+        } else {
+            System.out.println("Impossibile eliminare, non ci sono volontari nel database");
+        }
+        return volontariDaRimuovere;
+    }
+
+
     public String menuInserimentoParametroTerritoriale() { 
         String parametro;
         do {
@@ -152,7 +207,6 @@ public class AppView {
         } while(!InputDati.conferma("\nConferma, nuovo numero massimo di iscritti = " + maxIscritti));
 
         return maxIscritti;
-
     }
 
     public void setMenuConfiguratore() {
