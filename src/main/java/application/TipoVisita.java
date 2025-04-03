@@ -83,16 +83,16 @@ public class TipoVisita implements Serializable {
             "titolo='" + titolo + '\'' +
             ", descrizione='" + descrizione + '\'' +
             ", puntoIncontro='" + puntoIncontro + '\'' +
-            ", dataInizio=" + dataInizio.getTime() +
-            ", dataFine=" + dataFine.getTime() +
-            ", oraInizio=" + oraInizio.getTime() +
+            ", dataInizio=" + (dataInizio != null? dataInizio.getTime() : "nessuna") +
+            ", dataFine=" + (dataFine != null? dataFine.getTime() : "nessuna") +
+            ", oraInizio=" + (oraInizio != null? oraInizio.getTime() : "nessuna") +
             ", durata=" + durata +
             ", giorniSettimana=" + giorniSettimana +
             ", maxPartecipante=" + maxPartecipante +
             ", minPartecipante=" + minPartecipante +
             ", bigliettoIngresso=" + bigliettoIngresso +
             ", volontariIdonei=[" + volontari + "]" +
-            ", visiteAssociate=" + visiteAssociate.toString() +
+            ", visiteAssociate=" + (visiteAssociate != null ? visiteAssociate.toString() : "nessuna") +
             '}';
     }
 

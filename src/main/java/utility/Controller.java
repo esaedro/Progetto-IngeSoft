@@ -58,7 +58,7 @@ public class Controller {
 
         creaLuoghi();
         istanziaParametroTerritoriale();
-        dichiaraMassimoNumeroFruitori();
+        if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
 
         session.salvaParametriGlobali();
     }
@@ -90,7 +90,7 @@ public class Controller {
     }
 
     public void dichiaraMassimoNumeroFruitori() {
-        if (session.getUtenteAttivo() instanceof Configuratore && TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) {
+        if (session.getUtenteAttivo() instanceof Configuratore) {
             ((Configuratore) session.getUtenteAttivo())
                     .setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
         }
@@ -130,13 +130,17 @@ public class Controller {
         Set<Visita> visite = new HashSet<>();
         if (session.getVisite() != null) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-                visite.addAll(tipoVisita.getVisiteAssociate());
+                if (tipoVisita.getVisiteAssociate() != null) {
+                    visite.addAll(tipoVisita.getVisiteAssociate());
+                }
             }
         }
         
         if (session.getStoricoVisite() != null) {
-            for (TipoVisita visita : session.getStoricoVisite()) {
-                visite.addAll(visita.getVisiteAssociate());
+            for (TipoVisita tipoVisita : session.getStoricoVisite()) {
+                if (tipoVisita.getVisiteAssociate() != null) {
+                    visite.addAll(tipoVisita.getVisiteAssociate());
+                }
             }
         }
 

@@ -203,6 +203,7 @@ public class AppView {
         voci.put("Apri raccolta disponibilità", controller::riapriDisponibilita);
         myMenu.addVoci(voci);
     }
+    //TODO: Voci del menu, interazione utente da View ed elaborazione aggiunte/rimozioni da Controller
 
 
     public void setMenuVolontario() {
@@ -261,7 +262,7 @@ public class AppView {
             System.out.println("Non ci sono volontari disponibili");
         } else {
             for (Volontario user : volontari) {
-                System.out.println(user);
+                System.out.println(user.getNomeUtente());
             }
         }
     }
