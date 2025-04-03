@@ -201,8 +201,7 @@ public class Session {
 
     private void chechCondizioniDiVolontario() {
         utenti.removeIf(utente -> (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)));
-        System.out.println("nigga");
-    }
+}
 
     private void checkCondizioniDiTipoVisita() {
         Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
