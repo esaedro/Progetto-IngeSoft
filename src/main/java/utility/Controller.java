@@ -212,8 +212,9 @@ public class Controller {
     }
 
     public void rimuoviVolontario() {
-        if (!session.getVolontari().isEmpty())
-        session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
+        if (!session.getVolontari().isEmpty()) {
+            session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
+        }
         gestisciEffettiCollaterali();
     }
 

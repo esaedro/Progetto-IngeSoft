@@ -167,11 +167,7 @@ public class AppView {
             password = "config" + nomeUtente;
 
             volontario = new Volontario(nomeUtente, password, new HashSet<>());
-
-            if (volontario != null) {
-                volontari.add(volontario);
-            }
-            else break;
+            volontari.add(volontario);
         } while (InputDati.conferma("Inserire un altro volontario?"));
 
         return volontari;
@@ -179,7 +175,7 @@ public class AppView {
 
     public Set<Volontario> menuRimozioneVolontario(Set<Volontario> volontariPresenti) {
         Set<Volontario> volontariDaRimuovere = new HashSet<>();
-        if (volontariPresenti.isEmpty()) {
+        if (!volontariPresenti.isEmpty()) {
             volontariDaRimuovere = InputDati.selezionaPiuDaLista("Selezionare uno o più volontari da eliminare", 
                                         volontariPresenti, Volontario::getNomeUtente, 1, volontariPresenti.size());
         } else {
