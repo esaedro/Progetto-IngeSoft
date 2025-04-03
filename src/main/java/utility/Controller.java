@@ -179,7 +179,6 @@ public class Controller {
     }
 
     public void aggiungiVolontario() {
-        //check utenteAttivo instanceof Configuratore?
         Set<Volontario> nuoviVolontari = new HashSet<>();
 
         nuoviVolontari = appview.menuInserimentoVolontari(/*parametri?*/);
@@ -188,7 +187,6 @@ public class Controller {
     }
 
     public void aggiungiTipoVisita() {
-        //check utenteAttivo instanceof Configuratore?
         Set<TipoVisita> nuoveVisite = new HashSet<>();
 
         nuoveVisite = appview.menuInserimentoTipiVisita(session.getUtenteAttivo(), session.getVolontari());
@@ -202,19 +200,17 @@ public class Controller {
         luoghiDaEliminare = appview.menuRimozioneLuoghi(session.getLuoghi());
         session.rimuoviLuoghi(luoghiDaEliminare); */
 
-        session.rimuoviLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
+        session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviTipoVisita() {
-        session.rimuoviTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
+        session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviVolontario() {
-        if (!session.getVolontari().isEmpty()) {
-            session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
-        }
+        session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();
     }
 

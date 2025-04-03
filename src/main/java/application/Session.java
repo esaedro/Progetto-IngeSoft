@@ -135,7 +135,7 @@ public class Session {
         this.luoghi.add(luogo);
     }
 
-    public void rimuoviLuoghi(Set<Luogo> luoghidaRimuovere) {
+    public void removeLuoghi(Set<Luogo> luoghidaRimuovere) {
         this.luoghi.removeAll(luoghidaRimuovere);
     }
 
@@ -151,7 +151,7 @@ public class Session {
         this.visite.add(visite);
     }
 
-    public void rimuoviTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
+    public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
         this.visite.removeAll(visiteDaRimuovere);
     }
 
