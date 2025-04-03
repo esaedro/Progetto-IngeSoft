@@ -59,8 +59,9 @@ public class TipoVisita implements Serializable {
     }
 
     public Set<Luogo> getLuoghiAssociati(Set<Luogo> luoghi) {
-        luoghi.removeIf(luogo -> !luogo.getVisiteIds().contains(titolo));
-        return luoghi;
+        Set<Luogo> luoghiTemp = new HashSet<>(luoghi);
+        luoghiTemp.removeIf(luogo -> !luogo.getVisiteIds().contains(titolo));
+        return luoghiTemp;
     }
 
     public boolean haLuoghiAssociati(Set<Luogo> luoghi) {

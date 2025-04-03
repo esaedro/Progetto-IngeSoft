@@ -37,8 +37,9 @@ public class Volontario extends Utente {
     }
 
     public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
-        visite.removeIf(visita -> !visita.getVolontariIdonei().contains(this));
-        return visite;
+        Set<TipoVisita> visiteTemp = new HashSet<>(visite);
+        visiteTemp.removeIf(luogo -> !luogo.getVolontariIdonei().contains(this));
+        return visiteTemp;
     }
 
     public boolean haVisiteAssociate(Set<TipoVisita> visite) {

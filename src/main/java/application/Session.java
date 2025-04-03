@@ -184,4 +184,33 @@ public class Session {
         }
         return visiteResult;
     }
+
+    public void checkCondizioniDiClassi() {
+        checkCondizioniDiLuogo();
+        checkCondizioniDiTipoVisita();
+        chechCondizioniDiVolontario();
+    }
+
+    private void checkCondizioniDiLuogo() {
+        luoghi.removeIf(luogo -> !luogo.haVisiteAssociate());
+    }
+
+    private void chechCondizioniDiVolontario() {
+        getVolontari().removeIf(volontario -> !volontario.haVisiteAssociate(visite));
+    }
+
+    private void checkCondizioniDiTipoVisita() {
+        Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
+        while (tipoVisitaIterator.hasNext()) {
+            TipoVisita tipoVisita = tipoVisitaIterator.next();
+            if (!tipoVisita.haLuoghiAssociati(luoghi)) {
+                tipoVisitaIterator.remove();
+                chechCondizioniDiVolontario();
+            }
+            if (!tipoVisita.haVolontariAssociati()) {
+                tipoVisitaIterator.remove();
+                checkCondizioniDiLuogo();
+            }
+        }
+    }
 }
