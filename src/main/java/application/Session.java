@@ -129,7 +129,11 @@ public class Session {
 
     public void addLuoghi (Set<Luogo> luoghiDaAggiungere) {
         this.luoghi.addAll(luoghiDaAggiungere);
-    } 
+    }
+
+    public void addLuogo(Luogo luogo) {
+        this.luoghi.add(luogo);
+    }
 
     public Set<TipoVisita> getVisite() {
         return visite;
@@ -196,7 +200,8 @@ public class Session {
     }
 
     private void chechCondizioniDiVolontario() {
-        getVolontari().removeIf(volontario -> !volontario.haVisiteAssociate(visite));
+        utenti.removeIf(utente -> (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)));
+        System.out.println("nigga");
     }
 
     private void checkCondizioniDiTipoVisita() {

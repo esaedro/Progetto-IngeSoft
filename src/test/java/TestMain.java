@@ -190,4 +190,50 @@ public class TestMain {
 
         assertTrue(TipoVisita.getDatePrecluseFuture().isEmpty(), "problema lettura/scrittura date precluse i+1");
     }
+
+    @Test
+    void rimuoviVolontario() {
+        Session session = new Session();
+
+        session.setVisite(new HashSet<>());
+        session.setLuoghi(new HashSet<>());
+        session.setUtenti(new HashSet<>());
+
+        Luogo luogoSopp = new Luogo("LuogoSoppravive", "boh");
+        luogoSopp.addVisita("Visita non da distruggere");
+        session.addLuogo(luogoSopp);
+
+        Luogo luogoDead = new Luogo("LuogoNonSoppravive", "boh");
+        luogoDead.addVisita("Visita da distruggere");
+        session.addLuogo(luogoDead);
+
+        Volontario volontario = new Volontario("Volontario", "volontario");
+        Set<Utente> volontari = new HashSet<>();
+        volontari.add(volontario);
+        Set<Volontario> volontariPerVisita = new HashSet<>();
+        volontariPerVisita.add(volontario);
+
+        session.setUtenti(volontari);
+        session.addVisita(new TipoVisita("Visita da distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisita));
+
+        session.getVisite().clear();
+        session.getLuoghi().removeIf((luogo -> luogo.getVisiteIds().contains("Visita da distruggere")));
+        session.checkCondizioniDiClassi();
+
+        assertTrue(session.getLuoghi().contains(luogoSopp), "Problema eliminazione luoghi dopo tipovisita");
+        assertFalse(session.getLuoghi().contains(luogoDead), "Problema eliminazione luoghi dopo tipovisita");
+        assertTrue(session.getVolontari().isEmpty(), "Problema eliminazione volontari");
+    }
+
+    @Test
+    void rimuoviLuogo() {
+
+    }
+
+    @Test
+    void rimuoviTipoVisita() {
+
+    }
 }
