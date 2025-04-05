@@ -9,6 +9,7 @@ public class Visita {
     private Calendar dataVisita;
     private StatoVisita stato;
     private int numeroIscritti;
+    private Volontario volontarioAssociato;
     
     public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti) {
         this.dataVisita = dataVisita;
@@ -33,6 +34,12 @@ public class Visita {
     }
     public void setNumeroIscritti(int numeroIscritti) {
         this.numeroIscritti = numeroIscritti;
+    }
+    public void setVolontarioAssociato(Volontario volontarioAssociato) {
+        this.volontarioAssociato = volontarioAssociato;
+    }
+    public Volontario getVolontarioAssociato() {
+        return volontarioAssociato;
     }
 
     public String toString() {
