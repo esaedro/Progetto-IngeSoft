@@ -100,7 +100,6 @@ public class TestMain {
         session.getVisite().clear();
         session.carica();
 
-        System.out.println(((Volontario) finale).getDisponibilita());
         Set<TipoVisita> visiteAssociate = ((Volontario) finale).getVisiteAssociate(session.getVisite());
 
         visiteAssociate.forEach(
