@@ -483,31 +483,28 @@ public class Controller {
     }
 
     public void rimuoviLuogo() {
-        /* Set<Luogo> luoghiDaEliminare = new HashSet<>();
-        //check utenteAttivo instanceof Configuratore?
-        luoghiDaEliminare = appview.menuRimozioneLuoghi(session.getLuoghi());
-        session.rimuoviLuoghi(luoghiDaEliminare); */
-
         session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviTipoVisita() {
+        // TODO: rimuovi reference nei luoghi
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviVolontario() {
+        // TODO: rimuovi reference nel TipoVisita
         session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();
     }
 
     public void gestisciEffettiCollaterali() {
-        //TODO: esegue i check di session?
+        session.checkCondizioniDiClassi();
     }
 
     public void riapriDisponibilita() {
-        //TODO
+        session.salvataggioDatePrecluseFutureInAttuali();
         appview.setMenuConfiguratore();
     }
 }
