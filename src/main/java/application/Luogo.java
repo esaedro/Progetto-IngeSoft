@@ -52,6 +52,12 @@ public class Luogo implements Serializable {
         return !visiteIds.isEmpty();
     }
 
+    public void rimuoviVisita(String titoloVisita) {
+        if (visiteIds != null && visiteIds.contains(titoloVisita)) {
+            visiteIds.remove(titoloVisita);
+        }
+    }
+
     @Override
     public String toString() {
         return "Luogo{" +
