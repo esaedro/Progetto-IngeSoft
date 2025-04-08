@@ -34,7 +34,6 @@ public class AppView {
         System.out.println("\nUtente non trovato. Nome utente o password errati.");
     }
 
-
     public String menuCambioPassword(Utente utenteAttivo) {
         String newPassword;
         do {
