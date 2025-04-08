@@ -139,15 +139,15 @@ public class BelleStringhe {
 
         for (int i = 1; i <= mese.length(anno.isLeap()); i++) {
             String occupato = (colori)
-                ? ANSI_RED + String.valueOf(i) + ANSI_RESET
-                : "x" + String.valueOf(i) + "x";
+                ? ANSI_RED + incolonna(String.valueOf(i), 6) + ANSI_RESET
+                : incolonna ("x" + String.valueOf(i) + "x", 6);
             String selezionato = (colori)
-                ? ANSI_GREEN + String.valueOf(i) + ANSI_RESET
-                : "o" + String.valueOf(i) + "o";
+                ? ANSI_GREEN + incolonna(String.valueOf(i), 6)  + ANSI_RESET
+                : incolonna ("o" + String.valueOf(i) + "o", 6);
             if (giorniOccupati.contains(i)) {
-                result.append(incolonna(occupato, 6));
+                result.append(occupato);
             } else if (giorniSelezionati.contains(i)) {
-                result.append(incolonna(selezionato, 6));
+                result.append(selezionato);
             } else {
                 result.append(incolonna(String.valueOf(i), 6));
             }

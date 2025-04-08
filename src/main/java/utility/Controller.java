@@ -51,6 +51,7 @@ public class Controller {
 
     private void inizializzazione() {
         appview.benvenutoMsg(session.getUtenteAttivo());
+        
         if (session.getUtenteAttivo().getPassword().startsWith("config")) {
             session.cambiaPassword(
                 session.getUtenteAttivo(),
@@ -58,18 +59,15 @@ public class Controller {
             );
         }
 
-        creaLuoghi();
-        istanziaParametroTerritoriale();
-        if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
-
-        session.salvaParametriGlobali();
+        if (session.getUtenteAttivo() instanceof Configuratore) {
+            creaLuoghi();
+            istanziaParametroTerritoriale();
+            if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
+            session.salvaParametriGlobali();
+        }
     }
 
     public void creaLuoghi() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
-
         if (session.getLuoghi().isEmpty()) {
             Set<Luogo> luoghi = new HashSet<>();
             Set<TipoVisita> visite;
@@ -92,9 +90,6 @@ public class Controller {
     }
 
     private void istanziaParametroTerritoriale() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         if (Luogo.getParametroTerritoriale() == null) {
             ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
                     appview.menuInserimentoParametroTerritoriale()
@@ -103,9 +98,6 @@ public class Controller {
     }
 
     public void dichiaraMassimoNumeroFruitori() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         ((Configuratore) session.getUtenteAttivo()).setNumeroMassimoIscritti(
                 appview.menuInserimentoMassimoIscritti()
             );
@@ -113,7 +105,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 2) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 8) {
                 appview.setMenuConfiguratore();
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart();

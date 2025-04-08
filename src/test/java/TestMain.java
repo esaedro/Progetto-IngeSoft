@@ -191,6 +191,98 @@ public class TestMain {
     }
 
     @Test
+    void rimuoviTipoVisita() {
+        Session session = new Session();
+
+        session.setVisite(new HashSet<>());
+        session.setLuoghi(new HashSet<>());
+        session.setUtenti(new HashSet<>());
+
+        Luogo luogoDaNonDistruggere = new Luogo("LuogoSoppravive", "boh");
+        luogoDaNonDistruggere.addVisita("Visita non da distruggere");
+        session.addLuogo(luogoDaNonDistruggere);
+
+        Luogo luogoDaDistruggere = new Luogo("LuogoNonSoppravive", "boh");
+        luogoDaDistruggere.addVisita("Visita da distruggere");
+        session.addLuogo(luogoDaDistruggere);
+
+        Volontario volontarioDaDistruggere = new Volontario("Volontario", "volontario");
+        Set<Utente> volontari = new HashSet<>();
+        volontari.add(volontarioDaDistruggere);
+        Set<Volontario> volontariPerVisita = new HashSet<>();
+        volontariPerVisita.add(volontarioDaDistruggere);
+
+        session.setUtenti(volontari);
+        TipoVisita tipoVisitaDaDistruggere = new TipoVisita("Visita da distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisita);
+        session.addVisita(tipoVisitaDaDistruggere);
+
+        Set<TipoVisita> tipoVisiteDaDistruggere = new HashSet<>();
+        tipoVisiteDaDistruggere.add(tipoVisitaDaDistruggere);
+
+        session.removeTipoVisita(tipoVisiteDaDistruggere);
+        session.checkCondizioniDiClassi();
+
+        assertTrue(session.getLuoghi().contains(luogoDaNonDistruggere), "Problema eliminazione luoghi dopo tipovisita");
+        assertFalse(session.getLuoghi().contains(luogoDaDistruggere), "Problema eliminazione luoghi dopo tipovisita");
+        assertTrue(session.getVolontari().isEmpty(), "Problema eliminazione volontari");
+    }
+
+    @Test
+    void rimuoviLuogo() {
+        Session session = new Session();
+
+        session.setVisite(new HashSet<>());
+        session.setLuoghi(new HashSet<>());
+        session.setUtenti(new HashSet<>());
+
+        Luogo luogoDaDistruggere = new Luogo("LuogoDaDistruggere", "boh");
+        luogoDaDistruggere.addVisita("Visita da distruggere");
+        session.addLuogo(luogoDaDistruggere);
+
+        Volontario volontarioDaDistruggere = new Volontario("Volontario", "volontario");
+        Set<Utente> volontari = new HashSet<>();
+        volontari.add(volontarioDaDistruggere);
+
+        Set<Volontario> volontariPerVisita = new HashSet<>();
+        volontariPerVisita.add(volontarioDaDistruggere);
+
+        TipoVisita visitaDaDistruggere = new TipoVisita("Visita da distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisita);
+        session.addVisita(visitaDaDistruggere);
+
+        Luogo luogoDaNonDistruggere = new Luogo("Luogo", "boh");
+        luogoDaNonDistruggere.addVisita("Visita da non distruggere");
+        session.addLuogo(luogoDaNonDistruggere);
+
+        Volontario volontarioNonDaDistruggere = new Volontario("VolontarioForte", "volontario");
+        volontari.add(volontarioNonDaDistruggere);
+
+        Set<Volontario> volontariPerVisitaNonDaDistruggere = new HashSet<>();
+        volontariPerVisitaNonDaDistruggere.add(volontarioNonDaDistruggere);
+
+        session.setUtenti(volontari);
+
+        TipoVisita visitaNonDaDistruggere = new TipoVisita("Visita da non distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisitaNonDaDistruggere);
+        session.addVisita(visitaNonDaDistruggere);
+
+        Set<Luogo> luoghiDaRimuovere = new HashSet<>();
+        luoghiDaRimuovere.add(luogoDaDistruggere);
+        session.removeLuoghi(luoghiDaRimuovere);
+
+        session.checkCondizioniDiClassi();
+
+        assertTrue(session.getVolontari().contains(volontarioNonDaDistruggere), "Problema eliminazione volontari dopo luogo");
+        assertFalse(session.getVolontari().contains(volontarioDaDistruggere), "Problema eliminazione volontari dopo luogo");
+        assertTrue(session.getVisite().contains(visitaNonDaDistruggere), "Problema eliminazione visita dopo luogo");
+        assertFalse(session.getVisite().contains(visitaDaDistruggere), "Problema eliminazione visita dopo luogo");
+    }
+
+    @Test
     void rimuoviVolontario() {
         Session session = new Session();
 
@@ -198,41 +290,49 @@ public class TestMain {
         session.setLuoghi(new HashSet<>());
         session.setUtenti(new HashSet<>());
 
-        Luogo luogoSopp = new Luogo("LuogoSoppravive", "boh");
-        luogoSopp.addVisita("Visita non da distruggere");
-        session.addLuogo(luogoSopp);
+        Luogo luogoDaDistruggere = new Luogo("LuogoDaDistruggere", "boh");
+        luogoDaDistruggere.addVisita("Visita da distruggere");
+        session.addLuogo(luogoDaDistruggere);
 
-        Luogo luogoDead = new Luogo("LuogoNonSoppravive", "boh");
-        luogoDead.addVisita("Visita da distruggere");
-        session.addLuogo(luogoDead);
-
-        Volontario volontario = new Volontario("Volontario", "volontario");
+        Volontario volontarioDaDistruggere = new Volontario("Volontario", "volontario");
         Set<Utente> volontari = new HashSet<>();
-        volontari.add(volontario);
+        volontari.add(volontarioDaDistruggere);
+
         Set<Volontario> volontariPerVisita = new HashSet<>();
-        volontariPerVisita.add(volontario);
+        volontariPerVisita.add(volontarioDaDistruggere);
+
+        TipoVisita visitaDaDistruggere = new TipoVisita("Visita da distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisita);
+        session.addVisita(visitaDaDistruggere);
+
+        Luogo luogoDaNonDistruggere = new Luogo("Luogo", "boh");
+        luogoDaNonDistruggere.addVisita("Visita da non distruggere");
+        session.addLuogo(luogoDaNonDistruggere);
+
+        Volontario volontarioNonDaDistruggere = new Volontario("VolontarioForte", "volontario");
+        volontari.add(volontarioNonDaDistruggere);
+
+        Set<Volontario> volontariPerVisitaNonDaDistruggere = new HashSet<>();
+        volontariPerVisitaNonDaDistruggere.add(volontarioNonDaDistruggere);
 
         session.setUtenti(volontari);
-        session.addVisita(new TipoVisita("Visita da distruggere", "descr", "punto",
-                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
-                23, 24, true, volontariPerVisita));
 
-        session.getVisite().clear();
-        session.getLuoghi().removeIf((luogo -> luogo.getVisiteIds().contains("Visita da distruggere")));
+        TipoVisita visitaNonDaDistruggere = new TipoVisita("Visita da non distruggere", "descr", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 23, new HashSet<>(),
+                23, 24, true, volontariPerVisitaNonDaDistruggere);
+        session.addVisita(visitaNonDaDistruggere);
+
+        Set<Volontario> volontariDaDistruggere = new HashSet<>();
+        volontariDaDistruggere.add(volontarioDaDistruggere);
+        session.removeVolontario(volontariDaDistruggere);
+
         session.checkCondizioniDiClassi();
 
-        assertTrue(session.getLuoghi().contains(luogoSopp), "Problema eliminazione luoghi dopo tipovisita");
-        assertFalse(session.getLuoghi().contains(luogoDead), "Problema eliminazione luoghi dopo tipovisita");
-        assertTrue(session.getVolontari().isEmpty(), "Problema eliminazione volontari");
-    }
-
-    @Test
-    void rimuoviLuogo() {
-
-    }
-
-    @Test
-    void rimuoviTipoVisita() {
+        assertTrue(session.getLuoghi().contains(luogoDaNonDistruggere), "Problema eliminazione luogo dopo volontario");
+        assertFalse(session.getLuoghi().contains(luogoDaDistruggere), "Problema eliminazione luogo dopo volontario");
+        assertTrue(session.getVisite().contains(visitaNonDaDistruggere), "Problema eliminazione visita dopo volontario");
+        assertFalse(session.getVisite().contains(visitaDaDistruggere), "Problema eliminazione visita dopo volontario");
 
     }
 }

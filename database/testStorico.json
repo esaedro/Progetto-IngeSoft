@@ -3,10 +3,10 @@
     "dataVisita": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 7,
-      "hourOfDay": 9,
-      "minute": 54,
-      "second": 50
+      "dayOfMonth": 8,
+      "hourOfDay": 17,
+      "minute": 47,
+      "second": 38
     },
     "stato": "EFFETTUATA",
     "numeroIscritti": 7
@@ -15,10 +15,10 @@
     "dataVisita": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 7,
-      "hourOfDay": 9,
-      "minute": 54,
-      "second": 50
+      "dayOfMonth": 8,
+      "hourOfDay": 17,
+      "minute": 47,
+      "second": 38
     },
     "stato": "EFFETTUATA",
     "numeroIscritti": 9
