@@ -60,7 +60,7 @@ public class Controller {
         }
 
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            creaLuoghi();
+            if (session.getLuoghi().isEmpty()) creaLuoghi();
             istanziaParametroTerritoriale();
             if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
             session.salvaParametriGlobali();
@@ -68,7 +68,6 @@ public class Controller {
     }
 
     public void creaLuoghi() {
-        if (session.getLuoghi().isEmpty()) {
             Set<Luogo> luoghi = new HashSet<>();
             Set<TipoVisita> visite;
 
@@ -86,7 +85,6 @@ public class Controller {
             } while (appview.confermaLuoghi());
 
             session.addLuoghi(luoghi);
-        }
     }
 
     private void istanziaParametroTerritoriale() {
@@ -105,7 +103,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 8) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 9) {
                 appview.setMenuConfiguratore();
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart();
@@ -220,7 +218,7 @@ public class Controller {
         int maxVisitePerTipo = 2;
         for (TipoVisita tipoVisita : tipiVisite) {
             Set<Calendar> datePossibiliPerVisita = tipoVisita.getDatePossibiliPerVisita(
-                inizioMese,
+                fineMese,
                 datePossibili
             );
 
@@ -244,14 +242,8 @@ public class Controller {
             );
 
             // Controllo se ci sono date disponibili per le visite
-            if (dateEstratte.isEmpty()) {
-                throw new IllegalStateException("Nessuna data disponibile per le visite");
-            }
-
-            // Controllo se ci sono volontari disponibili per le visite
-            if (volontariEstratti.isEmpty()) {
-                throw new IllegalStateException("Nessun volontario disponibile per le visite");
-            }
+            if (dateEstratte.isEmpty() || volontariEstratti.isEmpty()) continue;
+                //throw new IllegalStateException("Nessuna data disponibile per le visite");
 
             session.creaVisitePerDatiEstratti(dateEstratte, oreEstratte, volontariEstratti, tipoVisita);
         }
@@ -260,49 +252,52 @@ public class Controller {
     }
 
     public void aggiungiVolontario() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
+        TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
 
-        Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari(/*parametri?*/);
+        if (!session.getVisite().isEmpty()) {
+            Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari();
 
-        session.addVolontari(nuoviVolontari); //aggiungi a session (addVolontari è nuovo metodo)
+            tipoVisitaSelezionato.aggiungiVolontariIdonei(nuoviVolontari);
+            session.addVolontari(nuoviVolontari); 
+        }       
     }
 
     public void aggiungiTipoVisita() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
+        Luogo luogoSelezionato = appview.selezioneLuogo(session.getLuoghi());  
 
-        Set<TipoVisita> nuoveVisite = appview.menuInserimentoTipiVisita(
-            session.getUtenteAttivo(),
-            session.getVolontari()
-        );
+        if (!session.getLuoghi().isEmpty()) {
+            Set<TipoVisita> nuoveVisite = appview.menuInserimentoTipiVisita(
+                session.getUtenteAttivo(), session.getVolontari());
 
-        session.addTipoVisite(nuoveVisite);
+            luogoSelezionato.aggiungiVisite(nuoveVisite);
+            session.addTipoVisite(nuoveVisite);
+        } 
     }
 
     public void rimuoviLuogo() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
+/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
+        } */
         session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviTipoVisita() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
+/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
+        } */
+
         //reference ai luoghi gestite nel metodo di session
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
+        
     }
 
     public void rimuoviVolontario() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
+/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
+        } */
+
         //reference a tipoVisita e Visita gestite nel metodo di session
         session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();

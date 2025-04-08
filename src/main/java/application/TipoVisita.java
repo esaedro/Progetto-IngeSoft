@@ -228,19 +228,31 @@ public class TipoVisita implements Serializable {
         }
     }
 
+    public void aggiungiVolontariIdonei(Set<Volontario> volontariDaAggiungere) {
+        if (volontariIdonei == null) {
+            volontariIdonei = new HashSet<>();
+        }
+        for (Volontario volontario : volontariDaAggiungere) {
+            if (!volontariIdonei.contains(volontario)) {
+                volontariIdonei.add(volontario);
+            }
+        }
+    }
+
     public static Set<Calendar> getDatePossibiliAttuali(Calendar fineMese) {
         // È meglio creare un insieme di date possibili, togliendo già quelle precluse per evitare di dover fare dei controlli successivamente
         Set<Integer> datePrecluse = TipoVisita.getDatePrecluseAttuali();
         Set<Calendar> datePossibili = new HashSet<>();
 
         // Riempio l'insieme delle date possibili
-        Calendar temp = Calendar.getInstance();
-        temp.add(Calendar.MONTH, 1);
-        temp.set(Calendar.HOUR_OF_DAY, 0);
-        temp.set(Calendar.MINUTE, 0);
-        temp.set(Calendar.SECOND, 0);
-        for (int i = 0; i < fineMese.getMaximum(Calendar.DAY_OF_MONTH); i++) {
+
+        for (int i = 1; i <= fineMese.getMaximum(Calendar.DAY_OF_MONTH); i++) {
             if (!datePrecluse.contains(i)) {
+                Calendar temp = Calendar.getInstance();
+                temp.add(Calendar.MONTH, 1);
+                temp.set(Calendar.HOUR_OF_DAY, 0);
+                temp.set(Calendar.MINUTE, 0);
+                temp.set(Calendar.SECOND, 0);
                 temp.set(Calendar.DAY_OF_MONTH, i);
                 datePossibili.add(temp);
             }
