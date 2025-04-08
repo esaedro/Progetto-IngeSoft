@@ -204,6 +204,20 @@ public class TipoVisita implements Serializable {
         return !getLuoghiAssociati(luoghi).isEmpty();
     }
 
+    public void rimuoviVolontario(Volontario volontario) {
+        if (volontariIdonei != null && volontariIdonei.contains(volontario)) {
+            volontariIdonei.remove(volontario);
+        }
+
+        for (Visita visita : visiteAssociate) {
+            if (visita.getVolontarioAssociato() != null && visita.getVolontarioAssociato().equals(volontario)) {
+                visita.setVolontarioAssociato(null);
+                visita.setStato(StatoVisita.CANCELLATA);
+            }
+        }
+
+    }
+
     @Override
     public String toString() {
         StringBuilder volontari = new StringBuilder();

@@ -168,7 +168,13 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
-        // TODO: rimuovi reference nei luoghi
+        
+        for (TipoVisita tipoVisita : visiteDaRimuovere) {
+            for (Luogo luogo : luoghi) {
+                luogo.rimuoviVisita(tipoVisita.getTitolo());
+            }
+        }
+
         this.visite.removeAll(visiteDaRimuovere);
     }
 
@@ -188,7 +194,13 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
-        // TODO: rimuovi reference nel TipoVisita
+        
+        for (Volontario volontario : volontariDaRimuovere) {
+            for (TipoVisita tipoVisita : visite) {
+                tipoVisita.rimuoviVolontario(volontario);
+            }
+        }
+
         utenti.removeAll(volontariDaRimuovere);
     }
 
