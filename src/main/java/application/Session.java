@@ -168,6 +168,7 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
+        // TODO: rimuovi reference nei luoghi
         this.visite.removeAll(visiteDaRimuovere);
     }
 
@@ -187,6 +188,7 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
+        // TODO: rimuovi reference nel TipoVisita
         utenti.removeAll(volontariDaRimuovere);
     }
 
