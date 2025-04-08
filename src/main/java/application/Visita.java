@@ -23,18 +23,23 @@ public class Visita {
     public void setDataVisita(Calendar dataVisita) {
         this.dataVisita = dataVisita;
     }
+
     public StatoVisita getStato() {
         return stato;
     }
+
     public void setStato(StatoVisita stato) {
         this.stato = stato;
     }
+
     public int getNumeroIscritti() {
         return numeroIscritti;
     }
+
     public void setNumeroIscritti(int numeroIscritti) {
         this.numeroIscritti = numeroIscritti;
     }
+
     public void setVolontarioAssociato(Volontario volontarioAssociato) {
         this.volontarioAssociato = volontarioAssociato;
     }

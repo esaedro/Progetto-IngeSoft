@@ -65,8 +65,13 @@ public class Session {
         filemanager.salvaParametriGlobali();
     }
 
-    public void caricaParametriGlobali() {
-        filemanager.caricaParametriGlobali();
+    public void cambiaPassword(Utente utente, String newPassword) {
+        for (Utente user : utenti) {
+            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
+                user.setPassword(newPassword);
+            }
+        }
+        salvaUtenti();
     }
 
     public void carica() {
@@ -77,17 +82,8 @@ public class Session {
         caricaParametriGlobali();
     }
 
-    public Set<TipoVisita> getStoricoVisite() {
-        return filemanager.carica(FileManager.fileStorico, TipoVisita.class);
-    }
-
-    public void cambiaPassword(Utente utente, String newPassword) {
-        for (Utente user : utenti) {
-            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
-                user.setPassword(newPassword);
-            }
-        }
-        salvaUtenti();
+    public void caricaParametriGlobali() {
+        filemanager.caricaParametriGlobali();
     }
 
     public Utente login(String nomeUtente, String password) {
@@ -97,9 +93,9 @@ public class Session {
         for (Utente user: utenti) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
                 return user;
-            }    
+            }
         }
-        
+
         return null;
     }
 
@@ -135,6 +131,7 @@ public class Session {
         this.luoghi.add(luogo);
     }
 
+    // TODO: realize a proxy
     public void removeLuoghi(Set<Luogo> luoghidaRimuovere) {
         this.luoghi.removeAll(luoghidaRimuovere);
     }
@@ -151,20 +148,27 @@ public class Session {
         this.visite.add(visite);
     }
 
+    public void addTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {
+        visite.addAll(tipoVisiteToAdd);
+    }
+
+    public Set<TipoVisita> getStoricoVisite() {
+        return filemanager.carica(FileManager.fileStorico, TipoVisita.class);
+    }
+
+    public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
+        ArrayList<TipoVisita> visiteResult = new ArrayList<>();
+        for (TipoVisita visita: visite) {
+            if (luogo.getVisiteIds().contains(visita.getTitolo())) {
+                visiteResult.add(visita);
+            }
+        }
+        return visiteResult;
+    }
+
+    // TODO: realize a proxy
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
         this.visite.removeAll(visiteDaRimuovere);
-    }
-
-    public void addAllVisite(Set<Visita> visite) {
-        visite.addAll(visite);
-    }
-
-    public FileManager getFilemanager() {
-        return filemanager;
-    }
-
-    public void setFilemanager(FileManager filemanager) {
-        this.filemanager = filemanager;
     }
 
     public Set<Volontario> getVolontari() {
@@ -181,28 +185,15 @@ public class Session {
         utenti.addAll(nuoviVolontari);
     }
 
+    // TODO: realize a proxy
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
         utenti.removeAll(volontariDaRimuovere);
-    }
-
-    public void addAllTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {
-        visite.addAll(tipoVisiteToAdd);
     }
 
     public void salvataggioDatePrecluseFutureInAttuali() {
         TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
         TipoVisita.clearDatePrecluseFuture();
         salvaParametriGlobali();
-    }
-
-    public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
-        ArrayList<TipoVisita> visiteResult = new ArrayList<>();
-        for (TipoVisita visita: visite) {
-            if (luogo.getVisiteIds().contains(visita.getTitolo())) {
-                visiteResult.add(visita);
-            }
-        }
-        return visiteResult;
     }
 
     public void checkCondizioniDiClassi() {
@@ -232,5 +223,9 @@ public class Session {
                 checkCondizioniDiLuogo();
             }
         }
+    }
+
+    public FileManager getFilemanager() {
+        return filemanager;
     }
 }
