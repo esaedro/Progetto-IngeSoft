@@ -221,7 +221,18 @@ public class Session {
     }
 
     private void chechCondizioniDiVolontario() {
-        utenti.removeIf(utente -> (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)));
+        Iterator<Utente> volontarioIterator = utenti.iterator();
+        while (volontarioIterator.hasNext()) {
+            Utente utente = volontarioIterator.next();
+            if (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)) {
+                volontarioIterator.remove();
+
+                for (TipoVisita tipoVisita : visite) {
+                    tipoVisita.rimuoviVolontario((Volontario) utente);
+                }
+            }
+
+        }
 }
 
     private void checkCondizioniDiTipoVisita() {
@@ -233,6 +244,9 @@ public class Session {
                 chechCondizioniDiVolontario();
             }
             if (!tipoVisita.haVolontariAssociati()) {
+                for (Luogo luogo : luoghi) {
+                    luogo.rimuoviVisita(tipoVisita.getTitolo());
+                }
                 tipoVisitaIterator.remove();
                 checkCondizioniDiLuogo();
             }
