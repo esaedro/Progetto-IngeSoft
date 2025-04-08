@@ -25,16 +25,23 @@ public class InputDati {
 
     private static Scanner lettore = creaScanner();
 
-    private static final String ERRORE_FORMATO = "Il dato inserito non e' nel formato corretto";
-    private static final String ERRORE_MINIMO = "È richiesto un valore maggiore o uguale a ";
-    private static final String ERRORE_STRINGA_VUOTA = "Non hai inserito alcun carattere";
-    private static final String ERRORE_MASSIMO = "È richiesto un valore minore o uguale a ";
-    private static final String MESSAGGIO_AMMISSIBILI = ANSI_RED + "I caratteri ammissibili sono: ";
-    // private final static String ERRORE_FORMATO = ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET;
-    // private final static String ERRORE_MINIMO = ANSI_RED + "È richiesto un valore maggiore o uguale a " + ANSI_RESET;
-    // private final static String ERRORE_STRINGA_VUOTA = ANSI_RED + "Non hai inserito alcun carattere" + ANSI_RESET;
-    // private final static String ERRORE_MASSIMO = ANSI_RED + "È richiesto un valore minore o uguale a " + ANSI_RESET;
-    // private final static String MESSAGGIO_AMMISSIBILI = ANSI_RED + "I caratteri ammissibili sono: ";
+    public static boolean colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
+    public static boolean newLineDifferente = false; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
+    private static final String ERRORE_FORMATO = colori
+        ? ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET
+        : "Il dato inserito non e' nel formato corretto";
+    private static final String ERRORE_MINIMO = colori
+        ? ANSI_RED + "È richiesto un valore maggiore o uguale a " + ANSI_RESET
+        : "È richiesto un valore maggiore o uguale a ";
+    private static final String ERRORE_STRINGA_VUOTA = colori
+        ? ANSI_RED + "Non hai inserito alcun carattere" + ANSI_RESET
+        : "Non hai inserito alcun carattere";
+    private static final String ERRORE_MASSIMO = colori
+        ? ANSI_RED + "È richiesto un valore minore o uguale a " + ANSI_RESET
+        : "È richiesto un valore minore o uguale a ";
+    private static final String MESSAGGIO_AMMISSIBILI = colori
+        ? ANSI_RED + "I caratteri ammissibili sono: " + ANSI_RESET
+        : "I caratteri ammissibili sono: ";
     private static final char[] CARATTERI_AMMISSIBILI = { 'S', 's', 'N', 'n' };
 
     /*
@@ -44,8 +51,7 @@ public class InputDati {
 
     private static Scanner creaScanner() {
         Scanner creato = new Scanner(System.in);
-//        creato.useDelimiter(System.getProperty("line.separator"));
-        creato.useDelimiter(System.getProperty("line.separator"));
+        creato.useDelimiter(newLineDifferente ? "/n" : System.getProperty("line.separator"));
         return creato;
     }
 
@@ -55,10 +61,10 @@ public class InputDati {
      * @return la stringa letta
      */
     public static String leggiStringa(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         System.out.print(messaggioInserimento);
         String lettura = lettore.next();
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return lettura;
     }
 
@@ -77,7 +83,7 @@ public class InputDati {
             else System.out.println(ERRORE_STRINGA_VUOTA);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return lettura;
     }
 
@@ -88,7 +94,7 @@ public class InputDati {
      * @return la stringa letta
      */
     public static String leggiStringaNonVuota(String messaggioInserimento, String messaggioErrore) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         String lettura;
         do {
@@ -98,12 +104,12 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return lettura;
     }
 
     public static char leggiChar(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         boolean finito = false;
         char valoreLetto = '\0';
         do {
@@ -116,13 +122,13 @@ public class InputDati {
                 System.out.println(ERRORE_STRINGA_VUOTA);
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static char leggiChar(String messaggioInserimento, String messaggioErrore) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         char valoreLetto = '\0';
         do {
@@ -135,7 +141,7 @@ public class InputDati {
                 System.out.println(messaggioErrore);
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -148,7 +154,7 @@ public class InputDati {
             if (String.valueOf(ammissibili).indexOf(valoreLetto) != -1) finito = true;
             else System.out.println(MESSAGGIO_AMMISSIBILI + ammissibili.toString());
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -157,7 +163,7 @@ public class InputDati {
         char[] ammissibili,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         char valoreLetto = '\0';
         do {
@@ -166,12 +172,12 @@ public class InputDati {
             if (String.valueOf(ammissibili).indexOf(valoreLetto) != -1) finito = true;
             else System.out.println(messaggioErrore);
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static int leggiIntero(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         boolean finito = false;
         int valoreLetto = 0;
         do {
@@ -184,13 +190,13 @@ public class InputDati {
                 lettore.next();
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static int leggiIntero(String messaggioInserimento, String messaggioErrore) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         int valoreLetto = 0;
         do {
@@ -203,7 +209,7 @@ public class InputDati {
                 lettore.next();
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -232,7 +238,7 @@ public class InputDati {
             else System.out.println(ERRORE_MINIMO + minimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -241,7 +247,7 @@ public class InputDati {
         int minimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         int valoreLetto = 0;
         do {
@@ -250,7 +256,7 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -264,7 +270,7 @@ public class InputDati {
             else System.out.println(ERRORE_MASSIMO + massimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -274,7 +280,7 @@ public class InputDati {
         int massimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         int valoreLetto = 0;
         do {
@@ -283,12 +289,12 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static short leggiShort(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         boolean finito = false;
         short valoreLetto = 0;
         do {
@@ -301,13 +307,13 @@ public class InputDati {
                 lettore.next();
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static short leggiShort(String messaggioInserimento, String messaggioErrore) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         short valoreLetto = 0;
         do {
@@ -320,7 +326,7 @@ public class InputDati {
                 lettore.next();
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -349,7 +355,7 @@ public class InputDati {
             else System.out.println(ERRORE_MINIMO + minimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -358,7 +364,7 @@ public class InputDati {
         int minimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         short valoreLetto = 0;
         do {
@@ -367,7 +373,7 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -381,7 +387,7 @@ public class InputDati {
             else System.out.println(ERRORE_MASSIMO + massimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -391,7 +397,7 @@ public class InputDati {
         int massimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         short valoreLetto = 0;
         do {
@@ -400,12 +406,12 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static long leggiLong(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         boolean finito = false;
         long valoreLetto = 0;
         do {
@@ -419,13 +425,13 @@ public class InputDati {
             }
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static long leggiLong(String messaggioInserimento, String messaggioErrore) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         long valoreLetto = 0;
         do {
@@ -439,7 +445,7 @@ public class InputDati {
             }
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -468,7 +474,7 @@ public class InputDati {
             else System.out.println(ERRORE_MINIMO + minimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -477,7 +483,7 @@ public class InputDati {
         int minimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         long valoreLetto = 0;
         do {
@@ -486,7 +492,7 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -500,7 +506,7 @@ public class InputDati {
             else System.out.println(ERRORE_MASSIMO + massimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -510,7 +516,7 @@ public class InputDati {
         int massimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         long valoreLetto = 0;
         do {
@@ -519,12 +525,12 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static double leggiDouble(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
         boolean finito = false;
         double valoreLetto = 0;
         do {
@@ -538,13 +544,13 @@ public class InputDati {
             }
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
     public static double leggiDouble(String messaggioInserimento, String messaggioErrore) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         double valoreLetto = 0;
         do {
@@ -558,7 +564,7 @@ public class InputDati {
             }
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -571,7 +577,7 @@ public class InputDati {
             else System.out.println(ERRORE_MINIMO + minimo);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -580,7 +586,7 @@ public class InputDati {
         double minimo,
         String messaggioErrore
     ) {
-        // messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
+        if (colori) messaggioErrore = ANSI_RED + messaggioErrore + ANSI_RESET;
         boolean finito = false;
         double valoreLetto = 0;
         do {
@@ -589,7 +595,7 @@ public class InputDati {
             else System.out.println(messaggioErrore);
         } while (!finito);
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return valoreLetto;
     }
 
@@ -599,8 +605,22 @@ public class InputDati {
      * @return true se l'utente ha inserito 's' o 'S', false altrimenti
      */
     public static boolean conferma(String messaggioInserimento) {
-        // messaggioInserimento = ANSI_RESET + messaggioInserimento + ANSI_GREEN + " [" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2] + "]: ";
-        messaggioInserimento = messaggioInserimento + " [" + CARATTERI_AMMISSIBILI[0] + "/" + CARATTERI_AMMISSIBILI[2] + "]: ";
+        if (colori) messaggioInserimento =
+            ANSI_RESET +
+            messaggioInserimento +
+            ANSI_GREEN +
+            " [" +
+            CARATTERI_AMMISSIBILI[0] +
+            "/" +
+            CARATTERI_AMMISSIBILI[2] +
+            "]: ";
+        messaggioInserimento =
+            messaggioInserimento +
+            " [" +
+            CARATTERI_AMMISSIBILI[0] +
+            "/" +
+            CARATTERI_AMMISSIBILI[2] +
+            "]: ";
         char valoreLetto = leggiUpperChar(
             messaggioInserimento,
             CARATTERI_AMMISSIBILI,
@@ -637,9 +657,9 @@ public class InputDati {
         Iterable<T> lista,
         Function<T, String> toString
     ) {
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         String selezionato = "*";
-        // selezionato = ANSI_GREEN + "*" + ANSI_RESET;
+        if (colori) selezionato = ANSI_GREEN + "*" + ANSI_RESET;
         char nonSelezionato = ' ';
 
         ArrayList<T> listaFittizia = new ArrayList<>();
@@ -659,9 +679,9 @@ public class InputDati {
         String erroreInterno = "";
 
         while (!finito) {
-            // System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
+            if (colori) System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
             if (!erroreInterno.isEmpty()) {
-                // erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
+                if (colori) erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
                 System.out.println(erroreInterno);
             }
             System.out.println(messaggioInserimento);
@@ -709,7 +729,7 @@ public class InputDati {
             }
         }
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return selezionati
             .entrySet()
             .stream()
@@ -746,9 +766,9 @@ public class InputDati {
         int minimo,
         int massimo
     ) {
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         String selezionato = "*";
-        // selezionato = ANSI_GREEN + "*" + ANSI_RESET;
+        if (colori) selezionato = ANSI_GREEN + "*" + ANSI_RESET;
         char nonSelezionato = ' ';
 
         ArrayList<T> listaFittizia = new ArrayList<>();
@@ -768,9 +788,9 @@ public class InputDati {
         String erroreInterno = "";
 
         while (!finito) {
-            // System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
+            if (colori) System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
             if (!erroreInterno.isEmpty()) {
-                // erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
+                if (colori) erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
                 System.out.println(erroreInterno);
             }
             System.out.println(
@@ -830,7 +850,7 @@ public class InputDati {
             }
         }
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return selezionati
             .entrySet()
             .stream()
@@ -860,9 +880,9 @@ public class InputDati {
      */
 
     public static <E extends Enum<E>> E selezionaUnEnum(String messaggioInserimento, E[] lista) {
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         String selezionato = "*";
-        // selezionato = ANSI_GREEN + "*" + ANSI_RESET;
+        if (colori) selezionato = ANSI_GREEN + "*" + ANSI_RESET;
         char nonSelezionato = ' ';
 
         EnumMap<E, Boolean> selezionati = new EnumMap<>(lista[0].getDeclaringClass());
@@ -877,9 +897,9 @@ public class InputDati {
         String erroreInterno = "";
 
         while (!finito) {
-            // System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
+            if (colori) System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
             if (!erroreInterno.isEmpty()) {
-                // erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
+                if (colori) erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
                 System.out.println(erroreInterno);
             }
             System.out.println(messaggioInserimento);
@@ -925,7 +945,7 @@ public class InputDati {
             }
         }
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return selezionati
             .entrySet()
             .stream()
@@ -961,9 +981,9 @@ public class InputDati {
         int minimo,
         int massimo
     ) {
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         String selezionato = "*";
-        // selezionato = ANSI_GREEN + "*" + ANSI_RESET;
+        if (colori) selezionato = ANSI_GREEN + "*" + ANSI_RESET;
         char nonSelezionato = ' ';
 
         EnumMap<E, Boolean> selezionati = new EnumMap<>(lista[0].getDeclaringClass());
@@ -978,9 +998,9 @@ public class InputDati {
         String erroreInterno = "";
 
         while (!finito) {
-            // System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
+            if (colori) System.out.print(PULISCI_TERMINALE); // Probabilmente non funzionerà su Windows, in caso è possibile sostituirla con molti println
             if (!erroreInterno.isEmpty()) {
-                // erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
+                if (colori) erroreInterno = ANSI_RED + erroreInterno + ANSI_RESET;
                 System.out.println(erroreInterno);
             }
             System.out.println(
@@ -1038,7 +1058,7 @@ public class InputDati {
             }
         }
 
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return selezionati
             .entrySet()
             .stream()
@@ -1061,16 +1081,16 @@ public class InputDati {
         formattatore.setLenient(false); // Impedisce di accettare date non valide
         do {
             messaggioInserimento = messaggioInserimento + "\n> ";
-            // messaggioInserimento += ANSI_GREEN;
+            if (colori) messaggioInserimento += ANSI_GREEN;
             System.out.print(messaggioInserimento);
             String dataInserita = lettore.next();
-            // System.out.print(ANSI_RESET);
+            if (colori) System.out.print(ANSI_RESET);
             try {
                 data.setTime(formattatore.parse(dataInserita));
                 int giornoInserito = data.get(Calendar.DAY_OF_MONTH);
                 if (giornoInserito != Integer.parseInt(dataInserita.split(separatore)[0])) {
                     String messaggioErrore = "Data non valida";
-                    // messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
+                    if (colori) messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
                     throw new ParseException(messaggioErrore, 0);
                 } else {
                     finito = true;
@@ -1079,7 +1099,7 @@ public class InputDati {
                 System.out.println(ERRORE_FORMATO);
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return data;
     }
 
@@ -1100,7 +1120,7 @@ public class InputDati {
         Calendar minimo,
         Calendar massimo
     ) {
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         int anno = minimo.get(Calendar.YEAR);
         boolean finito = false;
         Calendar data = Calendar.getInstance();
@@ -1114,20 +1134,22 @@ public class InputDati {
             ", massimo: " +
             formattatore.format(massimo.getTime()) +
             ")";
+        String erroreMinimo = (colori)
+            ? ERRORE_MINIMO + ANSI_RED + formattatore.format(minimo.getTime()) + ANSI_RESET
+            : ERRORE_MINIMO + formattatore.format(minimo.getTime());
+        String erroreMassimo = (colori)
+            ? ERRORE_MASSIMO + ANSI_RED + formattatore.format(massimo.getTime()) + ANSI_RESET
+            : ERRORE_MASSIMO + formattatore.format(massimo.getTime());
         do {
             data = leggiData(messaggioInserimento2, separatore);
             data.set(Calendar.YEAR, anno);
             Calendar minimoFittizio = (Calendar) minimo.clone();
             minimoFittizio.add(Calendar.DAY_OF_MONTH, -1);
             if (data.after(minimoFittizio) && data.before(massimo)) finito = true;
-            else if (data.before(minimo)) System.out.println(
-                ERRORE_MINIMO + formattatore.format(minimo.getTime())
-            );
-            // System.out.println(ERRORE_MINIMO + ANSI_RED + formattatore.format(minimo.getTime()) + ANSI_RESET);
-            else System.out.println(ERRORE_MASSIMO + formattatore.format(massimo.getTime()));
-            // System.out.println(ERRORE_MASSIMO + ANSI_RED + formattatore.format(massimo.getTime()) + ANSI_RESET);
+            else if (data.before(minimo)) System.out.println(erroreMinimo);
+            else System.out.println(erroreMassimo);
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return data;
     }
 
@@ -1146,10 +1168,10 @@ public class InputDati {
         formattatore.setLenient(false); // Impedisce di accettare ore non valide
         do {
             messaggioInserimento = messaggioInserimento + "\n> ";
-            // messaggioInserimento += ANSI_GREEN;
+            if (colori) messaggioInserimento += ANSI_GREEN;
             System.out.print(messaggioInserimento);
             String oraInserita = lettore.next();
-            // System.out.print(ANSI_RESET);
+            if (colori) System.out.print(ANSI_RESET);
             try {
                 ora.setTime(formattatore.parse(oraInserita));
                 if (
@@ -1157,13 +1179,13 @@ public class InputDati {
                     Integer.parseInt(oraInserita.split(separatore)[0])
                 ) {
                     String messaggioErrore = "Ora non valida";
-                    // messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
+                    if (colori) messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
                     throw new ParseException(messaggioErrore, 0);
                 } else if (
                     ora.get(Calendar.MINUTE) != Integer.parseInt(oraInserita.split(separatore)[1])
                 ) {
                     String messaggioErrore = "Ora non valida";
-                    // messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
+                    if (colori) messaggioErrore = ANSI_RED + "Data non valida" + ANSI_RESET;
                     throw new ParseException(messaggioErrore, 0);
                 } else {
                     finito = true;
@@ -1172,7 +1194,7 @@ public class InputDati {
                 System.out.println(ERRORE_FORMATO);
             }
         } while (!finito);
-        // System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return ora;
     }
 
@@ -1208,6 +1230,12 @@ public class InputDati {
             ", massimo: " +
             formattatore.format(massimo.getTime()) +
             ")";
+        String erroreMinimo = (colori)
+            ? ERRORE_MINIMO + ANSI_RED + formattatore.format(minimo.getTime()) + ANSI_RESET
+            : ERRORE_MINIMO + formattatore.format(minimo.getTime());
+        String erroreMassimo = (colori)
+            ? ERRORE_MASSIMO + ANSI_RED + formattatore.format(massimo.getTime()) + ANSI_RESET
+            : ERRORE_MASSIMO + formattatore.format(massimo.getTime());
         do {
             ora = leggiOra(messaggioInserimento2, separatore);
             ora.set(Calendar.DAY_OF_MONTH, giorno);
@@ -1216,12 +1244,8 @@ public class InputDati {
             Calendar minimoFittizio = (Calendar) minimo.clone();
             minimoFittizio.add(Calendar.MINUTE, -1);
             if (ora.after(minimoFittizio) && ora.before(massimo)) finito = true;
-            else if (ora.before(minimo)) System.out.println(
-                ERRORE_MINIMO + formattatore.format(minimo.getTime())
-            );
-            // System.out.println(ERRORE_MINIMO + ANSI_RED + formattatore.format(minimo.getTime()) + ANSI_RESET);
-            else System.out.println(ERRORE_MASSIMO + formattatore.format(massimo.getTime()));
-            // System.out.println(ERRORE_MASSIMO + ANSI_RED + formattatore.format(massimo.getTime()) + ANSI_RESET);
+            else if (ora.before(minimo)) System.out.println(erroreMinimo);
+            else System.out.println(erroreMassimo);
         } while (!finito);
         System.out.print(ANSI_RESET);
         return ora;
