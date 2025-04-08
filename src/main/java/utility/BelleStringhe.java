@@ -10,6 +10,7 @@ import java.util.Set;
 
 public class BelleStringhe {
 
+    public static boolean colori = true; // Abilita la colorazione degli input e dei messaggi di errore
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
@@ -19,7 +20,7 @@ public class BelleStringhe {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    public static final String PULISCI_TERMINALE = "\033\143";
+    public static final String PULISCI_TERMINALE = "\033\143"; // Svuota il terminale
 
     private static final String SPAZIO = " ";
     private static final String ACAPO = "\n";
@@ -126,19 +127,27 @@ public class BelleStringhe {
         Collection<Integer> giorniOccupati,
         Collection<Integer> giorniSelezionati
     ) {
+        String[] giorniSettimana = { "LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM" };
         StringBuffer result = new StringBuffer();
         result.append(incornicia(traduciMese(mese) + " " + anno.toString()));
-        result.append("\nLUN   MAR   MER   GIO   VEN   SAB   DOM\n");
+        result.append("\n");
+        for (String giorno : giorniSettimana) {
+            result.append(incolonna(giorno, 6));
+        }
+        result.append("\n");
         int giornoSettimana = 1;
 
         for (int i = 1; i <= mese.length(anno.isLeap()); i++) {
-            if (giornoSettimana == 1) {
-                //result.append(incolonna("", 6));
-            }
+            String occupato = (colori)
+                ? ANSI_RED + String.valueOf(i) + ANSI_RESET
+                : "x" + String.valueOf(i) + "x";
+            String selezionato = (colori)
+                ? ANSI_GREEN + String.valueOf(i) + ANSI_RESET
+                : "o" + String.valueOf(i) + "o";
             if (giorniOccupati.contains(i)) {
-                result.append(incolonna("x" + String.valueOf(i) + "x", 6));
+                result.append(incolonna(occupato, 6));
             } else if (giorniSelezionati.contains(i)) {
-                result.append(incolonna("@" + String.valueOf(i) + "@", 6));
+                result.append(incolonna(selezionato, 6));
             } else {
                 result.append(incolonna(String.valueOf(i), 6));
             }
@@ -154,7 +163,7 @@ public class BelleStringhe {
         System.out.println(result.toString());
     }
 
-        public static String traduciGiorno(DayOfWeek giorno) {
+    public static String traduciGiorno(DayOfWeek giorno) {
         return switch (giorno) {
             case MONDAY -> "Lunedì";
             case TUESDAY -> "Martedì";
