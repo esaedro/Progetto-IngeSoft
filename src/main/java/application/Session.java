@@ -231,9 +231,8 @@ public class Session {
                     tipoVisita.rimuoviVolontario((Volontario) utente);
                 }
             }
-
         }
-}
+    }
 
     private void checkCondizioniDiTipoVisita() {
         Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
