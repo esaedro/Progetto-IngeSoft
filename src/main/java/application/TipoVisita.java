@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TipoVisita implements Serializable {
-    
+
     private static int numeroMassimoIscrittoPerFruitore = 0;
     private static Set<Integer> datePrecluseFuture = new HashSet<>(), datePrecluseAttuali = new HashSet<>();
     private String titolo;
@@ -29,9 +29,20 @@ public class TipoVisita implements Serializable {
 
     private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
-    public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
-            Calendar oraInizio, int durata, Set<DayOfWeek> giorniSettimana, int minPartecipante, int maxPartecipante,
-            Boolean bigliettoIngresso, Set<Volontario> volontariIdonei) {
+    public TipoVisita(
+        String titolo,
+        String descrizione,
+        String puntoIncontro,
+        Calendar dataInizio,
+        Calendar dataFine,
+        Calendar oraInizio,
+        int durata,
+        Set<DayOfWeek> giorniSettimana,
+        int minPartecipante,
+        int maxPartecipante,
+        Boolean bigliettoIngresso,
+        Set<Volontario> volontariIdonei
+    ) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.puntoIncontro = puntoIncontro;
@@ -215,7 +226,64 @@ public class TipoVisita implements Serializable {
                 visita.setStato(StatoVisita.CANCELLATA);
             }
         }
+    }
 
+    public static Set<Calendar> getDatePossibiliAttuali(Calendar fineMese) {
+        // È meglio creare un insieme di date possibili, togliendo già quelle precluse per evitare di dover fare dei controlli successivamente
+        Set<Integer> datePrecluse = TipoVisita.getDatePrecluseAttuali();
+        Set<Calendar> datePossibili = new HashSet<>();
+
+        // Riempio l'insieme delle date possibili
+        Calendar temp = Calendar.getInstance();
+        temp.add(Calendar.MONTH, 1);
+        temp.set(Calendar.HOUR_OF_DAY, 0);
+        temp.set(Calendar.MINUTE, 0);
+        temp.set(Calendar.SECOND, 0);
+        for (int i = 0; i < fineMese.getMaximum(Calendar.DAY_OF_MONTH); i++) {
+            if (!datePrecluse.contains(i)) {
+                temp.set(Calendar.DAY_OF_MONTH, i);
+                datePossibili.add(temp);
+            }
+        }
+
+        return datePossibili;
+    }
+
+    public static Set<Calendar> getOrePossibili() {
+        Set<Calendar> orePossibili = new HashSet<>();
+
+        // Le visite potranno essere svolte tra le 8 e le 18 (scelta arbitraria perché non specificato nei requisiti)
+        for (int ora = 8; ora <= 18; ora++) {
+            Calendar calOra = Calendar.getInstance();
+            calOra.set(Calendar.HOUR_OF_DAY, ora);
+            calOra.set(Calendar.MINUTE, 0);
+            calOra.set(Calendar.SECOND, 0);
+            orePossibili.add((Calendar) calOra.clone());
+        }
+
+        return orePossibili;
+    }
+
+    public Set<Calendar> getDatePossibiliPerVisita(Calendar fineMese, Set<Calendar> datePossibili) {
+        Calendar fineVisita = dataFine.after(fineMese.getTime()) ? fineMese : dataFine;
+
+        // Calcolo le date possibili per questa visita
+        Set<Calendar> datePossibiliPerVisita = new HashSet<>();
+        if (fineVisita.equals(fineMese)) {
+            datePossibiliPerVisita = datePossibili;
+        } else {
+            for (Calendar data : datePossibili) {
+                if (data.before(fineVisita)) {
+                    datePossibiliPerVisita.add(data);
+                }
+                if (data.equals(fineVisita)) {
+                    datePossibiliPerVisita.add(data);
+                    break;
+                }
+            }
+        }
+
+        return datePossibiliPerVisita;
     }
 
     @Override
