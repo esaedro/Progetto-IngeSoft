@@ -84,7 +84,7 @@ public class Controller {
                     luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
                 }
                 luoghi.add(luogoDaAggiungere);
-                session.addAllTipoVisite(visite);
+                session.addTipoVisite(visite);
             } while (appview.confermaLuoghi());
 
             session.addLuoghi(luoghi);
@@ -510,7 +510,7 @@ public class Controller {
             session.getVolontari()
         );
 
-        session.addAllTipoVisite(nuoveVisite);
+        session.addTipoVisite(nuoveVisite);
     }
 
     public void rimuoviLuogo() {
