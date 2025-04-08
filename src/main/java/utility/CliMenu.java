@@ -1,22 +1,28 @@
 package utility;
 
-import java.util.Map.Entry;
-import java.util.LinkedHashMap;
+import static utility.BelleStringhe.ANSI_RED;
 import static utility.BelleStringhe.ANSI_RESET;
 import static utility.BelleStringhe.ANSI_YELLOW;
-import static utility.BelleStringhe.ANSI_RED;
+
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 /**
 Questa classe rappresenta un menu testuale generico a piu' voci
-Si suppone che la voce per uscire sia sempre associata alla scelta 0 
+Si suppone che la voce per uscire sia sempre associata alla scelta 0
 e sia presentata in fondo al menu
 */
-public class CliMenu <T, U> {
-    public static final String VOCE_USCITA = "q  " + "per uscire";
-    // public static final String VOCE_USCITA = ANSI_YELLOW + "q  " + ANSI_RESET + "per uscire";
-    public static final String RICHIESTA_INSERIMENTO = "Digita il numero dell'opzione desiderata > ";
-    public static final String ERRORE_INSERIMENTO = "Scelta non valida";
-    // public static final String ERRORE_INSERIMENTO = ANSI_RED + "Scelta non valida" + ANSI_RESET;
+public class CliMenu<T, U> {
+
+    public static boolean colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
+    public static final String VOCE_USCITA = (colori)
+        ? ANSI_YELLOW + "q  " + ANSI_RESET + "per uscire"
+        : "q  " + "per uscire";
+    public static final String RICHIESTA_INSERIMENTO =
+        "Digita il numero dell'opzione desiderata > ";
+    public static final String ERRORE_INSERIMENTO = (colori)
+        ? ANSI_RED + "Scelta non valida" + ANSI_RESET
+        : "Scelta non valida";
 
     private String titolo;
     protected LinkedHashMap<T, U> voci;
@@ -24,7 +30,6 @@ public class CliMenu <T, U> {
     public CliMenu() {
         voci = new LinkedHashMap<>();
     }
-
 
     /**
      * Costruttore per il menu
@@ -41,42 +46,40 @@ public class CliMenu <T, U> {
         int i = 0;
         for (Entry<T, U> entry : voci.entrySet()) {
             i++;
-            System.out.println(i + ") " + entry.getKey());
-            // System.out.println(ANSI_YELLOW + i + ") " + ANSI_RESET + entry.getKey());
+            String voce = (colori)
+                ? ANSI_YELLOW + i + ") " + ANSI_RESET + entry.getKey()
+                : i + ") " + entry.getKey();
+            System.out.println(voce);
         }
         System.out.println("\n" + VOCE_USCITA + "\n");
-
     }
 
     protected U scegli() {
         stampaMenu();
         do {
-        String scelta = InputDati.leggiStringaNonVuota(RICHIESTA_INSERIMENTO);
-        
-        try {
-            int voce_scelta = Integer.parseInt(String.valueOf(scelta));
-            if (voce_scelta <= 0 || voce_scelta > voci.size())
-                System.out.println(ERRORE_INSERIMENTO);
-                // System.out.println(ANSI_RESET + ERRORE_INSERIMENTO);
-            else {
-                // System.out.println(ANSI_RESET);
-                int index = 0;
-                for (U value : voci.values()) {
-                    if (index == voce_scelta - 1) {
-                        return value;
+            String scelta = InputDati.leggiStringaNonVuota(RICHIESTA_INSERIMENTO);
+
+            try {
+                int voce_scelta = Integer.parseInt(String.valueOf(scelta));
+                if (voce_scelta <= 0 || voce_scelta > voci.size()) System.out.println(
+                    ERRORE_INSERIMENTO
+                );
+                else {
+                    if (colori) System.out.println(ANSI_RESET);
+                    int index = 0;
+                    for (U value : voci.values()) {
+                        if (index == voce_scelta - 1) {
+                            return value;
+                        }
+                        index++;
                     }
-                    index++;
                 }
+            } catch (NumberFormatException e) {
+                if (scelta.equals("q")) {
+                    if (colori) System.out.println(ANSI_RESET);
+                    return null;
+                } else System.out.println(ERRORE_INSERIMENTO);
             }
-        } catch (NumberFormatException e) {
-            if (scelta.equals("q")) {
-                // System.out.println(ANSI_RESET);
-                return null;
-            }
-            else
-                System.out.println(ERRORE_INSERIMENTO);
-                // System.out.println(ANSI_RESET + ERRORE_INSERIMENTO);
-        }
         } while (true);
     }
 
