@@ -525,7 +525,6 @@ public class Controller {
         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
         }
-        // TODO: rimuovi reference nei luoghi
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
     }
@@ -534,7 +533,6 @@ public class Controller {
         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
         }
-        // TODO: rimuovi reference nel TipoVisita
         session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();
     }

@@ -4,6 +4,7 @@ import application.*;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,6 +34,10 @@ public class FileManager {
 
     public FileManager(String percorsoFile) {
         this.percorsoFile = percorsoFile;
+        File directory = new File(percorsoFile);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
     }
 
     public void salva(String nomeFile, Object object) {
