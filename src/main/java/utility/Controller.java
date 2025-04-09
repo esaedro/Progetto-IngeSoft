@@ -210,6 +210,17 @@ public class Controller {
         appview.setMenuConfiguratoreEditor();
     }
 
+    public void chiudiDisponibilitaERealizzaPianoVisite() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            gestisciEffettiCollaterali();
+            salva();
+            riapriDisponibilita();
+        }));
+
+        inizializzaPianoViste();
+        appview.setMenuConfiguratoreEditor();
+    }
+
     public void inizializzaPianoViste() {
         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
