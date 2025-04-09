@@ -199,6 +199,16 @@ public class Controller {
         );
     }
 
+    public void chiudiDisponibilitaERealizzaPianoVisite() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            gestisciEffettiCollaterali();
+            salva();
+            riapriDisponibilita();
+        }));
+
+        inizializzaPianoViste();
+        appview.setMenuConfiguratoreEditor();
+    }
 
     public void inizializzaPianoViste() {
         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
