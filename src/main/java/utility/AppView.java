@@ -50,12 +50,23 @@ public class AppView {
         return newPassword;
     }
 
-    public Luogo menuInserimentoLuogo() {
+    public Luogo menuInserimentoLuogo(Set<Luogo> luoghiPresenti) {
         System.out.println("Si inseriscano luoghi e visite da includere nell'applicazione");
         String nomeLuogo, indirizzoLuogo;
+        boolean luogoEsistente = false;
 
         do {
-            nomeLuogo = InputDati.leggiStringaNonVuota("\nInserire il nome del luogo da inserire: ", "Il nome del luogo non puo' essere vuoto");
+            do {
+                nomeLuogo = InputDati.leggiStringaNonVuota("\nInserire il nome del luogo da inserire: ", "Il nome del luogo non puo' essere vuoto");
+                for (Luogo luogo : luoghiPresenti) {
+                    if (luogo.getNome().trim().equals(nomeLuogo.trim())) {
+                        System.out.println("Un luogo con questo nome è già presente, sceglierne un altro");
+                        luogoEsistente = true;
+                        break;
+                    }
+                }
+            } while (luogoEsistente);
+            
             indirizzoLuogo = InputDati.leggiStringaNonVuota("Inserire l'indirizzo del luogo da inserire: ", "L'indirizzo del luogo non puo' essere vuoto");
         } while(!InputDati.conferma("Conferma inserimento luogo?"));
 
@@ -113,6 +124,7 @@ public class AppView {
             boolean bigliettoIngresso;
             Set<DayOfWeek> giorniSettimana = new HashSet<>();
             Set<Volontario> volontariIdonei = new HashSet<>();
+            Controller controller = Controller.getIstance();
 
             titolo = InputDati.leggiStringaNonVuota("Inserire il titolo della visita: ", "Il titolo della visita non puo' essere vuoto");
             descrizione = InputDati.leggiStringaNonVuota("Inserire la descrizione della visita: ", "La descrizione della visita non puo' essere vuota");
@@ -144,16 +156,18 @@ public class AppView {
             System.out.println("Inserire i volontari idonei alla visita: ");
             if (volontari.isEmpty()) {
                 System.out.println("Non ci sono volontari nel database, è necessario crearne uno");
-                volontariIdonei = menuInserimentoVolontari();
+                volontariIdonei = menuInserimentoVolontari(volontari);
             }
             else {
                 volontariIdonei = InputDati.selezionaPiuDaLista("Selezionare tra i volontari", volontari, Volontario::getNomeUtente, 0, volontari.size());
                 if (volontariIdonei.isEmpty()) {
                     System.out.println("Nessun volontario selezionato, è necessario crearne uno");
-                    volontariIdonei = menuInserimentoVolontari();
+                    volontariIdonei = menuInserimentoVolontari(volontari);
+                    controller.aggiungiVolontariInSession(volontariIdonei);
                 } else {
                     if (InputDati.conferma("Si vuole creare un nuovo volontario da aggiungere alla visita oltre a quelli già selezionati?")) {
-                        volontariIdonei.addAll(menuInserimentoVolontari());
+                        volontariIdonei.addAll(menuInserimentoVolontari(volontari));
+                        controller.aggiungiVolontariInSession(volontariIdonei);
                     }
                 }
             }
@@ -189,21 +203,32 @@ public class AppView {
         return tipoVisitaSelezionato;
     }
 
-    public Set<Volontario> menuInserimentoVolontari() {
+    public Set<Volontario> menuInserimentoVolontari(Set<Volontario> volontariPresenti) {
         String nomeUtente, password;
-        Volontario volontario;
-        Set<Volontario> volontari = new HashSet<>();
+        boolean esisteVolontario = false;
+        Volontario nuovoVolontario;
+        Set<Volontario> nuoviVolontari = new HashSet<>();
 
         System.out.println("\nInserire almeno un nuovo volontario");
         do {
-            nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente del volontario: ", "Il nome utente non puo' essere vuoto");
+            do {
+                nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente del volontario: ", "Il nome utente non puo' essere vuoto");
+                for (Volontario vol : volontariPresenti) {
+                    if (vol.getNomeUtente().trim().equals(nomeUtente.trim())) {
+                        System.out.println("Esiste già un volontario con questo nome utente, sceglierne un altro");
+                        esisteVolontario = true;
+                        break;
+                    }
+                }
+            } while (esisteVolontario);
+            
             password = "config" + nomeUtente;
 
-            volontario = new Volontario(nomeUtente, password, new HashSet<>());
-            volontari.add(volontario);
+            nuovoVolontario = new Volontario(nomeUtente, password, new HashSet<>());
+            nuoviVolontari.add(nuovoVolontario);
         } while (InputDati.conferma("Inserire un altro volontario?"));
 
-        return volontari;
+        return nuoviVolontari;
         }
 
     public Set<Volontario> menuRimozioneVolontario(Set<Volontario> volontariPresenti) {
