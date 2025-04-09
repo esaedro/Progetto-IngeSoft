@@ -72,7 +72,7 @@ public class Controller {
             Set<TipoVisita> visite;
 
             do {
-                Luogo luogoDaAggiungere = appview.menuInserimentoLuogo();
+                Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
                 visite = appview.menuInserimentoTipiVisita(
                     session.getUtenteAttivo(),
                     session.getVolontari()
@@ -259,11 +259,16 @@ public class Controller {
         TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
 
         if (!session.getVisite().isEmpty()) {
-            Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari();
+            Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari(session.getVolontari());
 
             tipoVisitaSelezionato.aggiungiVolontariIdonei(nuoviVolontari);
-            session.addVolontari(nuoviVolontari); 
+            aggiungiVolontariInSession(nuoviVolontari);
+            //session.addVolontari(nuoviVolontari); 
         }       
+    }
+
+    public void aggiungiVolontariInSession(Set<Volontario> volontari) {
+        session.addVolontari(volontari);
     }
 
     public void aggiungiTipoVisita() {
