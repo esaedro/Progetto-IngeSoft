@@ -304,15 +304,13 @@ public class Session {
         return mappaVolontariPerData;
     }
 
-    public AbstractMap.SimpleImmutableEntry<List<Calendar>, List<Calendar>> estraiDateOreCausali(
+    public List<Calendar> estraiDateCausali(
         Set<Calendar> datePossibiliPerVisita,
-        Set<Calendar> orePossibili,
         Map<Calendar, Set<Volontario>> mappaVolontariPerData,
         int massimo
     ) {
         // Creo un contentore per le date e le ore estratte
         List<Calendar> dateEstratte = new ArrayList<>();
-        List<Calendar> oreEstratte = new ArrayList<>();
 
         // Estraggo a caso due date e due ore possibili per questa visita (non nella stessa settimana)
         for (int i = 0; i < datePossibiliPerVisita.size() && dateEstratte.size() < massimo; i++) {
@@ -325,21 +323,14 @@ public class Session {
                 continue;
             }
             dateEstratte.add(data); // Aggiungo la data estratta alla lista
-            Calendar ora = orePossibili
-                .stream()
-                .skip(new Random().nextInt(orePossibili.size()))
-                .findFirst()
-                .orElse(null);
-            oreEstratte.add(ora);
             datePossibiliPerVisita.removeAll(
                 datePossibiliPerVisita
                     .stream()
                     .filter(date -> date.getWeekYear() == data.getWeekYear())
-                    .collect(Collectors.toList())
-            ); // Rimuovo tutte le date della stessa settimana
+                    .collect(Collectors.toList())); // Rimuovo tutte le date della stessa settimana
         }
 
-        return new AbstractMap.SimpleImmutableEntry<>(dateEstratte, oreEstratte);
+        return dateEstratte;
     }
 
     public List<Volontario> estraiVolontariCasuali(
@@ -384,17 +375,12 @@ public class Session {
 
     public void creaVisitePerDatiEstratti(
         List<Calendar> dateEstratte,
-        List<Calendar> oreEstratte,
         List<Volontario> volontariEstratti,
         TipoVisita tipoVisita
     ) {
         // Per ogni data estratta creo una visita e la aggiungo al tipo di visita
         for (int i = 0; i < Math.min(dateEstratte.size(), volontariEstratti.size()); i++) {
             Calendar dataVisita = dateEstratte.get(i);
-            Calendar oraVisita = oreEstratte.get(i);
-            dataVisita.set(Calendar.HOUR_OF_DAY, oraVisita.get(Calendar.HOUR_OF_DAY));
-            dataVisita.set(Calendar.MINUTE, oraVisita.get(Calendar.MINUTE));
-            dataVisita.set(Calendar.SECOND, oraVisita.get(Calendar.SECOND));
             Visita nuovaVisita = new Visita(dataVisita, StatoVisita.PROPOSTA, 0);
             nuovaVisita.setVolontarioAssociato(volontariEstratti.get(i));
             tipoVisita.addVisita(nuovaVisita);
