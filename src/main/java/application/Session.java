@@ -219,6 +219,14 @@ public class Session {
         utenti.removeAll(volontariDaRimuovere);
     }
 
+    public void cleanDisponibilitaDeiVolontari() {
+        for(Utente utente: utenti) {
+            if (utente instanceof Volontario) {
+                ((Volontario) utente).clearDisponibilita();
+            }
+        }
+    }
+
     public void salvataggioDatePrecluseFutureInAttuali() {
         TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
         TipoVisita.clearDatePrecluseFuture();

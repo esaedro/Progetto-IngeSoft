@@ -46,6 +46,10 @@ public class Volontario extends Utente {
         return !getVisiteAssociate(visite).isEmpty();
     }
 
+    public void clearDisponibilita() {
+        disponibilita.clear();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
