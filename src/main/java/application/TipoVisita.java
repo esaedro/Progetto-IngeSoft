@@ -261,40 +261,27 @@ public class TipoVisita implements Serializable {
         return datePossibili;
     }
 
-    public static Set<Calendar> getOrePossibili() {
-        Set<Calendar> orePossibili = new HashSet<>();
-
-        // Le visite potranno essere svolte tra le 8 e le 18 (scelta arbitraria perché non specificato nei requisiti)
-        for (int ora = 8; ora <= 18; ora++) {
-            Calendar calOra = Calendar.getInstance();
-            calOra.set(Calendar.HOUR_OF_DAY, ora);
-            calOra.set(Calendar.MINUTE, 0);
-            calOra.set(Calendar.SECOND, 0);
-            orePossibili.add((Calendar) calOra.clone());
-        }
-
-        return orePossibili;
-    }
-
     public Set<Calendar> getDatePossibiliPerVisita(Calendar fineMese, Set<Calendar> datePossibili) {
         Calendar fineVisita = dataFine.after(fineMese.getTime()) ? fineMese : dataFine;
 
         // Calcolo le date possibili per questa visita
         Set<Calendar> datePossibiliPerVisita = new HashSet<>();
-        if (fineVisita.equals(fineMese)) {
-            datePossibiliPerVisita = datePossibili;
-        } else {
-            for (Calendar data : datePossibili) {
-                if (data.before(fineVisita)) {
-                    datePossibiliPerVisita.add(data);
-                }
-                if (data.equals(fineVisita)) {
-                    datePossibiliPerVisita.add(data);
-                    break;
-                }
+        for (Calendar data : datePossibili) {
+            if (data.before(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+                datePossibiliPerVisita.add(data);
+            } else if (data.equals(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+                datePossibiliPerVisita.add(data);
+                break;
             }
         }
-
+        
+        // Imposto l'ora di inizio per ogni data possibile
+        datePossibiliPerVisita.forEach(data -> {
+            data.set(Calendar.HOUR_OF_DAY, oraInizio.get(Calendar.HOUR_OF_DAY));
+            data.set(Calendar.MINUTE, oraInizio.get(Calendar.MINUTE));
+            data.set(Calendar.SECOND, oraInizio.get(Calendar.SECOND));
+        });
+        
         return datePossibiliPerVisita;
     }
 

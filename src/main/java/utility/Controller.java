@@ -210,7 +210,6 @@ public class Controller {
         Calendar fineMese = inizioFineMese.getValue();
         Set<TipoVisita> tipiVisite = session.getTipiVisiteProssimoMese(inizioMese, fineMese);
         Set<Calendar> datePossibili = TipoVisita.getDatePossibiliAttuali(fineMese);
-        Set<Calendar> orePossibili = TipoVisita.getOrePossibili();
         // Recupero tutti i volontari dal sistema
         Set<Volontario> volontari = session.getVolontari();
 
@@ -225,15 +224,12 @@ public class Controller {
             Map<Calendar, Set<Volontario>> mappaVolontariPerData =
                 session.creaMappaVolontariPerOgniDataPossibile(volontari, datePossibiliPerVisita);
 
-            AbstractMap.SimpleImmutableEntry<List<Calendar>, List<Calendar>> estrazioneDateOre =
-                session.estraiDateOreCausali(
+            List<Calendar> dateEstratte =
+                session.estraiDateCausali(
                     datePossibiliPerVisita,
-                    orePossibili,
                     mappaVolontariPerData,
                     maxVisitePerTipo
                 );
-            List<Calendar> dateEstratte = estrazioneDateOre.getKey();
-            List<Calendar> oreEstratte = estrazioneDateOre.getValue();
             List<Volontario> volontariEstratti = session.estraiVolontariCasuali(
                 dateEstratte,
                 mappaVolontariPerData,
@@ -243,9 +239,8 @@ public class Controller {
 
             // Controllo se ci sono date disponibili per le visite
             if (dateEstratte.isEmpty() || volontariEstratti.isEmpty()) continue;
-                //throw new IllegalStateException("Nessuna data disponibile per le visite");
 
-            session.creaVisitePerDatiEstratti(dateEstratte, oreEstratte, volontariEstratti, tipoVisita);
+            session.creaVisitePerDatiEstratti(dateEstratte, volontariEstratti, tipoVisita);
         }
 
         appview.setMenuConfiguratoreEditor();
