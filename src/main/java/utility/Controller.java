@@ -315,6 +315,7 @@ public class Controller {
         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
             throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
         }
+        session.cleanDisponibilitaDeiVolontari();
         session.salvataggioDatePrecluseFutureInAttuali();
         appview.setMenuConfiguratore();
     }
