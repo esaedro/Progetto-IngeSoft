@@ -143,10 +143,19 @@ public class AppView {
 
             System.out.println("Inserire i volontari idonei alla visita: ");
             if (volontari.isEmpty()) {
-                System.out.println("Non ci sono volontari disponibili");
+                System.out.println("Non ci sono volontari nel database, è necessario crearne uno");
+                volontariIdonei = menuInserimentoVolontari();
             }
             else {
-                volontariIdonei = InputDati.selezionaPiuDaLista("Selezionare tra i volontari", volontari, Volontario::getNomeUtente, 1, volontari.size());
+                volontariIdonei = InputDati.selezionaPiuDaLista("Selezionare tra i volontari", volontari, Volontario::getNomeUtente, 0, volontari.size());
+                if (volontariIdonei.isEmpty()) {
+                    System.out.println("Nessun volontario selezionato, è necessario crearne uno");
+                    volontariIdonei = menuInserimentoVolontari();
+                } else {
+                    if (InputDati.conferma("Si vuole creare un nuovo volontario da aggiungere alla visita oltre a quelli già selezionati?")) {
+                        volontariIdonei.addAll(menuInserimentoVolontari());
+                    }
+                }
             }
 
             return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
@@ -292,6 +301,8 @@ public class AppView {
 
         myMenu.addVoci(voci);
     }
+
+
 
     public void stampaMenu() {
         Runnable scelta;
