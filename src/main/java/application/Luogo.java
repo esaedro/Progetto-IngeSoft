@@ -58,6 +58,15 @@ public class Luogo implements Serializable {
         }
     }
 
+    public void aggiungiVisite(Set<TipoVisita> visiteDaAggiungere) {
+        for (TipoVisita visita : visiteDaAggiungere) {
+            String titolo = visita.getTitolo();
+            if (!visiteIds.contains(titolo)) {
+                visiteIds.add(titolo);
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Luogo{" +

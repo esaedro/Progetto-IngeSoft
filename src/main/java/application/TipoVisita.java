@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TipoVisita implements Serializable {
-    
+
     private static int numeroMassimoIscrittoPerFruitore = 0;
     private static Set<Integer> datePrecluseFuture = new HashSet<>(), datePrecluseAttuali = new HashSet<>();
     private String titolo;
@@ -29,9 +29,20 @@ public class TipoVisita implements Serializable {
 
     private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
-    public TipoVisita(String titolo, String descrizione, String puntoIncontro, Calendar dataInizio, Calendar dataFine,
-            Calendar oraInizio, int durata, Set<DayOfWeek> giorniSettimana, int minPartecipante, int maxPartecipante,
-            Boolean bigliettoIngresso, Set<Volontario> volontariIdonei) {
+    public TipoVisita(
+        String titolo,
+        String descrizione,
+        String puntoIncontro,
+        Calendar dataInizio,
+        Calendar dataFine,
+        Calendar oraInizio,
+        int durata,
+        Set<DayOfWeek> giorniSettimana,
+        int minPartecipante,
+        int maxPartecipante,
+        Boolean bigliettoIngresso,
+        Set<Volontario> volontariIdonei
+    ) {
         this.titolo = titolo;
         this.descrizione = descrizione;
         this.puntoIncontro = puntoIncontro;
@@ -215,7 +226,63 @@ public class TipoVisita implements Serializable {
                 visita.setStato(StatoVisita.CANCELLATA);
             }
         }
+    }
 
+    public void aggiungiVolontariIdonei(Set<Volontario> volontariDaAggiungere) {
+        if (volontariIdonei == null) {
+            volontariIdonei = new HashSet<>();
+        }
+        for (Volontario volontario : volontariDaAggiungere) {
+            if (!volontariIdonei.contains(volontario)) {
+                volontariIdonei.add(volontario);
+            }
+        }
+    }
+
+    public static Set<Calendar> getDatePossibiliAttuali(Calendar fineMese) {
+        // È meglio creare un insieme di date possibili, togliendo già quelle precluse per evitare di dover fare dei controlli successivamente
+        Set<Integer> datePrecluse = TipoVisita.getDatePrecluseAttuali();
+        Set<Calendar> datePossibili = new HashSet<>();
+
+        // Riempio l'insieme delle date possibili
+
+        for (int i = 1; i <= fineMese.getMaximum(Calendar.DAY_OF_MONTH); i++) {
+            if (!datePrecluse.contains(i)) {
+                Calendar temp = Calendar.getInstance();
+                temp.add(Calendar.MONTH, 1);
+                temp.set(Calendar.HOUR_OF_DAY, 0);
+                temp.set(Calendar.MINUTE, 0);
+                temp.set(Calendar.SECOND, 0);
+                temp.set(Calendar.DAY_OF_MONTH, i);
+                datePossibili.add(temp);
+            }
+        }
+
+        return datePossibili;
+    }
+
+    public Set<Calendar> getDatePossibiliPerVisita(Calendar fineMese, Set<Calendar> datePossibili) {
+        Calendar fineVisita = dataFine.after(fineMese.getTime()) ? fineMese : dataFine;
+
+        // Calcolo le date possibili per questa visita
+        Set<Calendar> datePossibiliPerVisita = new HashSet<>();
+        for (Calendar data : datePossibili) {
+            if (data.before(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+                datePossibiliPerVisita.add(data);
+            } else if (data.equals(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+                datePossibiliPerVisita.add(data);
+                break;
+            }
+        }
+        
+        // Imposto l'ora di inizio per ogni data possibile
+        datePossibiliPerVisita.forEach(data -> {
+            data.set(Calendar.HOUR_OF_DAY, oraInizio.get(Calendar.HOUR_OF_DAY));
+            data.set(Calendar.MINUTE, oraInizio.get(Calendar.MINUTE));
+            data.set(Calendar.SECOND, oraInizio.get(Calendar.SECOND));
+        });
+        
+        return datePossibiliPerVisita;
     }
 
     @Override

@@ -1,10 +1,19 @@
 package application;
-import utility.FileManager;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import utility.FileManager;
 
 public class Session {
 
@@ -19,7 +28,12 @@ public class Session {
         this.filemanager = new FileManager("database/");
     }
 
-    public Session(Set<Utente> utenti, Set<Luogo> luoghi, Set<TipoVisita> visite, FileManager filemanager) {
+    public Session(
+        Set<Utente> utenti,
+        Set<Luogo> luoghi,
+        Set<TipoVisita> visite,
+        FileManager filemanager
+    ) {
         this.utenti = utenti;
         this.luoghi = luoghi;
         this.visite = visite;
@@ -40,7 +54,7 @@ public class Session {
     private void salvaStoricoVisite() {
         ArrayList<Visita> visiteDaSalvare = new ArrayList<>();
 
-        for(TipoVisita tipoVisita: visite) {
+        for (TipoVisita tipoVisita : visite) {
             Iterator<Visita> visiteIterator = tipoVisita.getVisiteAssociate().iterator();
             while (visiteIterator.hasNext()) {
                 Visita visita = visiteIterator.next();
@@ -76,9 +90,11 @@ public class Session {
 
     public void carica() {
         visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class) != null
-                ? filemanager.carica(FileManager.fileVisite, TipoVisita.class) : new HashSet<>();
+            ? filemanager.carica(FileManager.fileVisite, TipoVisita.class)
+            : new HashSet<>();
         luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
-                ? filemanager.carica(FileManager.fileLuoghi, Luogo.class) : new HashSet<>();
+            ? filemanager.carica(FileManager.fileLuoghi, Luogo.class)
+            : new HashSet<>();
         caricaParametriGlobali();
     }
 
@@ -88,9 +104,10 @@ public class Session {
 
     public Utente login(String nomeUtente, String password) {
         utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
-                ? filemanager.carica(FileManager.fileUtenti, Utente.class) : new HashSet<>();
+            ? filemanager.carica(FileManager.fileUtenti, Utente.class)
+            : new HashSet<>();
 
-        for (Utente user: utenti) {
+        for (Utente user : utenti) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
                 return user;
             }
@@ -123,7 +140,7 @@ public class Session {
         this.luoghi = luoghi;
     }
 
-    public void addLuoghi (Set<Luogo> luoghiDaAggiungere) {
+    public void addLuoghi(Set<Luogo> luoghiDaAggiungere) {
         this.luoghi.addAll(luoghiDaAggiungere);
     }
 
@@ -158,7 +175,7 @@ public class Session {
 
     public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
         ArrayList<TipoVisita> visiteResult = new ArrayList<>();
-        for (TipoVisita visita: visite) {
+        for (TipoVisita visita : visite) {
             if (luogo.getVisiteIds().contains(visita.getTitolo())) {
                 visiteResult.add(visita);
             }
@@ -168,7 +185,6 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
-        
         for (TipoVisita tipoVisita : visiteDaRimuovere) {
             for (Luogo luogo : luoghi) {
                 luogo.rimuoviVisita(tipoVisita.getTitolo());
@@ -194,7 +210,6 @@ public class Session {
 
     // TODO: realize a proxy
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
-        
         for (Volontario volontario : volontariDaRimuovere) {
             for (TipoVisita tipoVisita : visite) {
                 tipoVisita.rimuoviVolontario(volontario);
@@ -231,9 +246,8 @@ public class Session {
                     tipoVisita.rimuoviVolontario((Volontario) utente);
                 }
             }
-
         }
-}
+    }
 
     private void checkCondizioniDiTipoVisita() {
         Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
@@ -255,5 +269,121 @@ public class Session {
 
     public FileManager getFilemanager() {
         return filemanager;
+    }
+
+    public Set<TipoVisita> getTipiVisiteProssimoMese(Calendar inizioMese, Calendar fineMese) {
+        // Ordino le visite in base alla data di fine per evitare che le visite che terminano a breve non vengano istanziate
+        Set<TipoVisita> tipiVisite = new TreeSet<>(Comparator.comparing(TipoVisita::getDataFine));
+        tipiVisite.addAll(visite);
+
+        // Rimuovo tutti i tipi di vista che finiscono entro questo mese
+        tipiVisite.removeIf(tipoVisita -> tipoVisita.getDataFine().before(inizioMese.getTime()));
+
+        // Rimuovo tutti tipi di visita che iniziano a più di due mesi da oggi
+        tipiVisite.removeIf(tipoVisita -> tipoVisita.getDataInizio().after(fineMese.getTime()));
+
+        return tipiVisite;
+    }
+
+    public Map<Calendar, Set<Volontario>> creaMappaVolontariPerOgniDataPossibile(
+        Set<Volontario> volontari,
+        Set<Calendar> datePossibiliPerVisita
+    ) {
+        // Creo una mappa che lega le date possibili per la vista con i volontari disponibili per le rispettive date
+        Map<Calendar, Set<Volontario>> mappaVolontariPerData = new HashMap<>();
+        for (Calendar data : datePossibiliPerVisita) {
+            Set<Volontario> volontariDisponibili = new HashSet<>();
+            for (Volontario volontario : volontari) {
+                if (volontario.getDisponibilita().contains(data.get(Calendar.DAY_OF_MONTH))) {
+                    volontariDisponibili.add(volontario);
+                }
+            }
+            mappaVolontariPerData.put(data, volontariDisponibili);
+        }
+
+        return mappaVolontariPerData;
+    }
+
+    public List<Calendar> estraiDateCausali(
+        Set<Calendar> datePossibiliPerVisita,
+        Map<Calendar, Set<Volontario>> mappaVolontariPerData,
+        int massimo
+    ) {
+        // Creo un contentore per le date e le ore estratte
+        List<Calendar> dateEstratte = new ArrayList<>();
+
+        // Estraggo a caso due date e due ore possibili per questa visita (non nella stessa settimana)
+        for (int i = 0; i < datePossibiliPerVisita.size() && dateEstratte.size() < massimo; i++) {
+            Calendar data = datePossibiliPerVisita
+                .stream()
+                .skip(new Random().nextInt(datePossibiliPerVisita.size()))
+                .findFirst()
+                .orElse(null); // Prendo una data casuale
+            if (mappaVolontariPerData.get(data).isEmpty()) { // Controllo se c'è almeno un volontario disponibile per quella data
+                continue;
+            }
+            dateEstratte.add(data); // Aggiungo la data estratta alla lista
+            datePossibiliPerVisita.removeAll(
+                datePossibiliPerVisita
+                    .stream()
+                    .filter(date -> date.getWeekYear() == data.getWeekYear())
+                    .collect(Collectors.toList())); // Rimuovo tutte le date della stessa settimana
+        }
+
+        return dateEstratte;
+    }
+
+    public List<Volontario> estraiVolontariCasuali(
+        List<Calendar> dateEstratte,
+        Map<Calendar, Set<Volontario>> mappaVolontariPerData,
+        Set<TipoVisita> tipiVisite,
+        int massimo
+    ) {
+        List<Volontario> volontariEstratti = new ArrayList<>();
+        // Estraggo a caso due volontari per ogni data estratta (controllando che non siano già impegnati in altre visite per le stesse date)
+        for (int i = 0; i < dateEstratte.size() && volontariEstratti.size() < massimo; i++) {
+            Calendar data = dateEstratte.get(i);
+            Volontario volontarioEstratto = mappaVolontariPerData
+                .get(data)
+                .stream()
+                .skip(new Random().nextInt(mappaVolontariPerData.get(data).size()))
+                .findFirst()
+                .orElse(null);
+            // Controllo se il volontario è già impegnato in altre visite per la stessa data
+            boolean impegnato = false;
+            if (volontarioEstratto != null) {
+                for (TipoVisita tipoV : volontarioEstratto.getVisiteAssociate(tipiVisite)) {
+                    for (Visita visita : tipoV.getVisiteAssociate()) {
+                        if (
+                            visita.getDataVisita().get(Calendar.DAY_OF_MONTH) ==
+                            data.get(Calendar.DAY_OF_MONTH)
+                        ) {
+                            impegnato = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!impegnato) {
+                volontariEstratti.add(volontarioEstratto);
+            }
+        }
+
+        return volontariEstratti;
+    }
+
+    public void creaVisitePerDatiEstratti(
+        List<Calendar> dateEstratte,
+        List<Volontario> volontariEstratti,
+        TipoVisita tipoVisita
+    ) {
+        // Per ogni data estratta creo una visita e la aggiungo al tipo di visita
+        for (int i = 0; i < Math.min(dateEstratte.size(), volontariEstratti.size()); i++) {
+            Calendar dataVisita = dateEstratte.get(i);
+            Visita nuovaVisita = new Visita(dataVisita, StatoVisita.PROPOSTA, 0);
+            nuovaVisita.setVolontarioAssociato(volontariEstratti.get(i));
+            tipoVisita.addVisita(nuovaVisita);
+        }
     }
 }

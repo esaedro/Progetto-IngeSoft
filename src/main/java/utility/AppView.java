@@ -78,6 +78,17 @@ public class AppView {
         return luoghiDaRimuovere;
     }
 
+    public Luogo selezioneLuogo(Set<Luogo> luoghiPresenti) {
+        Luogo luogoSelezionato = null;
+        if (!luoghiPresenti.isEmpty()) {
+            luogoSelezionato = InputDati.selezionaUnoDaLista(
+            "Selezionare un luogo a cui associare la nuova visita", luoghiPresenti, Luogo::getNome); 
+        } else {
+            System.out.println("Azione impossibile, non ci sono luoghi nel database");
+        }
+        return luogoSelezionato;
+    }
+
     public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Volontario> volontari) {
         TipoVisita tipoVisita;
         Set<TipoVisita> visite = new HashSet<>();
@@ -108,8 +119,11 @@ public class AppView {
             puntoIncontro = InputDati.leggiStringaNonVuota("Inserire il punto di incontro della visita: ", "Il punto di incontro della visita non puo' essere vuoto");
 
             dataInizio = InputDati.leggiData("Inserisci data inizio ", "/");
+            dataInizio.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
             dataFine = InputDati.leggiData("Inserisci data fine ", "/");
+            dataFine.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
             oraInizio = InputDati.leggiOra("Inserisci ora inizio ", ":");
+
             durata = InputDati.leggiInteroMinMax("Inserisci durata in minuti: ", 1, 600, "Durata non valida");
 
             do {
@@ -153,6 +167,17 @@ public class AppView {
             System.out.println("Impossibile eliminare, non ci sono tipi di visita nel database");
         }
         return tipiVisitaDaRimuovere;
+    }
+
+    public TipoVisita selezioneTipoVisita(Set<TipoVisita> tipiVisitaPresenti) {
+        TipoVisita tipoVisitaSelezionato = null;
+        if (!tipiVisitaPresenti.isEmpty()) {
+            tipoVisitaSelezionato = InputDati.selezionaUnoDaLista(
+            "Selezionare un tipo di visita a cui associare il nuovo volontario", tipiVisitaPresenti, TipoVisita::getTitolo); 
+        } else {
+            System.out.println("Azione impossibile, non ci sono tipi di visita nel database");
+        }
+        return tipoVisitaSelezionato;
     }
 
     public Set<Volontario> menuInserimentoVolontari() {
@@ -243,9 +268,9 @@ public class AppView {
         myMenu.removeVoce(voce);
 
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
-        voci.put("Aggiungi un luogo", controller::creaLuoghi);
-        voci.put("Aggiungi un tipo visita ad un luogo", controller::aggiungiTipoVisita);
-        voci.put("Aggiungi un volontario a un tipo visita", controller::aggiungiVolontario);
+        voci.put("Aggiungi un nuovo luogo", controller::creaLuoghi);
+        voci.put("Aggiungi un nuovo tipo visita ad un luogo esistente", controller::aggiungiTipoVisita);
+        voci.put("Aggiungi un nuovo volontario a un tipo visita esistente", controller::aggiungiVolontario);
         voci.put("Elimina un luogo", controller::rimuoviLuogo);
         voci.put("Elimina un tipo visita", controller::rimuoviTipoVisita);
         voci.put("Elimina un volontario", controller::rimuoviVolontario);

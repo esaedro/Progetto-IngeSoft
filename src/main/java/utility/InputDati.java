@@ -614,13 +614,15 @@ public class InputDati {
             "/" +
             CARATTERI_AMMISSIBILI[2] +
             "]: ";
-        messaggioInserimento =
+        else {   
+            messaggioInserimento =
             messaggioInserimento +
             " [" +
             CARATTERI_AMMISSIBILI[0] +
             "/" +
             CARATTERI_AMMISSIBILI[2] +
             "]: ";
+        }
         char valoreLetto = leggiUpperChar(
             messaggioInserimento,
             CARATTERI_AMMISSIBILI,
