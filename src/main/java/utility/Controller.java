@@ -202,8 +202,8 @@ public class Controller {
     public void chiudiDisponibilitaERealizzaPianoVisite() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             gestisciEffettiCollaterali();
-            salva();
             riapriDisponibilita();
+            salva();
         }));
 
         inizializzaPianoViste();
@@ -228,6 +228,7 @@ public class Controller {
         int maxVisitePerTipo = 2;
         for (TipoVisita tipoVisita : tipiVisite) {
             Set<Calendar> datePossibiliPerVisita = tipoVisita.getDatePossibiliPerVisita(
+                inizioMese,
                 fineMese,
                 datePossibili
             );

@@ -4,7 +4,7 @@
     "descrizione": "qw",
     "puntoIncontro": "qwe",
     "dataInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 8,
       "dayOfMonth": 9,
       "hourOfDay": 0,
@@ -12,7 +12,7 @@
       "second": 0
     },
     "dataFine": {
-      "year": 1970,
+      "year": 2025,
       "month": 11,
       "dayOfMonth": 9,
       "hourOfDay": 0,
@@ -20,7 +20,7 @@
       "second": 0
     },
     "oraInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 0,
       "dayOfMonth": 1,
       "hourOfDay": 8,
@@ -46,7 +46,7 @@
     "visiteAssociate": [
       {
         "dataVisita": {
-          "year": 2023,
+          "year": 2025,
           "month": 9,
           "dayOfMonth": 1,
           "hourOfDay": 10,
@@ -63,7 +63,7 @@
     "descrizione": "asdas",
     "puntoIncontro": "adssd",
     "dataInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 0,
       "dayOfMonth": 1,
       "hourOfDay": 0,
@@ -71,7 +71,7 @@
       "second": 0
     },
     "dataFine": {
-      "year": 1970,
+      "year": 2025,
       "month": 11,
       "dayOfMonth": 12,
       "hourOfDay": 0,
@@ -79,7 +79,7 @@
       "second": 0
     },
     "oraInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 0,
       "dayOfMonth": 1,
       "hourOfDay": 9,
@@ -110,7 +110,7 @@
     "visiteAssociate": [
       {
         "dataVisita": {
-          "year": 2023,
+          "year": 2025,
           "month": 9,
           "dayOfMonth": 1,
           "hourOfDay": 10,
@@ -122,7 +122,7 @@
       },
       {
         "dataVisita": {
-          "year": 2023,
+          "year": 2025,
           "month": 9,
           "dayOfMonth": 1,
           "hourOfDay": 10,
@@ -131,6 +131,24 @@
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 5
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 3,
+          "hourOfDay": 9,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "volontarioAssociato": {
+          "nomeUtente": "V01",
+          "password": "volo",
+          "type": "volontario",
+          "disponibilita": []
+        }
       }
     ]
   },
@@ -139,7 +157,7 @@
     "descrizione": "asd",
     "puntoIncontro": "qwe",
     "dataInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 6,
       "dayOfMonth": 7,
       "hourOfDay": 0,
@@ -147,7 +165,7 @@
       "second": 0
     },
     "dataFine": {
-      "year": 1970,
+      "year": 2025,
       "month": 6,
       "dayOfMonth": 8,
       "hourOfDay": 0,
@@ -155,7 +173,7 @@
       "second": 0
     },
     "oraInizio": {
-      "year": 1970,
+      "year": 2025,
       "month": 0,
       "dayOfMonth": 1,
       "hourOfDay": 12,
@@ -184,7 +202,7 @@
     "visiteAssociate": [
       {
         "dataVisita": {
-          "year": 2023,
+          "year": 2025,
           "month": 9,
           "dayOfMonth": 1,
           "hourOfDay": 10,

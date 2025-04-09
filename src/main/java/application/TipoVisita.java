@@ -261,15 +261,19 @@ public class TipoVisita implements Serializable {
         return datePossibili;
     }
 
-    public Set<Calendar> getDatePossibiliPerVisita(Calendar fineMese, Set<Calendar> datePossibili) {
+    public Set<Calendar> getDatePossibiliPerVisita(Calendar inizioMese, Calendar fineMese, Set<Calendar> datePossibili) { 
+        if (inizioMese.after(dataFine) || fineMese.before(dataInizio)) {
+            return new HashSet<>();
+        }
+
         Calendar fineVisita = dataFine.after(fineMese.getTime()) ? fineMese : dataFine;
 
         // Calcolo le date possibili per questa visita
         Set<Calendar> datePossibiliPerVisita = new HashSet<>();
         for (Calendar data : datePossibili) {
-            if (data.before(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+            if (data.before(fineVisita) && data.after(dataInizio) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
                 datePossibiliPerVisita.add(data);
-            } else if (data.equals(fineVisita) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
+            } else if (data.equals(fineVisita) && data.after(dataInizio) && giorniSettimana.contains(DayOfWeek.of(data.get(Calendar.DAY_OF_WEEK)))) {
                 datePossibiliPerVisita.add(data);
                 break;
             }
