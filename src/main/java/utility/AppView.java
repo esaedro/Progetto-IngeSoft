@@ -227,7 +227,7 @@ public class AppView {
 
         Controller controller = Controller.getIstance();
         Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
-                controller::inizializzaPianoViste);
+                controller::chiudiDisponibilitaERealizzaPianoVisite);
         myMenu.addVoce(voce);
 
     }
