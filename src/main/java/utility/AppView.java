@@ -130,11 +130,11 @@ public class AppView {
             descrizione = InputDati.leggiStringaNonVuota("Inserire la descrizione della visita: ", "La descrizione della visita non puo' essere vuota");
             puntoIncontro = InputDati.leggiStringaNonVuota("Inserire il punto di incontro della visita: ", "Il punto di incontro della visita non puo' essere vuoto");
 
-            dataInizio = InputDati.leggiData("Inserisci data inizio ", "/");
+            dataInizio = InputDati.leggiData("Inserisci data inizio (dd/mm)", "/");
             dataInizio.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-            dataFine = InputDati.leggiData("Inserisci data fine ", "/");
+            dataFine = InputDati.leggiData("Inserisci data fine (dd/mm)", "/");
             dataFine.set(Calendar.YEAR, Calendar.getInstance().get(Calendar.YEAR));
-            oraInizio = InputDati.leggiOra("Inserisci ora inizio ", ":");
+            oraInizio = InputDati.leggiOra("Inserisci ora inizio (hh:mm)", ":");
 
             durata = InputDati.leggiInteroMinMax("Inserisci durata in minuti: ", 1, 600, "Durata non valida");
 
@@ -276,7 +276,7 @@ public class AppView {
         voci.put("Mostra lista visite", controller::mostraTipiVisite);
         voci.put("Inserisci massimo iscritti", controller::dichiaraMassimoNumeroFruitori);
         voci.put("Inserisci date precluse", controller::inserisciDatePrecluse);
-        voci.put("Mostra visite separate per stato", controller::mostraVisite);
+        voci.put("Mostra visite separate per stato", controller::mostraVisitePerStato);
         myMenu.addVoci(voci);
     }
 

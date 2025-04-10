@@ -145,7 +145,7 @@ public class Controller {
         appview.mostraTipiVisite(session.getVisite(), session.getStoricoVisite());
     }
 
-    public void mostraVisite() {
+    public void mostraVisitePerStato() {
         Set<Visita> visite = new HashSet<>();
         if (session.getVisite() != null) {
             for (TipoVisita tipoVisita : session.getVisite()) {
