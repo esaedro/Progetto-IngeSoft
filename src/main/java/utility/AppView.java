@@ -100,24 +100,28 @@ public class AppView {
         return luogoSelezionato;
     }
 
-    public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Volontario> volontari) {
+    public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Utente> utenti, Set<Volontario> volontari) {
         TipoVisita tipoVisita;
         Set<TipoVisita> visite = new HashSet<>();
 
-        System.out.println("\nInserire almeno un tipo di visita");
-        do {
-            tipoVisita = menuInserimentoTipoVisita(utenteAttivo, volontari);
-            if (tipoVisita != null) {
-                visite.add(tipoVisita);
+        if (utenteAttivo instanceof Configuratore) {
+            System.out.println("\nInserire almeno un tipo di visita");
+            do {
+                tipoVisita = menuInserimentoTipoVisita(utenti, volontari);
+                if (tipoVisita != null) {
+                    visite.add(tipoVisita);
+                }
+                else break;
+            } while (InputDati.conferma("Inserire un altro tipo di visita?"));
+        } else {
+                System.out.println("Permessi non sufficienti");
+                return null;
             }
-            else break;
-        } while (InputDati.conferma("Inserire un altro tipo di visita?"));
 
         return visite;
     }
 
-    private TipoVisita menuInserimentoTipoVisita(Utente utenteAttivo, Set<Volontario> volontari) {
-        if (utenteAttivo instanceof Configuratore) {
+    private TipoVisita menuInserimentoTipoVisita(Set<Utente> utenti, Set<Volontario> volontari) {
             String titolo, descrizione, puntoIncontro;
             Calendar dataInizio, dataFine, oraInizio;
             int durata, minPartecipante, maxPartecipante;
@@ -156,17 +160,17 @@ public class AppView {
             System.out.println("Inserire i volontari idonei alla visita: ");
             if (volontari.isEmpty()) {
                 System.out.println("Non ci sono volontari nel database, è necessario crearne uno");
-                volontariIdonei = menuInserimentoVolontari(volontari);
+                volontariIdonei = menuInserimentoVolontari(utenti);
             }
             else {
                 volontariIdonei = InputDati.selezionaPiuDaLista("Selezionare tra i volontari", volontari, Volontario::getNomeUtente, 0, volontari.size());
                 if (volontariIdonei.isEmpty()) {
                     System.out.println("Nessun volontario selezionato, è necessario crearne uno");
-                    volontariIdonei = menuInserimentoVolontari(volontari);
+                    volontariIdonei = menuInserimentoVolontari(utenti);
                     controller.aggiungiVolontariInSession(volontariIdonei);
                 } else {
                     if (InputDati.conferma("Si vuole creare un nuovo volontario da aggiungere alla visita oltre a quelli già selezionati?")) {
-                        volontariIdonei.addAll(menuInserimentoVolontari(volontari));
+                        volontariIdonei.addAll(menuInserimentoVolontari(utenti));
                         controller.aggiungiVolontariInSession(volontariIdonei);
                     }
                 }
@@ -175,11 +179,6 @@ public class AppView {
             return new TipoVisita(titolo, descrizione, puntoIncontro, dataInizio, dataFine, oraInizio, durata,
                     giorniSettimana, minPartecipante, maxPartecipante, bigliettoIngresso, volontariIdonei);
         }
-        else {
-            System.out.println("Permessi non sufficienti");
-            return null;
-        }
-    }
 
     public Set<TipoVisita> menuRimozioneTipoVisita(Set<TipoVisita> tipiVisitaPresenti) {
         Set<TipoVisita> tipiVisitaDaRimuovere = new HashSet<>();
@@ -203,7 +202,7 @@ public class AppView {
         return tipoVisitaSelezionato;
     }
 
-    public Set<Volontario> menuInserimentoVolontari(Set<Volontario> volontariPresenti) {
+    public Set<Volontario> menuInserimentoVolontari(Set<Utente> utentiPresenti) {
         String nomeUtente, password;
         boolean esisteVolontario = false;
         Volontario nuovoVolontario;
@@ -213,9 +212,9 @@ public class AppView {
         do {
             do {
                 nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente del volontario: ", "Il nome utente non puo' essere vuoto");
-                for (Volontario vol : volontariPresenti) {
-                    if (vol.getNomeUtente().trim().equals(nomeUtente.trim())) {
-                        System.out.println("Esiste già un volontario con questo nome utente, sceglierne un altro");
+                for (Utente utente : utentiPresenti) {
+                    if (utente.getNomeUtente().trim().equals(nomeUtente.trim())) {
+                        System.out.println("Esiste già un utente con questo nome, sceglierne un altro");
                         esisteVolontario = true;
                         break;
                     }
@@ -394,7 +393,7 @@ public class AppView {
         }
     }
 
-    public void mostraVisite(Map<StatoVisita, List<Visita>> visitePerStato) {
+    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato) {
         if (visitePerStato.isEmpty()) {
             System.out.println("Non ci sono visite");
         } else {

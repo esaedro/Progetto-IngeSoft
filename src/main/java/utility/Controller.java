@@ -74,9 +74,10 @@ public class Controller {
             do {
                 Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
                 visite = appview.menuInserimentoTipiVisita(
-                    session.getUtenteAttivo(),
-                    session.getVolontari()
-                );
+                    session.getUtenteAttivo(), session.getUtenti(), session.getVolontari());
+                
+                if (visite == null) return;
+                
                 for (TipoVisita tipoVisita : visite) {
                     luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
                 }
@@ -163,10 +164,10 @@ public class Controller {
             }
         }
 
-        appview.mostraVisite(separaVisitePerStato(visite));
+        appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
     }
 
-    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite, Utente utenteAttivo) {
         Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
 
         for (Visita visita : visite) {
@@ -177,9 +178,18 @@ public class Controller {
                 visitePerStato.put(stato, new ArrayList<>());
             }
         }
+
+        visitePerStato.remove(StatoVisita.NON_ISTANZIATA);
+
+        if (utenteAttivo instanceof Fruitore) {             //Il fruitore visualizza solo proposte, confermate e cancellate
+            visitePerStato.remove(StatoVisita.COMPLETA);   
+            visitePerStato.remove(StatoVisita.EFFETTUATA);
+        }
+        
         return visitePerStato;
     }
 
+    //TODO: ver4 aggiungere le Visita con stato Confermata alla visualizzazione del volontario
     public void mostraVisiteAssociate() {
         if (!(session.getUtenteAttivo() instanceof Volontario)) {
             throw new IllegalStateException("Solo il volontario ha i permessi necessari per eseguire questa operazione");
@@ -260,7 +270,7 @@ public class Controller {
         TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
 
         if (!session.getVisite().isEmpty()) {
-            Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari(session.getVolontari());
+            Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari(session.getUtenti());
 
             tipoVisitaSelezionato.aggiungiVolontariIdonei(nuoviVolontari);
             aggiungiVolontariInSession(nuoviVolontari);
@@ -277,10 +287,11 @@ public class Controller {
 
         if (!session.getLuoghi().isEmpty()) {
             Set<TipoVisita> nuoveVisite = appview.menuInserimentoTipiVisita(
-                session.getUtenteAttivo(), session.getVolontari());
-
-            luogoSelezionato.aggiungiVisite(nuoveVisite);
-            session.addTipoVisite(nuoveVisite);
+                session.getUtenteAttivo(), session.getUtenti(), session.getVolontari());
+            if (nuoveVisite != null) {
+                luogoSelezionato.aggiungiVisite(nuoveVisite);
+                session.addTipoVisite(nuoveVisite);
+            }
         } 
     }
 
