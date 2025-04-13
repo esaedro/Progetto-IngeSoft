@@ -67,6 +67,9 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void creaLuoghi() {
             Set<Luogo> luoghi = new HashSet<>();
             Set<TipoVisita> visite;
@@ -88,6 +91,9 @@ public class Controller {
             session.addLuoghi(luoghi);
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     private void istanziaParametroTerritoriale() {
         if (Luogo.getParametroTerritoriale() == null) {
             ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
@@ -96,6 +102,9 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void dichiaraMassimoNumeroFruitori() {
         ((Configuratore) session.getUtenteAttivo()).setNumeroMassimoIscritti(
                 appview.menuInserimentoMassimoIscritti()
@@ -116,6 +125,9 @@ public class Controller {
         appview.stampaMenu();
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void inserisciDatePrecluse() {
         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
                 appview.menuInserimentoDate()
@@ -178,12 +190,18 @@ public class Controller {
     }
 
     //TODO: ver4 aggiungere le Visita con stato Confermata alla visualizzazione del volontario
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Volontario
+     */
     public void mostraVisiteAssociate() {
         appview.mostraVisiteAssociateAlVolontario(
             ((Volontario) session.getUtenteAttivo()).getVisiteAssociate(session.getVisite())
         );
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Volontario
+     */
     public void inserisciDisponibilita() {
         Volontario volontario = (Volontario) session.getUtenteAttivo();
         volontario.addDisponibilita(
@@ -191,12 +209,16 @@ public class Controller {
         );
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void chiudiDisponibilitaERealizzaPianoVisite() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             gestisciEffettiCollaterali();
             riapriDisponibilita();
             salva();
         }));
+
 
         inizializzaPianoViste();
         appview.setMenuConfiguratoreEditor();
@@ -244,6 +266,9 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void aggiungiVolontario() {
         TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
 
@@ -260,6 +285,9 @@ public class Controller {
         session.addVolontari(volontari);
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void aggiungiTipoVisita() {
         Luogo luogoSelezionato = appview.selezioneLuogo(session.getLuoghi());  
 
@@ -273,11 +301,17 @@ public class Controller {
         } 
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void rimuoviLuogo() {
         session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void rimuoviTipoVisita() {
         //reference ai luoghi gestite nel metodo di session
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
@@ -285,6 +319,9 @@ public class Controller {
         
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void rimuoviVolontario() {
         //reference a tipoVisita e Visita gestite nel metodo di session
         session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
