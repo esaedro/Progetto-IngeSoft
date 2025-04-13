@@ -1,6 +1,7 @@
 package utility;
 
 import application.Configuratore;
+import application.Fruitore;
 import application.Utente;
 import application.Volontario;
 import com.google.gson.*;
@@ -22,6 +23,9 @@ class UtenteSerializer implements JsonSerializer<Utente> {
             JsonArray jsonArraydateDisponiblita = new JsonArray();
             ((Volontario) utente).getDisponibilita().forEach(jsonArraydateDisponiblita::add);
             jsonObject.add("disponibilita", jsonArraydateDisponiblita);
+        } else if (utente instanceof Fruitore) {
+            jsonObject.addProperty("type", "fruitore");
+            // TODO gestisci scrittura volontario
         }
 
         return jsonObject;

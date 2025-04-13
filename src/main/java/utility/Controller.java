@@ -117,32 +117,20 @@ public class Controller {
     }
 
     public void inserisciDatePrecluse() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
                 appview.menuInserimentoDate()
             );
     }
 
     public void mostraLuoghi() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         appview.mostraLuoghi(session.getLuoghi());
     }
 
     public void mostraVolontari() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         appview.mostraVolontari(session.getVolontari());
     }
 
     public void mostraTipiVisite() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         appview.mostraTipiVisite(session.getVisite(), session.getStoricoVisite());
     }
 
@@ -191,18 +179,12 @@ public class Controller {
 
     //TODO: ver4 aggiungere le Visita con stato Confermata alla visualizzazione del volontario
     public void mostraVisiteAssociate() {
-        if (!(session.getUtenteAttivo() instanceof Volontario)) {
-            throw new IllegalStateException("Solo il volontario ha i permessi necessari per eseguire questa operazione");
-        }
         appview.mostraVisiteAssociateAlVolontario(
             ((Volontario) session.getUtenteAttivo()).getVisiteAssociate(session.getVisite())
         );
     }
 
     public void inserisciDisponibilita() {
-        if (!(session.getUtenteAttivo() instanceof Volontario)) {
-            throw new IllegalStateException("Solo il volontario ha i permessi necessari per eseguire questa operazione");
-        }
         Volontario volontario = (Volontario) session.getUtenteAttivo();
         volontario.addDisponibilita(
             appview.menuInserimentoDisponibilita(volontario.getDisponibilita())
@@ -221,10 +203,6 @@ public class Controller {
     }
 
     public void inizializzaPianoViste() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
-
         AbstractMap.SimpleImmutableEntry<Calendar, Calendar> inizioFineMese =
             CalendarManager.getInizioFineMeseVisite();
         Calendar inizioMese = inizioFineMese.getKey();
@@ -296,18 +274,11 @@ public class Controller {
     }
 
     public void rimuoviLuogo() {
-/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        } */
         session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
         gestisciEffettiCollaterali();
     }
 
     public void rimuoviTipoVisita() {
-/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        } */
-
         //reference ai luoghi gestite nel metodo di session
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
@@ -315,10 +286,6 @@ public class Controller {
     }
 
     public void rimuoviVolontario() {
-/*         if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        } */
-
         //reference a tipoVisita e Visita gestite nel metodo di session
         session.removeVolontario(appview.menuRimozioneVolontario(session.getVolontari()));
         gestisciEffettiCollaterali();
@@ -329,11 +296,10 @@ public class Controller {
     }
 
     public void riapriDisponibilita() {
-        if (!(session.getUtenteAttivo() instanceof Configuratore)) {
-            throw new IllegalStateException("Solo il configuratore ha i permessi necessari per eseguire questa operazione");
-        }
         session.cleanDisponibilitaDeiVolontari();
         session.salvataggioDatePrecluseFutureInAttuali();
         appview.setMenuConfiguratore();
     }
+
+
 }

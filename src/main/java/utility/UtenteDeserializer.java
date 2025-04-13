@@ -1,6 +1,7 @@
 package utility;
 
 import application.Configuratore;
+import application.Fruitore;
 import application.Utente;
 import application.Volontario;
 import com.google.gson.*;
@@ -17,6 +18,8 @@ class UtenteDeserializer implements JsonDeserializer<Utente> {
             return context.deserialize(jsonObject, Configuratore.class);
         } else if ("volontario".equals(userType)) {
             return context.deserialize(jsonObject, Volontario.class);
+        } else if ("fruitore".equals(userType)) {
+            return context.deserialize(jsonObject, Fruitore.class);
         }
 
         throw new JsonParseException("Unknown user type: " + userType);

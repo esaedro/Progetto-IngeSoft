@@ -13,7 +13,7 @@ public class Fruitore extends Utente {
 
     //private Map<Visita, String> iscrizioni = new HashMap<>(); // <Visita, codice di prenotazione>
 
-    //opuure in Visita associamo i fruitori iscritti?
+    //oppure in Visita associamo i fruitori iscritti?
    
     
     public Fruitore(String nomeUtente, String password) {

@@ -310,8 +310,6 @@ public class AppView {
         voci.put("Apri raccolta disponibilità", controller::riapriDisponibilita);
         myMenu.addVoci(voci);
     }
-    //TODO: Voci del menu, interazione utente da View ed elaborazione aggiunte/rimozioni da Controller
-
 
     public void setMenuVolontario() {
         myMenu.removeAllVoci();
@@ -322,6 +320,19 @@ public class AppView {
         voci.put("Carica sessione", controller::carica);
         voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
+
+        myMenu.addVoci(voci);
+    }
+
+    public void setMenuFruitore() {
+        myMenu.removeAllVoci();
+        myMenu.setTitolo("Menu Configuratore");
+        Controller controller = Controller.getIstance();
+        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+        voci.put("Visualizza visite", controller::salva);
+        voci.put("Visualizza iscrizioni", controller::carica);
+        voci.put("Iscrizione a una visita ", controller::mostraVisiteAssociate);
+        voci.put("Annulla iscrizione'", controller::inserisciDisponibilita);
 
         myMenu.addVoci(voci);
     }
