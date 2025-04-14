@@ -14,7 +14,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
@@ -26,7 +25,7 @@ public class InputDati {
     private static Scanner lettore = creaScanner();
 
     public static boolean colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
-    public static boolean newLineDifferente = true; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
+    public static boolean newLineDifferente = false; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
     private static final String ERRORE_FORMATO = colori
         ? ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET
         : "Il dato inserito non e' nel formato corretto";
@@ -51,8 +50,7 @@ public class InputDati {
 
     private static Scanner creaScanner() {
         Scanner creato = new Scanner(System.in);
-//        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
-        creato.useDelimiter("\n");
+        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
         return creato;
     }
 

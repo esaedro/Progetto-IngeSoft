@@ -17,8 +17,21 @@
   {
     "nomeUtente": "F01",
     "password": "frutto",
-    "type": "fruitore",
-    "iscrizioni": [
-    ]
+    "type": "fruitore"
+  },
+  {
+    "nomeUtente": "paolo",
+    "password": "paolopaolo",
+    "type": "fruitore"
+  },
+  {
+    "nomeUtente": "pietro",
+    "password": "popopopo",
+    "type": "fruitore"
+  },
+  {
+    "nomeUtente": "luca",
+    "password": "fruitore",
+    "type": "fruitore"
   }
 ]

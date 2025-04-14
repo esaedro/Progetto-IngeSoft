@@ -200,22 +200,12 @@ public class AppView {
 
     public Set<Volontario> menuInserimentoVolontari(Set<Utente> utentiPresenti) {
         String nomeUtente, password;
-        boolean esisteVolontario = false;
         Volontario nuovoVolontario;
         Set<Volontario> nuoviVolontari = new HashSet<>();
 
         System.out.println("\nInserire almeno un nuovo volontario");
         do {
-            do {
-                nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente del volontario: ", "Il nome utente non puo' essere vuoto");
-                for (Utente utente : utentiPresenti) {
-                    if (utente.getNomeUtente().trim().equals(nomeUtente.trim())) {
-                        System.out.println("Esiste già un utente con questo nome, sceglierne un altro");
-                        esisteVolontario = true;
-                        break;
-                    }
-                }
-            } while (esisteVolontario);
+            nomeUtente = inserimentoNomeUtente("Inserire il nome utente del volontario: ", utentiPresenti);
             
             password = "config" + nomeUtente;
 
@@ -225,6 +215,43 @@ public class AppView {
 
         return nuoviVolontari;
         }
+
+    public String inserimentoNomeUtente(String msg, Set<Utente> utentiPresenti) {
+        String nomeUtente;
+        boolean giaEsistente;
+        do {
+            giaEsistente = false;
+            nomeUtente = InputDati.leggiStringaNonVuota(msg, "Il nome utente non puo' essere vuoto");
+            for (Utente utente : utentiPresenti) {
+                if (utente.getNomeUtente().trim().equals(nomeUtente.trim())) {
+                    System.out.println("Esiste già un utente con questo nome, sceglierne un altro");
+                    giaEsistente = true;
+                    break;
+                }
+            }
+        } while (giaEsistente || !InputDati.conferma("Confermare il nome utente?"));
+        return nomeUtente;
+    }
+
+    public String inserimentoPassword(String msg) {
+        String password;
+        boolean check;
+
+        do {
+            check = false;
+            password = InputDati.leggiStringaNonVuota(msg, "La password non puo' essere vuota");
+            if (password.contains("config")) {
+                check = true;
+                System.out.println("La password contiene parole riservate");
+            }
+            if (password.trim().length() < 8) {
+                check = true;
+                System.out.println("La password deve essere lunga almeno 8 caratteri");
+            }
+        } while(check || !InputDati.conferma("Confermare la password?"));
+
+        return password;
+    }
 
     public Set<Volontario> menuRimozioneVolontario(Set<Volontario> volontariPresenti) {
         Set<Volontario> volontariDaRimuovere = new HashSet<>();
@@ -256,6 +283,17 @@ public class AppView {
         } while(!InputDati.conferma("\nConferma, nuovo numero massimo di iscritti = " + maxIscritti));
 
         return maxIscritti;
+    }
+
+    public void setMenuStart (Controller controller) {
+        myMenu.removeAllVoci();
+        myMenu.setTitolo("Avvio Applicazione");
+        LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
+
+        voci.put("Login", controller::loginCredenziali);
+        voci.put("Registrati", controller::registrazioneFruitore);
+
+        myMenu.addVoci(voci);
     }
 
     public void setMenuConfiguratore(Controller controller) {
@@ -318,7 +356,7 @@ public class AppView {
 
     public void setMenuFruitore(Controller controller) {
         myMenu.removeAllVoci();
-        myMenu.setTitolo("Menu Configuratore");
+        myMenu.setTitolo("Menu Fruitore");
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Visualizza visite proposte/confermate/cancellate", controller::mostraVisitePerStato);
         voci.put("Visualizza le visite a cui hai effettuato un'iscrizione", controller::mostraIscrizioniFruitore);
@@ -336,6 +374,15 @@ public class AppView {
                 scelta.run();
             }
         } while (scelta != null);
+    }
+
+    public Runnable stampaMenuOnce() {
+        Runnable scelta = myMenu.scegli();
+        if (scelta != null) {
+            scelta.run();
+            return scelta;
+        }
+        else return null;
     }
 
     public Set<Integer> menuInserimentoDate() {
@@ -462,7 +509,7 @@ public class AppView {
         return nuoveDisponibilita;
     }
 
-    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte, Controller controller ) {
+    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte, Controller controller) {
         AbstractMap.SimpleEntry<Visita, Integer> iscrizione = null;
         Visita visita;
         int numeroIscritti;
@@ -470,14 +517,13 @@ public class AppView {
         if (!visiteProposte.isEmpty()) {
             do {
                 visita = InputDati.selezionaUnoDaLista("Selezionare una visita a cui iscriversi", visiteProposte, Visita::getIdentificativo);
-                if (visita == null) {
-                    return iscrizione;
-                }
+                
+                if (visita == null) return iscrizione;      //uscita dal menu
                 
                 TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita);
                 int maxIscrivibili = tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti();
 
-                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere? (massimo %d)", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
+                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere (massimo %d) ? ", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
             } while (!InputDati.conferma("Confermare iscrizione?"));
 
             iscrizione = new AbstractMap.SimpleEntry<>(visita, numeroIscritti);
@@ -493,9 +539,8 @@ public class AppView {
         if (!visiteIscritte.isEmpty()) {
             do {
                 visitaSelezionata = InputDati.selezionaUnoDaLista("Selezionare la visita di cui annullare l'iscrizione", visiteIscritte, Visita::getIdentificativo);
-                if (visitaSelezionata == null) {
-                    return null;
-                }
+                if (visitaSelezionata == null) return null;     //uscita dal menu
+    
             } while (!InputDati.conferma("Confermare disiscrizione?"));
         }
         else System.out.println("Non si è iscritti a nessuna visita");

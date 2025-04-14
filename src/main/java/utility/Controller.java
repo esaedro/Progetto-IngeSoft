@@ -16,6 +16,20 @@ public class Controller {
     }
 
     public void start() { //Prima impostazione password
+
+        appview.setMenuStart(this);
+        
+        if (appview.stampaMenuOnce() == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
+
+        carica();
+        inizializzazione();
+        
+        esecuzione();
+
+        salva();
+    }
+
+    public void loginCredenziali() {
         Utente utenteProvvisorio = null;
 
         while (utenteProvvisorio == null) {
@@ -27,12 +41,19 @@ public class Controller {
             if (utenteProvvisorio == null) appview.erroreLogin();
         }
         session.setUtenteAttivo(utenteProvvisorio);
-        carica();
+    }
 
-        inizializzazione();
-        esecuzione();
+    public void registrazioneFruitore() {
+        session.caricaUtenti();
+        
+        String nomeUtente = appview.inserimentoNomeUtente("Inserire il nome utente: ", session.getUtenti());
+        String password = appview.inserimentoPassword("Inserire la password: ");
 
-        salva();
+        Fruitore fruitore = new Fruitore(nomeUtente, password);
+        if (fruitore != null) session.addFruitore(fruitore);
+        session.salvaUtenti();
+
+        session.setUtenteAttivo(fruitore);
     }
 
     public void salva() {
@@ -43,6 +64,7 @@ public class Controller {
     }
 
     public void carica() {
+        //carica utenti viene fatto in login/registrazione
         session.carica();
         session.caricaParametriGlobali();
         System.out.println("\nSessione caricata");

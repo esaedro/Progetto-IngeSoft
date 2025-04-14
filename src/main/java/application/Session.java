@@ -91,10 +91,14 @@ public class Session {
         filemanager.caricaParametriGlobali();
     }
 
-    public Utente login(String nomeUtente, String password) {
+    public void caricaUtenti() {
         utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
-            ? filemanager.carica(FileManager.fileUtenti, Utente.class)
-            : new HashSet<>();
+        ? filemanager.carica(FileManager.fileUtenti, Utente.class)
+        : new HashSet<>();
+    }
+
+    public Utente login(String nomeUtente, String password) {
+        caricaUtenti();
 
         for (Utente user : utenti) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
@@ -205,6 +209,10 @@ public class Session {
 
     public void addVolontari(Set<Volontario> nuoviVolontari) {
         utenti.addAll(nuoviVolontari);
+    }
+
+    public void addFruitore(Fruitore fruitore) {
+        utenti.add(fruitore);
     }
 
     // TODO: realize a proxy
