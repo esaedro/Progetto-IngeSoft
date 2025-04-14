@@ -75,8 +75,8 @@ public class Controller {
 
             do {
                 Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
-                visite = appview.menuInserimentoTipiVisita(
-                    session.getUtenteAttivo(), session.getUtenti(), session.getVolontari());
+                visite = appview.menuInserimentoTipiVisita(session.getUtenteAttivo(), session.getUtenti(),
+                        session.getVolontari(), this);
                 
                 if (visite == null) return;
                 
@@ -300,7 +300,7 @@ public class Controller {
 
         if (!session.getLuoghi().isEmpty()) {
             Set<TipoVisita> nuoveVisite = appview.menuInserimentoTipiVisita(
-                session.getUtenteAttivo(), session.getUtenti(), session.getVolontari());
+                session.getUtenteAttivo(), session.getUtenti(), session.getVolontari(), this);
             if (nuoveVisite != null) {
                 luogoSelezionato.aggiungiVisite(nuoveVisite);
                 session.addTipoVisite(nuoveVisite);
@@ -365,7 +365,7 @@ public class Controller {
 
             //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
             //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
-            visitaConIscritti = appview.menuIscrizione(visiteProposte);
+            visitaConIscritti = appview.menuIscrizione(visiteProposte, this);
             
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());

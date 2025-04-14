@@ -100,14 +100,14 @@ public class AppView {
         return luogoSelezionato;
     }
 
-    public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Utente> utenti, Set<Volontario> volontari) {
+    public Set<TipoVisita> menuInserimentoTipiVisita(Utente utenteAttivo, Set<Utente> utenti, Set<Volontario> volontari, Controller controller) {
         TipoVisita tipoVisita;
         Set<TipoVisita> visite = new HashSet<>();
 
         if (utenteAttivo instanceof Configuratore) {
             System.out.println("\nInserire almeno un tipo di visita");
             do {
-                tipoVisita = menuInserimentoTipoVisita(utenti, volontari);
+                tipoVisita = menuInserimentoTipoVisita(utenti, volontari, controller);
                 visite.add(tipoVisita);
             } while (InputDati.conferma("Inserire un altro tipo di visita?"));
         } else {
@@ -118,14 +118,13 @@ public class AppView {
         return visite;
     }
 
-    private TipoVisita menuInserimentoTipoVisita(Set<Utente> utenti, Set<Volontario> volontari) {
+    private TipoVisita menuInserimentoTipoVisita(Set<Utente> utenti, Set<Volontario> volontari, Controller controller) {
             String titolo, descrizione, puntoIncontro;
             Calendar dataInizio, dataFine, oraInizio;
             int durata, minPartecipante, maxPartecipante;
             boolean bigliettoIngresso;
             Set<DayOfWeek> giorniSettimana = new HashSet<>();
             Set<Volontario> volontariIdonei;
-            Controller controller = Controller.getInstance();
 
             titolo = InputDati.leggiStringaNonVuota("Inserire il titolo della visita: ", "Il titolo della visita non puo' essere vuoto");
             descrizione = InputDati.leggiStringaNonVuota("Inserire la descrizione della visita: ", "La descrizione della visita non puo' essere vuota");
@@ -463,10 +462,10 @@ public class AppView {
         return nuoveDisponibilita;
     }
 
-    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte) {
+    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte, Controller controller ) {
         AbstractMap.SimpleEntry<Visita, Integer> iscrizione = null;
-        Visita visita = null;
-        int numeroIscritti = 0;
+        Visita visita;
+        int numeroIscritti;
 
         if (!visiteProposte.isEmpty()) {
             do {
@@ -475,7 +474,7 @@ public class AppView {
                     return iscrizione;
                 }
                 
-                TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(visita);
+                TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita);
                 int maxIscrivibili = tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti();
 
                 numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere? (massimo %d)", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
