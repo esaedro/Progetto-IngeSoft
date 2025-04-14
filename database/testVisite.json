@@ -1,54 +1,5 @@
 [
   {
-    "titolo": "Visita2",
-    "descrizione": "Disneyland",
-    "puntoIncontro": "",
-    "dataInizio": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
-    },
-    "dataFine": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
-    },
-    "oraInizio": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
-    },
-    "durata": 2,
-    "giorniSettimana": [],
-    "minPartecipante": 5,
-    "maxPartecipante": 10,
-    "bigliettoIngresso": true,
-    "volontariIdonei": [],
-    "visiteAssociate": [
-      {
-        "dataVisita": {
-          "year": 2025,
-          "month": 3,
-          "dayOfMonth": 14,
-          "hourOfDay": 15,
-          "minute": 16,
-          "second": 7
-        },
-        "stato": "PROPOSTA",
-        "numeroIscritti": 8
-      }
-    ]
-  },
-  {
     "titolo": "Visita1",
     "descrizione": "Disneyland",
     "puntoIncontro": "",
@@ -56,25 +7,25 @@
       "year": 2025,
       "month": 3,
       "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
     },
     "dataFine": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
     },
     "oraInizio": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
     },
     "durata": 2,
     "giorniSettimana": [],
@@ -88,12 +39,61 @@
           "year": 2025,
           "month": 3,
           "dayOfMonth": 14,
-          "hourOfDay": 15,
-          "minute": 16,
-          "second": 7
+          "hourOfDay": 19,
+          "minute": 13,
+          "second": 53
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 6
+      }
+    ]
+  },
+  {
+    "titolo": "Visita2",
+    "descrizione": "Disneyland",
+    "puntoIncontro": "",
+    "dataInizio": {
+      "year": 2025,
+      "month": 3,
+      "dayOfMonth": 14,
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
+    },
+    "dataFine": {
+      "year": 2025,
+      "month": 3,
+      "dayOfMonth": 14,
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
+    },
+    "oraInizio": {
+      "year": 2025,
+      "month": 3,
+      "dayOfMonth": 14,
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
+    },
+    "durata": 2,
+    "giorniSettimana": [],
+    "minPartecipante": 5,
+    "maxPartecipante": 10,
+    "bigliettoIngresso": true,
+    "volontariIdonei": [],
+    "visiteAssociate": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 3,
+          "dayOfMonth": 14,
+          "hourOfDay": 19,
+          "minute": 13,
+          "second": 53
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 8
       }
     ]
   }

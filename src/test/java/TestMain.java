@@ -42,8 +42,10 @@ public class TestMain {
         session.salvaUtenti();
 
         Utente finale = session.login("C_Dilbert", "admin");
-
         assertInstanceOf(Configuratore.class, finale,"Login configuratore non restituisce i permessi");
+
+        finale = session.login("Errore", "ErroreMaPassword");
+        assertNull(finale, "Erroro login configuratore");
     }
 
     @Test
@@ -66,6 +68,9 @@ public class TestMain {
 
         ((Volontario)finale).getDisponibilita().forEach(giorno ->
                 assertFalse(disp.add(giorno), "errore lettura/scrittura disponibilità volontario"));
+
+        finale = session.login("Errore", "ErroreMaPassword");
+        assertNull(finale, "Erroro volontario fruitore");
 
     }
 
@@ -333,6 +338,32 @@ public class TestMain {
         assertFalse(session.getLuoghi().contains(luogoDaDistruggere), "Problema eliminazione luogo dopo volontario");
         assertTrue(session.getVisite().contains(visitaNonDaDistruggere), "Problema eliminazione visita dopo volontario");
         assertFalse(session.getVisite().contains(visitaDaDistruggere), "Problema eliminazione visita dopo volontario");
+    }
 
+    @Test
+    void loginFruitoreTest() {
+        Session session = new Session();
+
+        Set<Utente> utentiTest = new HashSet<>();
+        utentiTest.add(new Configuratore("Fruitore", "frutto"));
+        session.setUtenti(utentiTest);
+        session.salvaUtenti();
+
+        Utente finale = session.login("Fruitore", "frutto");
+        assertInstanceOf(Configuratore.class, finale,"Login fruitore non restituisce i permessi");
+
+        finale = session.login("Errore", "ErroreMaPassword");
+        assertNull(finale, "Erroro login fruitore");
+    }
+
+    @Test
+    void registraFruitoreTest() {
+        Session session = new Session();
+
+        Set<Utente> utentiTest = new HashSet<>();
+        session.setUtenti(utentiTest);
+        session.salvaUtenti();
+
+        //TODO
     }
 }

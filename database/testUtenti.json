@@ -1,8 +1,7 @@
 [
   {
-    "nomeUtente": "V_Jhonny",
-    "password": "volontario",
-    "type": "volontario",
-    "disponibilita": []
+    "nomeUtente": "Fruitore",
+    "password": "frutto",
+    "type": "configuratore"
   }
 ]
