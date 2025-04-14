@@ -331,7 +331,7 @@ public class AppView {
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Visualizza visite", controller::mostraVisitePerStato);
         voci.put("Visualizza iscrizioni", controller::visualizzaVisiteConIscrizione);
-        voci.put("Iscrizione a una visita ", controller::iscrivizioneFruitore);
+        voci.put("Iscrizione a una visita ", controller::iscrizioneFruitore);
         voci.put("Annulla iscrizione'", controller::annullaIscrizione);
 
         myMenu.addVoci(voci);

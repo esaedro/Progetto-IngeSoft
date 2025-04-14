@@ -2,7 +2,6 @@ package utility;
 
 import application.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -343,7 +342,7 @@ public class Controller {
     /**
      * @ requires session.getUtenteAttivo() instanceof Configuratore
      */
-    public void iscrivizioneFruitore() {
+    public void iscrizioneFruitore() {
 
     }
 
