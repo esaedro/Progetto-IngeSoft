@@ -6,8 +6,8 @@ import java.util.*;
 public class Controller {
 
     private static final Controller controller = new Controller();
-    Session session = new Session();
-    AppView appview = new AppView();
+    private Session session = new Session();
+    private AppView appview = new AppView();
 
     private Controller() {}
 
@@ -360,4 +360,21 @@ public class Controller {
 
     }
 
+    public String toString(Object obj) {
+        if (obj == null) {
+            return "null";
+        }
+        return obj.toString();
+    }
+
+    public TipoVisita getTipoVisitaAssociato(Visita visita) {
+        if (session.getVisite() != null && !session.getVisite().isEmpty()) {
+            for (TipoVisita tipoVisita : session.getVisite()) {
+                for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
+                    if (visitaAssociata.equals(visita)) return tipoVisita;
+                }
+            }
+        }
+        return null;
+    }
 }
