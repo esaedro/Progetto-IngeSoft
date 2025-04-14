@@ -197,7 +197,6 @@ public class Controller {
         return visitePerStato;
     }
 
-    //TODO: ver4 aggiungere le Visita con stato Confermata alla visualizzazione del volontario
     /**
      * @ requires session.getUtenteAttivo() instanceof Volontario
      */
@@ -436,21 +435,23 @@ public class Controller {
         if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
             Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
-            //TODO: nessuna iscrizione
             Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
-            for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
-                Visita visita = entry.getKey();
-                Iscrizione iscrizione = entry.getValue();
-                StatoVisita stato = visita.getStato();
+            if (!iscrizioni.isEmpty()) {                
+                for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
+                    Visita visita = entry.getKey();
+                    Iscrizione iscrizione = entry.getValue();
+                    StatoVisita stato = visita.getStato();
 
-                //se non va fixare qui
-                if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
-                    visiteConIscrizioniPerStato
-                        .computeIfAbsent(stato, k -> new HashMap<>())
-                        .put(visita, iscrizione);
+                    //se non va fixare qui
+                    if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
+                        visiteConIscrizioniPerStato
+                            .computeIfAbsent(stato, k -> new HashMap<>())
+                            .put(visita, iscrizione);
+                    }
                 }
             }
+
             appview.mostraVisiteStatoConIscrizioni(visiteConIscrizioniPerStato);
         }
     }
