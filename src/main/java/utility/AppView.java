@@ -329,10 +329,10 @@ public class AppView {
         myMenu.setTitolo("Menu Configuratore");
         Controller controller = Controller.getIstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
-        voci.put("Visualizza visite", controller::salva);
-        voci.put("Visualizza iscrizioni", controller::carica);
-        voci.put("Iscrizione a una visita ", controller::mostraVisiteAssociate);
-        voci.put("Annulla iscrizione'", controller::inserisciDisponibilita);
+        voci.put("Visualizza visite", controller::mostraVisitePerStato);
+        voci.put("Visualizza iscrizioni", controller::visualizzaVisiteConIscrizione);
+        voci.put("Iscrizione a una visita ", controller::iscrivizioneFruitore);
+        voci.put("Annulla iscrizione'", controller::annullaIscrizione);
 
         myMenu.addVoci(voci);
     }

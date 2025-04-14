@@ -120,6 +120,8 @@ public class Controller {
             }
         } else if (session.getUtenteAttivo() instanceof Volontario) {
             appview.setMenuVolontario();
+        } else if (session.getUtenteAttivo() instanceof Fruitore) {
+            appview.setMenuFruitore();
         }
 
         appview.stampaMenu();
@@ -338,5 +340,25 @@ public class Controller {
         appview.setMenuConfiguratore();
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
+    public void iscrivizioneFruitore() {
+
+    }
+
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
+    public void annullaIscrizione() {
+
+    }
+
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
+    public void visualizzaVisiteConIscrizione() {
+
+    }
 
 }
