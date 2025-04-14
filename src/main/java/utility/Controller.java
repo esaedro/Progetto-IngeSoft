@@ -113,14 +113,14 @@ public class Controller {
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
             if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 9) {
-                appview.setMenuConfiguratore();
+                appview.setMenuConfiguratore(this);
             } else {
-                appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart();
+                appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
             }
         } else if (session.getUtenteAttivo() instanceof Volontario) {
-            appview.setMenuVolontario();
+            appview.setMenuVolontario(this);
         } else if (session.getUtenteAttivo() instanceof Fruitore) {
-            appview.setMenuFruitore();
+            appview.setMenuFruitore(this);
         }
 
         appview.stampaMenu();
@@ -229,7 +229,7 @@ public class Controller {
 
 
         inizializzaPianoViste();
-        appview.setMenuConfiguratoreEditor();
+        appview.setMenuConfiguratoreEditor(this);
     }
 
     public void inizializzaPianoViste() {
@@ -346,7 +346,7 @@ public class Controller {
     public void riapriDisponibilita() {
         session.cleanDisponibilitaDeiVolontari();
         session.salvataggioDatePrecluseFutureInAttuali();
-        appview.setMenuConfiguratore();
+        appview.setMenuConfiguratore(this);
     }
 
     /**
@@ -452,13 +452,6 @@ public class Controller {
             }
             appview.mostraVisiteStatoConIscrizioni(visiteConIscrizioniPerStato);
         }
-    }
-
-    public String toString(Object obj) {
-        if (obj == null) {
-            return "null";
-        }
-        return obj.toString();
     }
 
     public TipoVisita getTipoVisitaAssociato(Visita visita) {
