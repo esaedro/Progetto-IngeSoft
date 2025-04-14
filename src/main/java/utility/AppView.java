@@ -128,7 +128,7 @@ public class AppView {
             boolean bigliettoIngresso;
             Set<DayOfWeek> giorniSettimana = new HashSet<>();
             Set<Volontario> volontariIdonei = new HashSet<>();
-            Controller controller = Controller.getIstance();
+            Controller controller = Controller.getInstance();
 
             titolo = InputDati.leggiStringaNonVuota("Inserire il titolo della visita: ", "Il titolo della visita non puo' essere vuoto");
             descrizione = InputDati.leggiStringaNonVuota("Inserire la descrizione della visita: ", "La descrizione della visita non puo' essere vuota");
@@ -265,7 +265,7 @@ public class AppView {
     public void setMenuConfiguratore() {
         myMenu.removeAllVoci();
         myMenu.setTitolo("Menu configuratore");
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
 
         voci.put("Salva sessione", controller::salva);
@@ -283,7 +283,7 @@ public class AppView {
         myMenu.removeAllVoci();
         setMenuConfiguratore();
 
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
                 controller::chiudiDisponibilitaERealizzaPianoVisite);
         myMenu.addVoce(voce);
@@ -294,7 +294,7 @@ public class AppView {
         myMenu.removeAllVoci();
         setMenuConfiguratore();
 
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
 
         Map.Entry<String, Runnable> voce = Map.entry("Chiudere raccolta disponibilità e produci piano delle visite",
                 controller::inizializzaPianoViste);
@@ -314,11 +314,12 @@ public class AppView {
     public void setMenuVolontario() {
         myMenu.removeAllVoci();
         myMenu.setTitolo("Menu volontario");
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
         voci.put("Salva sessione", controller::salva);
         voci.put("Carica sessione", controller::carica);
-        voci.put("Mostra lista visite a cui sei associato ", controller::mostraVisiteAssociate);
+        voci.put("Mostra i tipi di visite a cui sei associato ", controller::mostraVisiteAssociate);        
+        voci.put("Mostra le tue visite confermate con le relative iscrizioni", controller::mostraVisiteConfermateConIscrizioni);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
         myMenu.addVoci(voci);
@@ -327,17 +328,15 @@ public class AppView {
     public void setMenuFruitore() {
         myMenu.removeAllVoci();
         myMenu.setTitolo("Menu Configuratore");
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
-        voci.put("Visualizza visite", controller::mostraVisitePerStato);
-        voci.put("Visualizza iscrizioni", controller::visualizzaVisiteConIscrizione);
-        voci.put("Iscrizione a una visita ", controller::iscrizioneFruitore);
-        voci.put("Annulla iscrizione'", controller::annullaIscrizione);
+        voci.put("Visualizza visite proposte/confermate/cancellate", controller::mostraVisitePerStato);
+        voci.put("Visualizza le visite a cui hai effettuato un'iscrizione", controller::mostraIscrizioniFruitore);
+        voci.put("Iscrivi persone a una visita ", controller::iscrizioneFruitore);
+        voci.put("Annulla un'iscrizione'", controller::annullaIscrizione);
 
         myMenu.addVoci(voci);
     }
-
-
 
     public void stampaMenu() {
         Runnable scelta;
@@ -368,7 +367,7 @@ public class AppView {
     }
 
     public void mostraLuoghi(Set<Luogo> luoghi) {
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         if (luoghi == null || luoghi.isEmpty()) {
             System.out.println("Non ci sono luoghi disponibili");
         } else {
@@ -394,49 +393,79 @@ public class AppView {
             return;
         }
 
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
 
         if (tipiVisita != null && !tipiVisita.isEmpty()) {
-            for(TipoVisita visita : tipiVisita) {
-                System.out.println("\n" + controller.toString(visita));
+            for(TipoVisita tipoVisita : tipiVisita) {
+                System.out.println("\n" + controller.toString(tipoVisita));
             }
         }
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
-            for(TipoVisita visita: storicoVisite) {
-                System.out.println("\n" + controller.toString(visita));
+            for(TipoVisita tipoVisita: storicoVisite) {
+                System.out.println("\n" + controller.toString(tipoVisita));
             }
         }
     }
 
     public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato) {
         if (!visitePerStato.isEmpty()) {
-            Controller controller = Controller.getIstance();
+            Controller controller = Controller.getInstance();
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
                 System.out.println("\nStato: " + entry.getKey());
-                if (entry.getValue().isEmpty()) {
-                    System.out.println("Nessuna visita associata a questo stato");
-                } else {
+                if (!entry.getValue().isEmpty()) {
                     for (Visita visita : entry.getValue()) {
                         System.out.println(controller.toString(visita));
                     }
-                }
+                } else System.out.println("Nessuna visita associata a questo stato");
             }
         } else {
             System.out.println("Non ci sono visite");
         }
     }
-   
 
-    public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
-        if (visiteAssociate.isEmpty()) {
-            System.out.println("Non ci sono visite associate al volontario");
+    public void mostraVisiteStatoConIscrizioni(Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato) {
+        if (!visiteConIscrizioniPerStato.isEmpty()) {
+            Controller controller = Controller.getInstance();
+            for (Map.Entry<StatoVisita, Map<Visita, Iscrizione>> entry : visiteConIscrizioniPerStato.entrySet()) {
+                System.out.println("\nStato: " + entry.getKey());
+                if (!entry.getValue().isEmpty()) {
+
+                    for (Map.Entry<Visita, Iscrizione> visiteIscrizioni : entry.getValue().entrySet()) {
+                        System.out.println(controller.toString(visiteIscrizioni.getKey()));
+                        System.out.println("Iscrizione #" + visiteIscrizioni.getValue().getCodiceUnivoco() + " : " + visiteIscrizioni.getValue().getNumeroDiIscritti() + " iscritti");
+                    }
+                } else System.out.println("Nessuna iscrizione a visite in questo stato");
+            
+            }
         } else {
-            Controller controller = Controller.getIstance();
-            for (TipoVisita visita : visiteAssociate) {
-                System.out.println("\n" + controller.toString(visita));
+            System.out.println("Non ci sono visite");
+        }
+    }
+
+    public void mostraVisiteConfermateConIscrizioni(Map<Visita, Set<Iscrizione>> visiteConfermateConIscrizioni) {
+        if (!visiteConfermateConIscrizioni.isEmpty()) {
+            Controller controller = Controller.getInstance();
+            for (Map.Entry<Visita, Set<Iscrizione>> entry : visiteConfermateConIscrizioni.entrySet()) {
+                System.out.println("\n" + controller.toString(entry.getKey()));
+                if (!entry.getValue().isEmpty()) {
+                    for (Iscrizione iscrizione : entry.getValue()) {
+                        System.out.println("Iscrizione #" + iscrizione.getCodiceUnivoco() + " : " + iscrizione.getNumeroDiIscritti() + " iscritti");
+                    }
+                } else System.out.println("Nessuna iscrizione a questa visita");
+            }
+        } else {
+            System.out.println("Non ci sono visite confermate");
+        }
+    }
+   
+    public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
+        if (!visiteAssociate.isEmpty()) {
+            Controller controller = Controller.getInstance();
+            for (TipoVisita tipoVisita : visiteAssociate) {
+                System.out.println("\n" + controller.toString(tipoVisita));
             }
             System.out.println();
-        }
+        } else System.out.println("Non ci sono visite associate al volontario");
     }
 
     public Set<Integer> menuInserimentoDisponibilita(Set<Integer> disponibilita) {
@@ -448,6 +477,39 @@ public class AppView {
             System.out.println("Nessuna disponibilita' selezionata");
         }
         return nuoveDisponibilita;
+    }
+
+    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte) {
+        AbstractMap.SimpleEntry<Visita, Integer> iscrizione = null;
+        Visita visita = null;
+        int numeroIscritti = 0;
+
+        if (!visiteProposte.isEmpty()) {
+            do {
+                visita = InputDati.selezionaUnoDaLista("Selezionare una visita a cui iscriversi", visiteProposte, Visita::getIdentificativo);
+                
+                TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(visita);
+                int maxIscrivibili = tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti();
+
+                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere? (massimo %d) (inserire 0 per uscire dal menu di iscrizione)", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
+            } while (numeroIscritti != 0 || !InputDati.conferma("Confermare iscrizione?"));
+
+            iscrizione = new AbstractMap.SimpleEntry<>(visita, numeroIscritti);
+        }
+        else System.out.println("Non ci sono visite proposte a cui iscriversi");
+
+        return iscrizione;
+    }
+
+    public Visita menuDisiscrizione(Set<Visita> visiteIscritte) {
+        Visita visitaSelezionata = null;
+
+        if (!visiteIscritte.isEmpty()) {
+            visitaSelezionata = InputDati.selezionaUnoDaLista("Selezionare la visita di cui annullare l'iscrizione", visiteIscritte, Visita::getIdentificativo);
+        }
+        else System.out.println("Non si è iscritti a nessuna visita");
+
+        return visitaSelezionata;
     }
 
 }

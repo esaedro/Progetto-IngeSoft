@@ -193,6 +193,16 @@ public class Session {
         return volontari;
     }
 
+    public Set<Fruitore> getFruitori() {
+        Set<Fruitore> fruitori = new HashSet<>();
+        for (Utente utente : utenti) {
+            if (utente instanceof Fruitore) {
+                fruitori.add((Fruitore) utente);
+            }
+        }
+        return fruitori;
+    }
+
     public void addVolontari(Set<Volontario> nuoviVolontari) {
         utenti.addAll(nuoviVolontari);
     }
@@ -420,6 +430,7 @@ public class Session {
             List<Iscrizione> iscrizioniVisita = new ArrayList<>(); // Lista di tutte le iscrizioni per la visita fornita in input
             List<String> codiciIscrizioniVisita = new ArrayList<>(); // Lista di tutti i codici di iscrizione per la visita fornita in input
 
+            //TODO: sostituire con getFruitori()
             for (Utente u : utenti) {
                 if (u instanceof Fruitore) {
                     fruitori.add((Fruitore) u);

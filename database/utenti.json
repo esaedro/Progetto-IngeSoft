@@ -8,6 +8,10 @@
     "nomeUtente": "V01",
     "password": "volo",
     "type": "volontario",
-    "disponibilita": []
+    "disponibilita": [
+      2,
+      3,
+      4
+    ]
   }
 ]

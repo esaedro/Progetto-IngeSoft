@@ -11,7 +11,7 @@ public class Controller {
 
     private Controller() {}
 
-    public static Controller getIstance() {
+    public static Controller getInstance() {
         return controller;
     }
 
@@ -148,6 +148,14 @@ public class Controller {
     }
 
     public void mostraVisitePerStato() {
+        Set<Visita> visite = getAllVisite();
+        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
+        appview.mostraVisiteStato(visitePerStato);
+
+        //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
+    }
+
+    private Set<Visita> getAllVisite() {
         Set<Visita> visite = new HashSet<>();
         if (session.getVisite() != null) {
             for (TipoVisita tipoVisita : session.getVisite()) {
@@ -164,8 +172,7 @@ public class Controller {
                 }
             }
         }
-
-        appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
+        return visite;
     }
 
     public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite, Utente utenteAttivo) {
@@ -339,25 +346,94 @@ public class Controller {
         appview.setMenuConfiguratore();
     }
 
-    /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
-     */
     public void iscrizioneFruitore() {
+        if (session.getUtenteAttivo() instanceof Fruitore) {
+            AbstractMap.SimpleEntry<Visita, Integer> visitaConIscritti;
 
+            Set<Visita> visiteProposte = new HashSet<>();
+
+            for (Visita visita : getAllVisite()) {
+                if (visita.getStato() == StatoVisita.PROPOSTA) {
+                    visiteProposte.add(visita);
+                }
+            }
+
+            //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
+            //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
+            visitaConIscritti = appview.menuIscrizione(visiteProposte);
+            
+            if (visitaConIscritti != null) {
+                session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
+            }
+        }
     }
 
-    /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
-     */
     public void annullaIscrizione() {
+        if (session.getUtenteAttivo() instanceof Fruitore) {
+            //interazione con l'utente per la scelta della visita (mostrate tutte visite a cui si è iscritti a video, quale annullare)
+            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
+            Visita visitaDaCuiDisiscriversi;
+
+            visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
+
+            session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
+        }
 
     }
 
-    /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
-     */
-    public void visualizzaVisiteConIscrizione() {
+    public Map<Visita, Set<Iscrizione>> getIscrizioniPerQuesteVisite(Set<Visita> visite) {
+        Map<Visita, Set<Iscrizione>> visiteConIscrizioni = new HashMap<>();
+        Set<Iscrizione> iscrizioni = new HashSet<>();
 
+        for (Visita visita : visite) {
+            iscrizioni.clear();
+
+            for (Fruitore fruitore : session.getFruitori()) {
+                if (fruitore.getIscrizioni().containsKey(visita)) {
+                    iscrizioni.add(fruitore.getIscrizioni().get(visita));        
+                }
+            }
+            visiteConIscrizioni.put(visita, iscrizioni);
+        }
+
+        return visiteConIscrizioni;
+    }
+
+    public void mostraVisiteConfermateConIscrizioni () {
+        if (session.getUtenteAttivo() instanceof Volontario) {
+            Set<Visita> visiteConfermate = new HashSet<>();
+            for (Visita visita : getAllVisite()) {
+                if (visita.getStato() == StatoVisita.CONFERMATA) {
+                    visiteConfermate.add(visita);
+                }
+            }
+            appview.mostraVisiteConfermateConIscrizioni(getIscrizioniPerQuesteVisite(visiteConfermate));
+        }
+    }
+
+    public void mostraIscrizioniFruitore() {
+
+        //visite nello stato proposta/confermata/cancellata a cui ha effettuato un'iscrizione
+        if (session.getUtenteAttivo() instanceof Fruitore) {
+            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
+            Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
+
+            Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
+
+            for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
+                Visita visita = entry.getKey();
+                Iscrizione iscrizione = entry.getValue();
+                StatoVisita stato = visita.getStato();
+
+                //se non va fixare qui
+                if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
+                    visiteConIscrizioniPerStato
+                        .computeIfAbsent(stato, k -> new HashMap<>())
+                        .put(visita, iscrizione);
+                }
+            }
+            appview.mostraVisiteStatoConIscrizioni(visiteConIscrizioniPerStato);
+        }
     }
 
     public String toString(Object obj) {

@@ -9,7 +9,7 @@ public class Main {
         BelleStringhe.colori = true;
         InputDati.newLineDifferente = false;
         
-        Controller controller = Controller.getIstance();
+        Controller controller = Controller.getInstance();
         controller.start();
     }
 }

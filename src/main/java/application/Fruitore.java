@@ -1,18 +1,16 @@
 package application;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class Fruitore extends Utente {
 
-    private Map<Visita, Iscrizione> iscrizioni = new HashMap<>(); // <Visita, codice di prenotazione>
-
+    private Map<Visita, Iscrizione> iscrizioni = new HashMap<>();
+    
     public Fruitore(String nomeUtente, String password) {
         super(nomeUtente, password);
     }
-
+    
     public Fruitore(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
     }
@@ -27,5 +25,9 @@ public class Fruitore extends Utente {
 
     public Map<Visita, Iscrizione> getIscrizioni() {
         return iscrizioni;
+    }
+
+    public void setIscrizioni(Map<Visita, Iscrizione> iscrizioni) {
+        this.iscrizioni = iscrizioni;
     }
 }
