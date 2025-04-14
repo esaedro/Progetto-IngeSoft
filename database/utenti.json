@@ -13,5 +13,10 @@
       3,
       4
     ]
+  },
+  {
+    "nomeUtente": "F01",
+    "password": "frutto",
+    "type": "fruitore"
   }
 ]

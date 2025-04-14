@@ -25,7 +25,6 @@ class UtenteSerializer implements JsonSerializer<Utente> {
             jsonObject.add("disponibilita", jsonArraydateDisponiblita);
         } else if (utente instanceof Fruitore) {
             jsonObject.addProperty("type", "fruitore");
-            // TODO gestisci scrittura volontario
         }
 
         return jsonObject;

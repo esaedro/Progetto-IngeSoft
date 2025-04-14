@@ -6,8 +6,8 @@ import java.util.*;
 public class Controller {
 
     private static final Controller controller = new Controller();
-    private Session session = new Session();
-    private AppView appview = new AppView();
+    private final Session session = new Session();
+    private final AppView appview = new AppView();
 
     private Controller() {}
 
@@ -340,12 +340,18 @@ public class Controller {
         session.checkCondizioniDiClassi();
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     */
     public void riapriDisponibilita() {
         session.cleanDisponibilitaDeiVolontari();
         session.salvataggioDatePrecluseFutureInAttuali();
         appview.setMenuConfiguratore();
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     */
     public void iscrizioneFruitore() {
         if (session.getUtenteAttivo() instanceof Fruitore) {
             AbstractMap.SimpleEntry<Visita, Integer> visitaConIscritti;
@@ -368,6 +374,9 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     */
     public void annullaIscrizione() {
         if (session.getUtenteAttivo() instanceof Fruitore) {
             //interazione con l'utente per la scelta della visita (mostrate tutte visite a cui si è iscritti a video, quale annullare)
@@ -381,6 +390,9 @@ public class Controller {
 
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     */
     public Map<Visita, Set<Iscrizione>> getIscrizioniPerQuesteVisite(Set<Visita> visite) {
         Map<Visita, Set<Iscrizione>> visiteConIscrizioni = new HashMap<>();
         Set<Iscrizione> iscrizioni = new HashSet<>();
@@ -399,6 +411,9 @@ public class Controller {
         return visiteConIscrizioni;
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     */
     public void mostraVisiteConfermateConIscrizioni () {
         if (session.getUtenteAttivo() instanceof Volontario) {
             Set<Visita> visiteConfermate = new HashSet<>();
@@ -411,13 +426,16 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     */
     public void mostraIscrizioniFruitore() {
 
         //visite nello stato proposta/confermata/cancellata a cui ha effettuato un'iscrizione
-        if (session.getUtenteAttivo() instanceof Fruitore) {
-            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
-            Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
+        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
+            Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
+            //TODO: nessuna iscrizione
             Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
             for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
