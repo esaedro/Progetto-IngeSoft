@@ -4,23 +4,23 @@
       "year": 2025,
       "month": 3,
       "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
     },
     "stato": "EFFETTUATA",
-    "numeroIscritti": 9
+    "numeroIscritti": 7
   },
   {
     "dataVisita": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 14,
-      "hourOfDay": 15,
-      "minute": 16,
-      "second": 7
+      "hourOfDay": 19,
+      "minute": 13,
+      "second": 53
     },
     "stato": "EFFETTUATA",
-    "numeroIscritti": 7
+    "numeroIscritti": 9
   }
 ]
