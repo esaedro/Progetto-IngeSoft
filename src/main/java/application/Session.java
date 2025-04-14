@@ -1,9 +1,8 @@
 package application;
 
-import utility.FileManager;
-
 import java.util.*;
 import java.util.stream.Collectors;
+import utility.FileManager;
 
 public class Session {
 
@@ -210,7 +209,7 @@ public class Session {
     }
 
     public void cleanDisponibilitaDeiVolontari() {
-        for(Utente utente: utenti) {
+        for (Utente utente : utenti) {
             if (utente instanceof Volontario) {
                 ((Volontario) utente).clearDisponibilita();
             }
@@ -384,32 +383,81 @@ public class Session {
             tipoVisita.addVisita(nuovaVisita);
         }
     }
-    
-    public boolean puoIscriversi(Fruitore fruitore, Visita visita) {
+
+    public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti) {
         if (visita.getStato() == StatoVisita.PROPOSTA) {
-            TipoVisita tipovisita = visite.stream().filter(t -> t.getVisiteAssociate().contains(visita)).findFirst().orElse(null);
+            TipoVisita tipovisita = visite
+                .stream()
+                .filter(t -> t.getVisiteAssociate().contains(visita))
+                .findFirst()
+                .orElse(null);
             if (tipovisita != null) {
-                if (visita.getNumeroIscritti() < tipovisita.getMaxPartecipante()) {
+                if (visita.getNumeroIscritti() + numeroIscritti < tipovisita.getMaxPartecipante()) {
                     return true;
                 }
             }
         }
         return false;
     }
-    
+
     public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
         if (fruitore.getIscrizioni().containsKey(visita)) {
-            if (visita.getStato() == StatoVisita.COMPLETA || visita.getStato() == StatoVisita.PROPOSTA) {
+            if (
+                visita.getStato() == StatoVisita.COMPLETA ||
+                visita.getStato() == StatoVisita.PROPOSTA
+            ) {
                 return true;
             }
         }
         return false;
     }
-    
+
+    public void iscrizione(Fruitore fruitore, Visita visita, int numeroIscritti) {
+        if (puoIscriversi(fruitore, visita, numeroIscritti)) {
+            Iscrizione nuovaIscrizione;
+            String codiceIscrizione;
+            List<Fruitore> fruitori = new ArrayList<>(); // Lista di tutti i fruitori attualmente registrati
+            List<Iscrizione> iscrizioniVisita = new ArrayList<>(); // Lista di tutte le iscrizioni per la visita fornita in input
+            List<String> codiciIscrizioniVisita = new ArrayList<>(); // Lista di tutti i codici di iscrizione per la visita fornita in input
+
+            for (Utente u : utenti) {
+                if (u instanceof Fruitore) {
+                    fruitori.add((Fruitore) u);
+                }
+            }
+            for (Fruitore f : fruitori) {
+                if (f.getIscrizioni().containsKey(visita)) {
+                    iscrizioniVisita.add(f.getIscrizioni().get(visita));
+                }
+            }
+            for (Iscrizione i : iscrizioniVisita) {
+                codiciIscrizioniVisita.add(i.getCodiceUnivoco());
+            }
+
+            // Controllo che il codice creato non sia già presente per le iscrizioni alla stessa visita
+            do {
+                codiceIscrizione = String.format("%06d", new Random().nextInt(1000000));
+            } while (codiciIscrizioniVisita.contains(codiceIscrizione));
+
+            nuovaIscrizione = new Iscrizione(codiceIscrizione, numeroIscritti);
+            fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
+            visita.setNumeroIscritti(visita.getNumeroIscritti() + numeroIscritti);
+            
+            TipoVisita tipoVisita = visite
+                .stream()
+                .filter(t -> t.getVisiteAssociate().contains(visita))
+                .findFirst()
+                .orElse(null);
+            if (tipoVisita != null && visita.getNumeroIscritti() == tipoVisita.getMaxPartecipante()) {
+                visita.setStato(StatoVisita.COMPLETA);
+            }
+        }
+    }
+
     public void disiscrizione(Fruitore fruitore, Visita visita) {
         if (puoDisiscriversi(fruitore, visita)) {
-            fruitore.getIscrizioni().remove(visita);
-            visita.setNumeroIscritti(visita.getNumeroIscritti() - 1);
+            fruitore.rimuoviIscrizione(visita);
+            visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
             visita.setStato(StatoVisita.PROPOSTA);
         }
     }
