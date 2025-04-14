@@ -423,7 +423,7 @@ public class Controller {
             iscrizioni.clear();
 
             for (Fruitore fruitore : session.getFruitori()) {
-                if (fruitore.getIscrizioni().containsKey(visita)) {
+                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita)) {
                     iscrizioni.add(fruitore.getIscrizioni().get(visita));        
                 }
             }
@@ -436,11 +436,14 @@ public class Controller {
     /**
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
-    public void mostraVisiteConfermateConIscrizioni () {
+    public void mostraVisiteConfermateConIscrizioni() {
         if (session.getUtenteAttivo() instanceof Volontario) {
             Set<Visita> visiteConfermate = new HashSet<>();
             for (Visita visita : getAllVisite()) {
-                if (visita.getStato() == StatoVisita.CONFERMATA) {
+
+                //TODO: controllare se il metodo se funziona
+                
+                if (visita.getStato() == StatoVisita.CONFERMATA && visita.getVolontarioAssociato().equals(session.getUtenteAttivo())) {
                     visiteConfermate.add(visita);
                 }
             }
