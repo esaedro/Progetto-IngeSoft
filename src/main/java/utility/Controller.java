@@ -385,7 +385,8 @@ public class Controller {
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
-            session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
+            if (visitaDaCuiDisiscriversi != null)
+                session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
         }
 
     }
@@ -457,9 +458,11 @@ public class Controller {
     public TipoVisita getTipoVisitaAssociato(Visita visita) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-                for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
-                    if (visitaAssociata.equals(visita)) return tipoVisita;
-                }
+                if (tipoVisita.getVisiteAssociate().contains(visita))
+                    return tipoVisita;
+                // for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
+                //     if (visitaAssociata.equals(visita)) return tipoVisita;
+                // }
             }
         }
         return null;

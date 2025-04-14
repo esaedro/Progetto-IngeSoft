@@ -17,6 +17,8 @@
   {
     "nomeUtente": "F01",
     "password": "frutto",
-    "type": "fruitore"
+    "type": "fruitore",
+    "iscrizioni": [
+    ]
   }
 ]
