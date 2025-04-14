@@ -384,4 +384,33 @@ public class Session {
             tipoVisita.addVisita(nuovaVisita);
         }
     }
+    
+    public boolean puoIscriversi(Fruitore fruitore, Visita visita) {
+        if (visita.getStato() == StatoVisita.PROPOSTA) {
+            TipoVisita tipovisita = visite.stream().filter(t -> t.getVisiteAssociate().contains(visita)).findFirst().orElse(null);
+            if (tipovisita != null) {
+                if (visita.getNumeroIscritti() < tipovisita.getMaxPartecipante()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
+        if (fruitore.getIscrizioni().containsKey(visita)) {
+            if (visita.getStato() == StatoVisita.COMPLETA || visita.getStato() == StatoVisita.PROPOSTA) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void disiscrizione(Fruitore fruitore, Visita visita) {
+        if (puoDisiscriversi(fruitore, visita)) {
+            fruitore.getIscrizioni().remove(visita);
+            visita.setNumeroIscritti(visita.getNumeroIscritti() - 1);
+            visita.setStato(StatoVisita.PROPOSTA);
+        }
+    }
 }

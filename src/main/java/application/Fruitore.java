@@ -8,11 +8,11 @@ import java.util.Set;
 public class Fruitore extends Utente {
 
     private Map<Visita, Iscrizione> iscrizioni = new HashMap<>(); // <Visita, codice di prenotazione>
-    
+
     public Fruitore(String nomeUtente, String password) {
         super(nomeUtente, password);
     }
-    
+
     public Fruitore(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
     }
@@ -23,5 +23,9 @@ public class Fruitore extends Utente {
 
     public void rimuoviIscrizione(Visita visita) {
         iscrizioni.remove(visita);
+    }
+
+    public Map<Visita, Iscrizione> getIscrizioni() {
+        return iscrizioni;
     }
 }
