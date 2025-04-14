@@ -505,7 +505,9 @@ public class AppView {
         Visita visitaSelezionata = null;
 
         if (!visiteIscritte.isEmpty()) {
-            visitaSelezionata = InputDati.selezionaUnoDaLista("Selezionare la visita di cui annullare l'iscrizione", visiteIscritte, Visita::getIdentificativo);
+            do {
+                visitaSelezionata = InputDati.selezionaUnoDaLista("Selezionare la visita di cui annullare l'iscrizione", visiteIscritte, Visita::getIdentificativo);
+            } while (!InputDati.conferma("Confermare disiscrizione?"));
         }
         else System.out.println("Non si è iscritti a nessuna visita");
 
