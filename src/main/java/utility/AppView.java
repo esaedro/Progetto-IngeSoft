@@ -8,7 +8,7 @@ import java.util.*;
 
 public class AppView {
 
-    CliMenu<String, Runnable> myMenu = new CliMenu<>();
+    private CliMenu<String, Runnable> myMenu = new CliMenu<>();
 
     public void benvenutoMsg(Utente utenteAttivo) {
         System.out.println(BelleStringhe.incornicia(
@@ -368,11 +368,12 @@ public class AppView {
     }
 
     public void mostraLuoghi(Set<Luogo> luoghi) {
+        Controller controller = Controller.getIstance();
         if (luoghi == null || luoghi.isEmpty()) {
             System.out.println("Non ci sono luoghi disponibili");
         } else {
             for (Luogo luogo : luoghi) {
-                System.out.println(luogo.toString());
+                System.out.println(controller.toString(luogo));
             }
         }
     }
@@ -392,41 +393,47 @@ public class AppView {
             System.out.println("Non ci sono visite disponibili");
             return;
         }
+
+        Controller controller = Controller.getIstance();
+
         if (tipiVisita != null && !tipiVisita.isEmpty()) {
             for(TipoVisita visita : tipiVisita) {
-                System.out.println("\n" + visita.toString());
+                System.out.println("\n" + controller.toString(visita));
             }
         }
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
             for(TipoVisita visita: storicoVisite) {
-                System.out.println("\n" + visita.toString());
+                System.out.println("\n" + controller.toString(visita));
             }
         }
     }
 
     public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato) {
-        if (visitePerStato.isEmpty()) {
-            System.out.println("Non ci sono visite");
-        } else {
+        if (!visitePerStato.isEmpty()) {
+            Controller controller = Controller.getIstance();
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
                 System.out.println("\nStato: " + entry.getKey());
                 if (entry.getValue().isEmpty()) {
                     System.out.println("Nessuna visita associata a questo stato");
                 } else {
                     for (Visita visita : entry.getValue()) {
-                        System.out.println(visita.toString());
+                        System.out.println(controller.toString(visita));
                     }
                 }
             }
+        } else {
+            System.out.println("Non ci sono visite");
         }
     }
+   
 
     public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
         if (visiteAssociate.isEmpty()) {
             System.out.println("Non ci sono visite associate al volontario");
         } else {
+            Controller controller = Controller.getIstance();
             for (TipoVisita visita : visiteAssociate) {
-                System.out.println("\n" + visita.toString());
+                System.out.println("\n" + controller.toString(visita));
             }
             System.out.println();
         }
