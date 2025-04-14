@@ -487,12 +487,15 @@ public class AppView {
         if (!visiteProposte.isEmpty()) {
             do {
                 visita = InputDati.selezionaUnoDaLista("Selezionare una visita a cui iscriversi", visiteProposte, Visita::getIdentificativo);
+                if (visita == null) {
+                    return iscrizione;
+                }
                 
                 TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(visita);
                 int maxIscrivibili = tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti();
 
-                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere? (massimo %d) (inserire 0 per uscire dal menu di iscrizione)", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
-            } while (numeroIscritti != 0 || !InputDati.conferma("Confermare iscrizione?"));
+                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere? (massimo %d)", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
+            } while (!InputDati.conferma("Confermare iscrizione?"));
 
             iscrizione = new AbstractMap.SimpleEntry<>(visita, numeroIscritti);
         }
@@ -507,6 +510,9 @@ public class AppView {
         if (!visiteIscritte.isEmpty()) {
             do {
                 visitaSelezionata = InputDati.selezionaUnoDaLista("Selezionare la visita di cui annullare l'iscrizione", visiteIscritte, Visita::getIdentificativo);
+                if (visitaSelezionata == null) {
+                    return null;
+                }
             } while (!InputDati.conferma("Confermare disiscrizione?"));
         }
         else System.out.println("Non si è iscritti a nessuna visita");

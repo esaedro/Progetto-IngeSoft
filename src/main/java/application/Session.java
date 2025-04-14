@@ -395,7 +395,7 @@ public class Session {
     }
 
     public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti) {
-        if (visita.getStato() == StatoVisita.PROPOSTA) {
+        if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
             TipoVisita tipovisita = visite
                 .stream()
                 .filter(t -> t.getVisiteAssociate().contains(visita))
@@ -426,16 +426,10 @@ public class Session {
         if (puoIscriversi(fruitore, visita, numeroIscritti)) {
             Iscrizione nuovaIscrizione;
             String codiceIscrizione;
-            List<Fruitore> fruitori = new ArrayList<>(); // Lista di tutti i fruitori attualmente registrati
+            Set<Fruitore> fruitori = getFruitori();
             List<Iscrizione> iscrizioniVisita = new ArrayList<>(); // Lista di tutte le iscrizioni per la visita fornita in input
             List<String> codiciIscrizioniVisita = new ArrayList<>(); // Lista di tutti i codici di iscrizione per la visita fornita in input
 
-            //TODO: sostituire con getFruitori()
-            for (Utente u : utenti) {
-                if (u instanceof Fruitore) {
-                    fruitori.add((Fruitore) u);
-                }
-            }
             for (Fruitore f : fruitori) {
                 if (f.getIscrizioni().containsKey(visita)) {
                     iscrizioniVisita.add(f.getIscrizioni().get(visita));
@@ -448,7 +442,7 @@ public class Session {
             // Controllo che il codice creato non sia già presente per le iscrizioni alla stessa visita
             do {
                 codiceIscrizione = String.format("%06d", new Random().nextInt(1000000));
-            } while (codiciIscrizioniVisita.contains(codiceIscrizione));
+            } while (codiciIscrizioniVisita.stream().anyMatch(codiceIscrizione::equals));
 
             nuovaIscrizione = new Iscrizione(codiceIscrizione, numeroIscritti);
             fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
@@ -467,8 +461,8 @@ public class Session {
 
     public void disiscrizione(Fruitore fruitore, Visita visita) {
         if (puoDisiscriversi(fruitore, visita)) {
-            fruitore.rimuoviIscrizione(visita);
             visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
+            fruitore.rimuoviIscrizione(visita);
             visita.setStato(StatoVisita.PROPOSTA);
         }
     }
