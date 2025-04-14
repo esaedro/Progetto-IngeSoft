@@ -3,7 +3,10 @@ package application;
 public class Iscrizione {
 
     private String codiceUnivoco;
+
+    //@ public invariant numeroDiIscritti > 0;
     private int numeroDiIscritti;
+
 
     public Iscrizione(String codiceUnivoco, int numeroDiIscritti) {
         this.codiceUnivoco = codiceUnivoco;

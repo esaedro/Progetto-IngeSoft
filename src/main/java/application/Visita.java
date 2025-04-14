@@ -9,6 +9,8 @@ public class Visita {
     private Calendar dataVisita;
     private StatoVisita stato;
     private int numeroIscritti;
+
+    //@ public invariant volontarioAssociato =! null;
     private Volontario volontarioAssociato;
     
     public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti) {

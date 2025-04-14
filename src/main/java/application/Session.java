@@ -1,26 +1,16 @@
 package application;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 import utility.FileManager;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Session {
 
     private Set<Utente> utenti;
     private Set<Luogo> luoghi;
     private Set<TipoVisita> visite;
-    private FileManager filemanager;
+    private final FileManager filemanager;
 
     private Utente utenteAttivo;
 

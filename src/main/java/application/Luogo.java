@@ -9,6 +9,8 @@ public class Luogo implements Serializable {
     private static String parametroTerritoriale;
     private String nome;
     private String indirizzo;
+
+    //@ public invariant visiteIds.size() > 0;
     private Set<String> visiteIds = new HashSet<>();
 
     public Luogo(String nome, String indirizzo) {

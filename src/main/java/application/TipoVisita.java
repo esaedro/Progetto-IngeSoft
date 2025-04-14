@@ -19,14 +19,18 @@ public class TipoVisita implements Serializable {
     private Calendar dataFine;
     private Calendar oraInizio;
     private int durata;
+
+    //@ public invariant giorniSettimana.size() > 0;
     private Set<DayOfWeek> giorniSettimana;
 
+    //@ public invariant maxPartecipante >= minPartecipante
     private int minPartecipante;
     private int maxPartecipante;
 
     private Boolean bigliettoIngresso;
-    private Set<Volontario> volontariIdonei;
 
+    //@ public invariant volontariIdonei.size() > 0;
+    private Set<Volontario> volontariIdonei;
     private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
     public TipoVisita(
