@@ -391,7 +391,7 @@ public class Controller {
                 }
             }
 
-            visiteProposte.removeIf(visita -> fruitore.getIscrizioni().containsKey(visita.getId()));
+            visiteProposte.removeIf((visita -> fruitore.getIscrizioni().containsKey(visita)));
             //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
             //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
             visitaConIscritti = appview.menuIscrizione(visiteProposte, this);
@@ -414,9 +414,10 @@ public class Controller {
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
-            if (visitaDaCuiDisiscriversi != null)
+            if (visitaDaCuiDisiscriversi != null) {
                 session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
-            salva();
+                salva();
+            }
         }
 
     }

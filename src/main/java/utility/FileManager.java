@@ -30,6 +30,7 @@ public class FileManager {
             .registerTypeAdapter(Volontario.class, new UtenteSerializer())
             .registerTypeAdapter(Fruitore.class, new UtenteSerializer())
             .registerTypeAdapter(Utente.class, new UtenteDeserializer())
+            .registerTypeAdapter(Fruitore.class, new FruitoreDeserializer())
             .setPrettyPrinting()
             .create();
 

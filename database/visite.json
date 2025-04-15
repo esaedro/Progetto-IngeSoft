@@ -72,8 +72,30 @@
           "second": 30
         },
         "stato": "PROPOSTA",
+<<<<<<< HEAD
         "numeroIscritti": 7,
         "titolo": "TitoloVisita1"
+=======
+        "numeroIscritti": 11
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 3,
+          "hourOfDay": 9,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 4,
+        "volontarioAssociato": {
+          "nomeUtente": "V01",
+          "password": "volo",
+          "type": "volontario",
+          "disponibilita": []
+        }
+>>>>>>> 477a79cb4de0f25157851272975d5d02f0da2a87
       }
     ]
   },

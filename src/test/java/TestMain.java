@@ -356,32 +356,20 @@ public class TestMain {
         Session session = new Session();
 
         Set<Utente> utentiTest = new HashSet<>();
-
-        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 14, "fruitoreTest");
-
-        HashMap<String, Iscrizione> iscrizioni = new HashMap<>();
-        iscrizioni.put(String.valueOf(visita.getId()), new Iscrizione("Codice", 5));
-
+        HashMap<Visita, Iscrizione> iscrizioni = new HashMap<>();
+        iscrizioni.put(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 4),
+                new Iscrizione("codice", 2));
         utentiTest.add(new Fruitore("Fruitore", "frutto", iscrizioni));
         session.setUtenti(utentiTest);
         session.salvaUtenti();
+
+        session.setUtenti(new HashSet<>());
 
         Utente finale = session.login("Fruitore", "frutto");
         assertInstanceOf(Fruitore.class, finale,"Login fruitore non restituisce i permessi");
 
         finale = session.login("Errore", "ErroreMaPassword");
         assertNull(finale, "Erroro login fruitore");
-    }
-
-    @Test
-    void registraFruitoreTest() {
-        Session session = new Session();
-
-        Set<Utente> utentiTest = new HashSet<>();
-        session.setUtenti(utentiTest);
-        session.salvaUtenti();
-
-        //TODO
     }
 
     @Test
