@@ -7,25 +7,25 @@
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 37,
-      "second": 44
+      "hourOfDay": 14,
+      "minute": 49,
+      "second": 20
     },
     "dataFine": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 37,
-      "second": 44
+      "hourOfDay": 14,
+      "minute": 49,
+      "second": 20
     },
     "oraInizio": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 37,
-      "second": 44
+      "hourOfDay": 14,
+      "minute": 49,
+      "second": 20
     },
     "durata": 3,
     "giorniSettimana": [],
@@ -39,9 +39,9 @@
           "year": 2025,
           "month": 3,
           "dayOfMonth": 15,
-          "hourOfDay": 11,
-          "minute": 37,
-          "second": 44
+          "hourOfDay": 14,
+          "minute": 49,
+          "second": 20
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 5,

@@ -1,12 +1,12 @@
 package utility;
 
-import application.Configuratore;
-import application.Fruitore;
-import application.Utente;
-import application.Volontario;
+import application.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 class UtenteSerializer implements JsonSerializer<Utente> {
     @Override
@@ -25,6 +25,10 @@ class UtenteSerializer implements JsonSerializer<Utente> {
             jsonObject.add("disponibilita", jsonArraydateDisponiblita);
         } else if (utente instanceof Fruitore) {
             jsonObject.addProperty("type", "fruitore");
+
+            Gson gson = new Gson();
+            JsonElement element = gson.toJsonTree(((Fruitore)utente).getIscrizioni());
+            jsonObject.add("iscrizioni", element);
         }
 
         return jsonObject;

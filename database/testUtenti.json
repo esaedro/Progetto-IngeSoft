@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "nomeUtente": "Fruitore",
+    "password": "frutto",
+    "type": "fruitore",
+    "iscrizioni": {
+      "15-3-2025-PROPOSTA-14": {
+        "codiceUnivoco": "Codice",
+        "numeroDiIscritti": 5
+      }
+    }
+  }
+]

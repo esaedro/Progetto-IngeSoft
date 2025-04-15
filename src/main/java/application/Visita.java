@@ -23,13 +23,25 @@ public class Visita {
         this.stato = stato;
         this.numeroIscritti = numeroIscritti;
     }
+
+    public Visita(String visitaID) {
+        String[] params = visitaID.split("-");
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Integer.parseInt(params[2]), Integer.parseInt(params[1]), Integer.parseInt(params[0]));
+        this.dataVisita = calendar;
+
+        this.stato = StatoVisita.valueOf(params[3]);
+        this.numeroIscritti = Integer.parseInt(params[4]);
+    }
+
+    public String getId() {
+        return dataVisita.get(Calendar.DAY_OF_MONTH) + "-" + dataVisita.get(Calendar.MONTH)
+                + "-" + dataVisita.get(Calendar.YEAR) + "-" + stato + "-" + numeroIscritti;
+    }
     
     public Calendar getDataVisita() {
         return dataVisita;
-    }
-
-    public void setDataVisita(Calendar dataVisita) {
-        this.dataVisita = dataVisita;
     }
 
     public StatoVisita getStato() {
@@ -85,8 +97,7 @@ public class Visita {
     }
 
     public TipoVisita getTipoVisita() {
-        TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
-        return tipoVisita;
+        return Controller.getInstance().getTipoVisitaAssociato(this);
     }
 
     public String getTipoVisitaTitolo() {
@@ -101,30 +112,33 @@ public class Visita {
             if (tipoVisita == null) {
                 return "Questa visita non è associata ad alcun tipo di visita";
             }
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t\t\t");
-            sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
-            sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
-            sb.append("Data di svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\t\t");
-            sb.append("Ora inizio: " + (tipoVisita.getOraInizio() != null 
-                ? tipoVisita.getOraInizio().get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", tipoVisita.getOraInizio().get(Calendar.MINUTE)) 
-                : "non specificata") + "\t\t");
-            sb.append("Biglietto di ingresso" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
+            sb.append("Titolo: ").append(tipoVisita.getTitolo()).append("\t\t\t\t");
+            sb.append("Descrizione: ").append(tipoVisita.getDescrizione()).append("\t\t");
+            sb.append("Punto di incontro: ").append(tipoVisita.getPuntoIncontro()).append("\n");
+            sb.append("Data di svolgimento: ").append(dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata").append("\t\t");
+            sb.append("Ora inizio: ").append(tipoVisita.getOraInizio() != null
+                    ? tipoVisita.getOraInizio().get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", tipoVisita.getOraInizio().get(Calendar.MINUTE))
+                    : "non specificata").append("\t\t");
+            sb.append("Biglietto di ingresso").append(tipoVisita.getBigliettoIngresso() ? " " : " non ").append("necessario\n");
         }
 
         else if (this.stato == StatoVisita.EFFETTUATA) {
             //sb.append("Titolo: " + (getTipoVisitaTitolo() != null ? getTipoVisitaTitolo() : "non trovato") + "\t\t");
-            sb.append("Data svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
+            sb.append("Data svolgimento: ").append(dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
         }
 
-        else if (this.stato == StatoVisita.CANCELLATA) {
+        else {
             if (tipoVisita == null) {
                 return "Questa visita non è associata ad alcun tipo di visita";
             }
             sb.append("Visita cancellata\n");
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
-            sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
-        }    
+            sb.append("Titolo: ").append(tipoVisita.getTitolo()).append("\n");
+            sb.append("Data di mancato svolgimento: ").append(dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
+        }
 
         return sb.toString();
-    }    
+    }
+
+
+
 }

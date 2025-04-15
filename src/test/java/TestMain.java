@@ -70,7 +70,7 @@ public class TestMain {
                 assertFalse(disp.add(giorno), "errore lettura/scrittura disponibilità volontario"));
 
         finale = session.login("Errore", "ErroreMaPassword");
-        assertNull(finale, "Erroro volontario fruitore");
+        assertNull(finale, "Errore volontario");
 
     }
 
@@ -356,12 +356,18 @@ public class TestMain {
         Session session = new Session();
 
         Set<Utente> utentiTest = new HashSet<>();
-        utentiTest.add(new Configuratore("Fruitore", "frutto"));
+
+        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 14);
+
+        HashMap<String, Iscrizione> iscrizioni = new HashMap<>();
+        iscrizioni.put(String.valueOf(visita.getId()), new Iscrizione("Codice", 5));
+
+        utentiTest.add(new Fruitore("Fruitore", "frutto", iscrizioni));
         session.setUtenti(utentiTest);
         session.salvaUtenti();
 
         Utente finale = session.login("Fruitore", "frutto");
-        assertInstanceOf(Configuratore.class, finale,"Login fruitore non restituisce i permessi");
+        assertInstanceOf(Fruitore.class, finale,"Login fruitore non restituisce i permessi");
 
         finale = session.login("Errore", "ErroreMaPassword");
         assertNull(finale, "Erroro login fruitore");

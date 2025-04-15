@@ -5,12 +5,16 @@ import java.util.Map;
 
 public class Fruitore extends Utente {
 
-    private Map<Visita, Iscrizione> iscrizioni = new HashMap<>();
+    private HashMap<String, Iscrizione> iscrizioni = new HashMap<>();
 
+
+    public Fruitore(String nomeUtente, String password) {
+        super(nomeUtente, password);
+    }
     /**
      * @ requires nomeUtente != null && password != null;
      */
-    public Fruitore(String nomeUtente, String password, Map<Visita, Iscrizione> iscrizioni) {
+    public Fruitore(String nomeUtente, String password, HashMap<String, Iscrizione> iscrizioni) {
         super(nomeUtente, password);
         this.iscrizioni = iscrizioni;
     }
@@ -26,24 +30,24 @@ public class Fruitore extends Utente {
      * @ requires visita != null && iscrizione != null;
      */
     public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
-        iscrizioni.put(visita, iscrizione);
+        iscrizioni.put(String.valueOf(visita.getId()), iscrizione);
     }
 
     /**
      * @ requires visita != null;
      */
     public void rimuoviIscrizione(Visita visita) {
-        iscrizioni.remove(visita);
+        iscrizioni.remove(String.valueOf(visita.getId()));
     }
 
-    public Map<Visita, Iscrizione> getIscrizioni() {
+    public HashMap<String, Iscrizione> getIscrizioni() {
         return iscrizioni;
     }
 
     /**
      * @ requires iscrizioni != null;
      */
-    public void setIscrizioni(Map<Visita, Iscrizione> iscrizioni) {
+    public void setIscrizioni(HashMap<String, Iscrizione> iscrizioni) {
         this.iscrizioni = iscrizioni;
     }
 }

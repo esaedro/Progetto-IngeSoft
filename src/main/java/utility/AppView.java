@@ -557,8 +557,11 @@ public class AppView {
         return iscrizione;
     }
 
-    public Visita menuDisiscrizione(Set<Visita> visiteIscritte) {
+    public Visita menuDisiscrizione(Set<String> visiteIscritteIds) {
         Visita visitaSelezionata = null;
+
+        Set<Visita> visiteIscritte = new HashSet<>();
+        visiteIscritteIds.forEach((id) -> visiteIscritte.add(new Visita(id)));
 
         if (!visiteIscritte.isEmpty()) {
             do {
