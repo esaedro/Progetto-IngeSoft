@@ -187,11 +187,9 @@ public class Controller {
             }
         }
 
-        if (session.getStoricoVisite() != null) {
-            for (TipoVisita tipoVisita : session.getStoricoVisite()) {
-                if (tipoVisita.getVisiteAssociate() != null) {
-                    visite.addAll(tipoVisita.getVisiteAssociate());
-                }
+        for (Map.Entry<String, Set<Visita>> entry: session.getStoricoVisite().entrySet()) {
+            if (entry.getValue() != null && !entry.getValue().isEmpty()){
+                visite.addAll(entry.getValue());
             }
         }
         return visite;

@@ -58,6 +58,17 @@ public class FileManager {
         }
     }
 
+    public <T, K> HashMap<T, Set<K>> caricaStorico (String nomeFile, Class<T> classToLoadKey, Class<K> classToLoadValue) {
+
+        Type arrayTypeSet = TypeToken.getParameterized(Set.class, classToLoadValue).getType();
+        Type arrayType = TypeToken.getParameterized(HashMap.class, classToLoadKey, arrayTypeSet).getType();
+        try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
+            return gson.fromJson(reader, arrayType);
+        } catch (IOException e) {
+            return new HashMap<>();
+        }
+    }
+
     public void salvaParametriGlobali() {
         JsonObject jo = new JsonObject();
         jo.addProperty("parametro_territoriale", Luogo.getParametroTerritoriale());

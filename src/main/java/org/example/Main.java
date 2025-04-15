@@ -11,8 +11,5 @@ public class Main {
         
         Controller controller = Controller.getInstance();
         controller.start();
-    
-        //TODO: cambiare archivio storico da TipoVisita ad oggetti Visita con stato cancellata
-        //TODO: controllare che venga salvato in visite.json il campo VolontarioAssociato di  (contenute a loro volta nel campo visiteAssociate)
     }
 }

@@ -423,7 +423,7 @@ public class AppView {
         }
     }
 
-    public void mostraTipiVisite(Set<TipoVisita> tipiVisita, Set<TipoVisita> storicoVisite) {
+    public void mostraTipiVisite(Set<TipoVisita> tipiVisita, HashMap<String, Set<Visita>> storicoVisite) {
         if ((tipiVisita == null || tipiVisita.isEmpty()) && (storicoVisite == null || storicoVisite.isEmpty())) {
             System.out.println("Non ci sono visite disponibili");
             return;
@@ -435,8 +435,10 @@ public class AppView {
             }
         }
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
-            for(TipoVisita tipoVisita: storicoVisite) {
-                System.out.println("\n" + toString(tipoVisita));
+            for (Map.Entry<String, Set<Visita>> entry: storicoVisite.entrySet()) {
+                for(Visita visita: entry.getValue()) {
+                    System.out.println("\n" + toString(visita));
+                }
             }
         }
     }

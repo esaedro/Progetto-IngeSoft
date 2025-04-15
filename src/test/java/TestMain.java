@@ -124,21 +124,34 @@ public class TestMain {
         TipoVisita visita1 = new TipoVisita("Visita1", "Disneyland", "",
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
-        visita1.addVisita(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6));
-        visita1.addVisita(new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7));
+
+        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6);
+        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7);
+
+        visita1.addVisita(visita1Proposta);
+        visita1.addVisita(visita1Effettuata);
         session.addVisita(visita1);
 
         TipoVisita visita2 = new TipoVisita("Visita2", "Disneyland", "",
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
-        visita2.addVisita(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8));
-        visita2.addVisita(new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9));
+
+        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8);
+        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9);
+
+        visita2.addVisita(visita2Proposta);
+        visita2.addVisita(visita2Effettuata);
         session.addVisita(visita2);
 
         session.salva();
         session.carica();
 
-        assertEquals(session.getStoricoVisite().size(), 2, "Problema nel salvataggio dello storico");
+        HashMap<String, Set<Visita>> visiteStoric = session.getStoricoVisite();
+
+        assertFalse(session.getStoricoVisite().get("Visita1").contains(visita1Proposta), "Problema nel salvataggio dello storico");
+        assertTrue(session.getStoricoVisite().get("Visita1").contains(visita1Effettuata), "Problema nel salvataggio dello storico");
+        assertFalse(session.getStoricoVisite().get("Visita2").contains(visita2Proposta), "Problema nel salvataggio dello storico");
+        assertTrue(session.getStoricoVisite().get("Visita2").contains(visita2Effettuata), "Problema nel salvataggio dello storico");
 
     }
 
@@ -365,5 +378,29 @@ public class TestMain {
         session.salvaUtenti();
 
         //TODO
+    }
+
+    @Test
+    void scritturaVisitaDentroTipoVisita() {
+        Session session = new Session();
+        session.setVisite(new HashSet<>());
+
+        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
+        visita.setVolontarioAssociato(new Volontario("volontario", "volontario"));
+
+        TipoVisita tipoVisita = new TipoVisita("Titolo", "Descrizione", "punto",
+                Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 3, new HashSet<>(), 1, 5,
+                true, new HashSet<>());
+        tipoVisita.addVisita(visita);
+
+        session.addVisita(tipoVisita);
+
+        session.salva();
+        session.setVisite(new HashSet<>());
+
+        session.carica();
+
+        session.getVisite().forEach((tV) -> tV.getVisiteAssociate().
+                forEach(((v) -> assertNotNull(v.getVolontarioAssociato()))));
     }
 }

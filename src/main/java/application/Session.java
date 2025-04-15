@@ -41,23 +41,29 @@ public class Session {
     }
 
     private void salvaStoricoVisite() {
-        ArrayList<Visita> visiteDaSalvare = new ArrayList<>();
-
+//        Set<Visita> visiteDaSalvare = new HashSet<>();
+        HashMap<String, Set<Visita>> visiteDaSalvare = new HashMap<>();
         for (TipoVisita tipoVisita : visite) {
             Iterator<Visita> visiteIterator = tipoVisita.getVisiteAssociate().iterator();
             while (visiteIterator.hasNext()) {
                 Visita visita = visiteIterator.next();
                 if (visita.getStato() == StatoVisita.EFFETTUATA) {
-                    visiteDaSalvare.add(visita);
+                    Set<Visita> visiteTemp = new HashSet<>();
+                    if (visiteDaSalvare.get(tipoVisita.getTitolo()) != null) {
+                        visiteTemp = visiteDaSalvare.get(tipoVisita.getTitolo());
+                    }
+                    visiteTemp.add(visita);
+                    visiteDaSalvare.put(tipoVisita.getTitolo(), visiteTemp);
                     visiteIterator.remove();
                 }
             }
         }
 
         if (!visiteDaSalvare.isEmpty()) {
-            Set<Visita> storicoVisite = filemanager.carica(FileManager.fileStorico, Visita.class);
+            HashMap<String, Set<Visita>> storicoVisite = filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
             if (storicoVisite != null) {
-                visiteDaSalvare.addAll(storicoVisite);
+//                visiteDaSalvare.addAll(storicoVisite);
+                visiteDaSalvare.putAll(storicoVisite);
             }
             filemanager.salva(FileManager.fileStorico, visiteDaSalvare);
             visiteDaSalvare.clear();
@@ -162,8 +168,8 @@ public class Session {
         visite.addAll(tipoVisiteToAdd);
     }
 
-    public Set<TipoVisita> getStoricoVisite() {
-        return filemanager.carica(FileManager.fileStorico, TipoVisita.class);
+    public HashMap<String, Set<Visita>> getStoricoVisite() {
+        return filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
     }
 
     public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
