@@ -407,8 +407,9 @@ public class AppView {
         if (luoghi == null || luoghi.isEmpty()) {
             System.out.println("Non ci sono luoghi disponibili");
         } else {
+            System.out.println(BelleStringhe.incornicia("Luoghi Presenti: "));
             for (Luogo luogo : luoghi) {
-                System.out.println(toString(luogo));
+                System.out.println(toString(luogo) + "\n");
             }
         }
     }
@@ -417,6 +418,7 @@ public class AppView {
         if (volontari == null || volontari.isEmpty()) {
             System.out.println("Non ci sono volontari disponibili");
         } else {
+            System.out.println("Volontari Presenti: ");
             for (Volontario user : volontari) {
                 System.out.println(user.getNomeUtente());
             }
@@ -437,7 +439,7 @@ public class AppView {
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
             for (Map.Entry<String, Set<Visita>> entry: storicoVisite.entrySet()) {
                 for(Visita visita: entry.getValue()) {
-                    System.out.println("\n" + toString(visita));
+                    System.out.println("\nVisita cancellata\n"+ entry.getKey() + "\t" + toString(visita));
                 }
             }
         }

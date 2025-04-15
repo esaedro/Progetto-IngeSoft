@@ -80,11 +80,10 @@ public class Luogo implements Serializable {
 
     @Override
     public String toString() {
-        return "Luogo{" +
-                "nome='" + nome + '\'' + 
-                ", indirizzo='" + indirizzo + '\'' + 
-                ", visiteIds=" + visiteIds +
-                '}';
+        return  nome +
+                "\t\tIndirizzo: " + indirizzo + 
+                "\nTipi di visita svolti qui: " + visiteIds
+                ;
     }
 
 }
