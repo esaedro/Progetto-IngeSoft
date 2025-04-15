@@ -7,6 +7,9 @@ public class Utente implements Serializable {
     private String nomeUtente;
     private String password;
 
+    /**
+     * @ requires nomeUtente != null && password != null;
+     */
     public Utente(String nomeUtente, String password) {
         this.nomeUtente = nomeUtente;
         this.password = password;
@@ -20,6 +23,9 @@ public class Utente implements Serializable {
         return nomeUtente;
     }
 
+    /**
+     * @ requires nomeUtente != null;
+     */
     public void setNomeUtente(String nomeUtente) {
         this.nomeUtente = nomeUtente;
     }
@@ -28,6 +34,9 @@ public class Utente implements Serializable {
         return password;
     }
 
+    /**
+     * @ requires password != null;
+     */
     public void setPassword(String password) {
         this.password = password;
     }

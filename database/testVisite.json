@@ -1,36 +1,36 @@
 [
   {
-    "titolo": "Visita2",
-    "descrizione": "Disneyland",
-    "puntoIncontro": "",
+    "titolo": "Titolo",
+    "descrizione": "Descrizione",
+    "puntoIncontro": "punto",
     "dataInizio": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
       "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
+      "minute": 37,
+      "second": 44
     },
     "dataFine": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
       "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
+      "minute": 37,
+      "second": 44
     },
     "oraInizio": {
       "year": 2025,
       "month": 3,
       "dayOfMonth": 15,
       "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
+      "minute": 37,
+      "second": 44
     },
-    "durata": 2,
+    "durata": 3,
     "giorniSettimana": [],
-    "minPartecipante": 5,
-    "maxPartecipante": 10,
+    "minPartecipante": 1,
+    "maxPartecipante": 5,
     "bigliettoIngresso": true,
     "volontariIdonei": [],
     "visiteAssociate": [
@@ -40,60 +40,17 @@
           "month": 3,
           "dayOfMonth": 15,
           "hourOfDay": 11,
-          "minute": 4,
-          "second": 30
+          "minute": 37,
+          "second": 44
         },
         "stato": "PROPOSTA",
-        "numeroIscritti": 8
-      }
-    ]
-  },
-  {
-    "titolo": "Visita1",
-    "descrizione": "Disneyland",
-    "puntoIncontro": "",
-    "dataInizio": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
-    },
-    "dataFine": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
-    },
-    "oraInizio": {
-      "year": 2025,
-      "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 11,
-      "minute": 4,
-      "second": 30
-    },
-    "durata": 2,
-    "giorniSettimana": [],
-    "minPartecipante": 5,
-    "maxPartecipante": 10,
-    "bigliettoIngresso": true,
-    "volontariIdonei": [],
-    "visiteAssociate": [
-      {
-        "dataVisita": {
-          "year": 2025,
-          "month": 3,
-          "dayOfMonth": 15,
-          "hourOfDay": 11,
-          "minute": 4,
-          "second": 30
-        },
-        "stato": "PROPOSTA",
-        "numeroIscritti": 6
+        "numeroIscritti": 5,
+        "volontarioAssociato": {
+          "nomeUtente": "volontario",
+          "password": "volontario",
+          "type": "volontario",
+          "disponibilita": []
+        }
       }
     ]
   }
