@@ -6,9 +6,21 @@ import utility.FileManager;
 
 public class Session {
 
+    /**
+     * @ invariant utenti != null && !utenti.isEmpty();
+     */
     private Set<Utente> utenti;
+    /**
+     * @ invariant luoghi != null;
+     */
     private Set<Luogo> luoghi;
+    /**
+     * @ invariant visite != null;
+     */
     private Set<TipoVisita> visite;
+    /**
+     * @ invariant filemanager != null;
+     */
     private final FileManager filemanager;
 
     private Utente utenteAttivo;
@@ -17,6 +29,9 @@ public class Session {
         this.filemanager = new FileManager("database/");
     }
 
+    /**
+     * @ requires utenti != null && luoghi != null && visite != null && filemanager != null;
+     */
     public Session(
         Set<Utente> utenti,
         Set<Luogo> luoghi,
@@ -74,6 +89,9 @@ public class Session {
         filemanager.salvaParametriGlobali();
     }
 
+    /**
+     * @ requires utente != null && newPassword != null && !newPassword.isEmpty();
+     */
     public void cambiaPassword(Utente utente, String newPassword) {
         for (Utente user : utenti) {
             if (user.getNomeUtente().equals(utente.getNomeUtente())) {
@@ -103,6 +121,9 @@ public class Session {
         : new HashSet<>();
     }
 
+    /**
+     * @ requires nomeUtente != null && !nomeUtente.isEmpty() && password != null && !password.isEmpty();
+     */
     public Utente login(String nomeUtente, String password) {
         caricaUtenti();
 
@@ -119,6 +140,9 @@ public class Session {
         return utenti;
     }
 
+    /**
+     * @ requires utenti != null;
+     */
     public void setUtenti(Set<Utente> utenti) {
         this.utenti = utenti;
     }
@@ -127,6 +151,9 @@ public class Session {
         return utenteAttivo;
     }
 
+    /**
+     * @ requires utenteAttivo != null;
+     */
     public void setUtenteAttivo(Utente utenteAttivo) {
         this.utenteAttivo = utenteAttivo;
     }
@@ -135,43 +162,67 @@ public class Session {
         return luoghi;
     }
 
+    /**
+     * @ requires luoghi != null;
+     */
     public void setLuoghi(Set<Luogo> luoghi) {
         this.luoghi = luoghi;
     }
 
+    /**
+     * @ requires luoghiDaAggiungere != null;
+     */
     public void addLuoghi(Set<Luogo> luoghiDaAggiungere) {
         this.luoghi.addAll(luoghiDaAggiungere);
     }
 
+    /**
+     * @ requires luogo != null;
+     */
     public void addLuogo(Luogo luogo) {
         this.luoghi.add(luogo);
     }
 
     // TODO: realize a proxy
-    public void removeLuoghi(Set<Luogo> luoghidaRimuovere) {
-        this.luoghi.removeAll(luoghidaRimuovere);
+    /**
+     * @ requires luoghiDaRimuovere != null;
+     */
+    public void removeLuoghi(Set<Luogo> luoghiDaRimuovere) {
+        this.luoghi.removeAll(luoghiDaRimuovere);
     }
 
     public Set<TipoVisita> getVisite() {
         return visite;
     }
 
+    /**
+     * @ requires visite != null;
+     */
     public void setVisite(Set<TipoVisita> visite) {
         this.visite = visite;
     }
 
+    /**
+     * @ requires visite != null;
+     */
     public void addVisita(TipoVisita visite) {
         this.visite.add(visite);
     }
 
-    public void addTipoVisite(Set<TipoVisita> tipoVisiteToAdd) {
-        visite.addAll(tipoVisiteToAdd);
+    /**
+     * @ requires tipoVisiteDaAggiungere != null;
+     */
+    public void addTipoVisite(Set<TipoVisita> tipoVisiteDaAggiungere) {
+        visite.addAll(tipoVisiteDaAggiungere);
     }
 
     public HashMap<String, Set<Visita>> getStoricoVisite() {
         return filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
     }
 
+    /**
+     * @ requires luogo != null;
+     */
     public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
         ArrayList<TipoVisita> visiteResult = new ArrayList<>();
         for (TipoVisita visita : visite) {
@@ -183,6 +234,9 @@ public class Session {
     }
 
     // TODO: realize a proxy
+    /**
+     * @ requires visiteDaRimuovere != null;
+     */
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
         for (TipoVisita tipoVisita : visiteDaRimuovere) {
             for (Luogo luogo : luoghi) {
@@ -461,7 +515,7 @@ public class Session {
             nuovaIscrizione = new Iscrizione(codiceIscrizione, numeroIscritti);
             fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
             visita.setNumeroIscritti(visita.getNumeroIscritti() + numeroIscritti);
-            
+
             TipoVisita tipoVisita = visite
                 .stream()
                 .filter(t -> t.getVisiteAssociate().contains(visita))

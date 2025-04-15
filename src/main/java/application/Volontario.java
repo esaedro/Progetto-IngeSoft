@@ -6,16 +6,24 @@ public class Volontario extends Utente {
 
     Set<Integer> disponibilita = new HashSet<>();
 
-    // Constructor per non dare errore, non fa realmente parte del progetto
+    /**
+     * @ requires nomeUtente != null && password != null;
+     */
     public Volontario(String nomeUtente, String password) {
         super(nomeUtente, password);
     }
 
+    /**
+     * @ requires nomeUtente != null && password != null;
+     */
     public Volontario(String nomeUtente, String password, Set<Integer> disponibilita) {
         super(nomeUtente, password);
         this.disponibilita = disponibilita;
     }
 
+    /**
+     * @ requires utente != null;
+     */
     public Volontario(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
     }
@@ -24,10 +32,16 @@ public class Volontario extends Utente {
         return disponibilita;
     }
 
+    /**
+     * @ requires disponibilitaNuova != null;
+     */
     public void setDisponibilita(Set<Integer> disponibilitaNuova) {
         this.disponibilita = disponibilitaNuova;
     }
 
+    /**
+     * @ requires disponibilitaDaAggiungere != null;
+     */
     public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {
         this.disponibilita.addAll(disponibilitaDaAggiungere);
     }

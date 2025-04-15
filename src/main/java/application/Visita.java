@@ -10,9 +10,14 @@ public class Visita {
     private StatoVisita stato;
     private int numeroIscritti;
 
-    //@ public invariant volontarioAssociato =! null;
+    /**
+     * @ invariant volontarioAssociato != null;
+     */
     private Volontario volontarioAssociato;
-    
+
+    /**
+     * @ requires volontarioAssociato != null;
+     */
     public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti) {
         this.dataVisita = dataVisita;
         this.stato = stato;
@@ -22,6 +27,7 @@ public class Visita {
     public Calendar getDataVisita() {
         return dataVisita;
     }
+
     public void setDataVisita(Calendar dataVisita) {
         this.dataVisita = dataVisita;
     }
@@ -30,6 +36,9 @@ public class Visita {
         return stato;
     }
 
+    /**
+     * @ requires stato != null;
+     */
     public void setStato(StatoVisita stato) {
         this.stato = stato;
     }
@@ -38,10 +47,16 @@ public class Visita {
         return numeroIscritti;
     }
 
+    /**
+     * @ requires stato >= 0;
+     */
     public void setNumeroIscritti(int numeroIscritti) {
         this.numeroIscritti = numeroIscritti;
     }
 
+    /**
+     * @ requires volontarioAssociato != null;
+     */
     public void setVolontarioAssociato(Volontario volontarioAssociato) {
         this.volontarioAssociato = volontarioAssociato;
     }
@@ -50,6 +65,9 @@ public class Visita {
         return volontarioAssociato;
     }
 
+    /**
+     * @ ensures id == getTipoVisitaAssociato(this).getTitolo();
+     */
     public String getIdentificativo() {
         String id = "";
         id += Controller.getInstance().getTipoVisitaAssociato(this).getTitolo();

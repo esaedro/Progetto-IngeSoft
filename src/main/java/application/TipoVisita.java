@@ -20,16 +20,19 @@ public class TipoVisita implements Serializable {
     private Calendar oraInizio;
     private int durata;
 
-    //@ public invariant giorniSettimana.size() > 0;
     private Set<DayOfWeek> giorniSettimana;
 
-    //@ public invariant maxPartecipante >= minPartecipante
+    /**
+     * @ public invariant maxPartecipante >= minPartecipante
+     */
     private int minPartecipante;
     private int maxPartecipante;
 
     private Boolean bigliettoIngresso;
 
-    //@ public invariant volontariIdonei.size() > 0;
+    /**
+     * @ public invariant volontariIdonei.size() > 0;
+     */
     private Set<Volontario> volontariIdonei;
     private ArrayList<Visita> visiteAssociate = new ArrayList<>();
 
@@ -65,6 +68,9 @@ public class TipoVisita implements Serializable {
         return numeroMassimoIscrittoPerFruitore;
     }
 
+    /**
+     * @ requires numeroMassimoIscrittoPerFruitore >= 1
+     */
     public static void setNumeroMassimoIscrittoPerFruitore(int numeroMassimoIscrittoPerFruitore) {
         TipoVisita.numeroMassimoIscrittoPerFruitore = numeroMassimoIscrittoPerFruitore;
     }
@@ -73,96 +79,44 @@ public class TipoVisita implements Serializable {
         return titolo;
     }
 
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
-    }
-
     public String getDescrizione() {
         return descrizione;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
     }
 
     public String getPuntoIncontro() {
         return puntoIncontro;
     }
 
-    public void setPuntoIncontro(String puntoIncontro) {
-        this.puntoIncontro = puntoIncontro;
-    }
-
     public Calendar getDataInizio() {
         return dataInizio;
-    }
-
-    public void setDataInizio(Calendar dataInizio) {
-        this.dataInizio = dataInizio;
     }
 
     public Calendar getDataFine() {
         return dataFine;
     }
 
-    public void setDataFine(Calendar dataFine) {
-        this.dataFine = dataFine;
-    }
-
     public Calendar getOraInizio() {
         return oraInizio;
-    }
-
-    public void setOraInizio(Calendar oraInizio) {
-        this.oraInizio = oraInizio;
     }
 
     public int getDurata() {
         return durata;
     }
 
-    public void setDurata(int durata) {
-        this.durata = durata;
-    }
-
-    public Set<DayOfWeek> getGiorniSettimana() {
-        return giorniSettimana;
-    }
-
-    public void setGiorniSettimana(Set<DayOfWeek> giorniSettimana) {
-        this.giorniSettimana = giorniSettimana;
-    }
-
     public int getMaxPartecipante() {
         return maxPartecipante;
-    }
-
-    public void setMaxPartecipante(int maxPartecipante) {
-        this.maxPartecipante = maxPartecipante;
     }
 
     public int getMinPartecipante() {
         return minPartecipante;
     }
 
-    public void setMinPartecipante(int minPartecipante) {
-        this.minPartecipante = minPartecipante;
-    }
-
     public Boolean getBigliettoIngresso() {
         return bigliettoIngresso;
     }
 
-    public void setBigliettoIngresso(Boolean bigliettoIngresso) {
-        this.bigliettoIngresso = bigliettoIngresso;
-    }
-
     public Set<Volontario> getVolontariIdonei() {
         return volontariIdonei;
-    }
-
-    public void setVolontariIdonei(Set<Volontario> volontariIdonei) {
-        this.volontariIdonei = volontariIdonei;
     }
 
     public boolean haVolontariAssociati() {
@@ -173,10 +127,16 @@ public class TipoVisita implements Serializable {
         return datePrecluseFuture;
     }
 
+    /**
+     *@ requires datePrecluseDaAggiungere != null
+     */
     public static void aggiungiDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
         datePrecluseFuture.addAll(datePrecluseDaAggiungere);
     }
 
+    /**
+     * @ requires datePrecluseDaAggiungere != null
+     */
     public static void setDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluseFuture = datePrecluseDaAggiungere;
     }
@@ -189,10 +149,16 @@ public class TipoVisita implements Serializable {
         return datePrecluseAttuali;
     }
 
+    /**
+     * @ requires datePrecluseDaAggiungere != null
+     */
     public static void aggiungiDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
         datePrecluseAttuali.addAll(datePrecluseDaAggiungere);
     }
 
+    /**
+     * @ requires datePrecluseDaAggiungere != null
+     */
     public static void setDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluseAttuali = datePrecluseDaAggiungere;
     }
@@ -201,14 +167,13 @@ public class TipoVisita implements Serializable {
         return visiteAssociate;
     }
 
-    public void setVisiteAssociate(ArrayList<Visita> visiteAssociate) {
-        this.visiteAssociate = visiteAssociate;
-    }
-
     public void addVisita(Visita visita) {
         visiteAssociate.add(visita);
     }
 
+    /**
+     * @ requires luoghi != null && luoghi.size() > 0
+     */
     public Set<Luogo> getLuoghiAssociati(Set<Luogo> luoghi) {
         Set<Luogo> luoghiTemp = new HashSet<>(luoghi);
         luoghiTemp.removeIf(luogo -> !luogo.getVisiteIds().contains(titolo));
@@ -219,8 +184,11 @@ public class TipoVisita implements Serializable {
         return !getLuoghiAssociati(luoghi).isEmpty();
     }
 
+    /**
+     * @ requires volontario != null
+     */
     public void rimuoviVolontario(Volontario volontario) {
-        if (volontariIdonei != null && volontariIdonei.contains(volontario)) {
+        if (volontariIdonei != null) {
             volontariIdonei.remove(volontario);
         }
 
@@ -232,15 +200,14 @@ public class TipoVisita implements Serializable {
         }
     }
 
+    /**
+     * @ requires volontariDaAggiungere != null && volontariDaAggiungere > 0
+     */
     public void aggiungiVolontariIdonei(Set<Volontario> volontariDaAggiungere) {
         if (volontariIdonei == null) {
             volontariIdonei = new HashSet<>();
         }
-        for (Volontario volontario : volontariDaAggiungere) {
-            if (!volontariIdonei.contains(volontario)) {
-                volontariIdonei.add(volontario);
-            }
-        }
+        volontariIdonei.addAll(volontariDaAggiungere);
     }
 
     public static Set<Calendar> getDatePossibiliAttuali(Calendar fineMese) {
