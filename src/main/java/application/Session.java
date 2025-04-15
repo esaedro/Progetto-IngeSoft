@@ -463,8 +463,8 @@ public class Session {
     }
 
     public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti) {
-        if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
-            TipoVisita tipovisita = visite
+        if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita.getId())) {
+            TipoVisita tipovisita = visite  //usare titolo??
                 .stream()
                 .filter(t -> t.getVisiteAssociate().contains(visita))
                 .findFirst()
@@ -479,7 +479,7 @@ public class Session {
     }
 
     public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
-        if (fruitore.getIscrizioni().containsKey(visita)) {
+        if (fruitore.getIscrizioni().containsKey(visita.getId())) {
             if (
                 visita.getStato() == StatoVisita.COMPLETA ||
                 visita.getStato() == StatoVisita.PROPOSTA
@@ -499,8 +499,8 @@ public class Session {
             List<String> codiciIscrizioniVisita = new ArrayList<>(); // Lista di tutti i codici di iscrizione per la visita fornita in input
 
             for (Fruitore f : fruitori) {
-                if (f.getIscrizioni().containsKey(visita)) {
-                    iscrizioniVisita.add(f.getIscrizioni().get(visita));
+                if (f.getIscrizioni().containsKey(visita.getId())) {
+                    iscrizioniVisita.add(f.getIscrizioni().get(visita.getId()));
                 }
             }
             for (Iscrizione i : iscrizioniVisita) {
@@ -516,6 +516,7 @@ public class Session {
             fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
             visita.setNumeroIscritti(visita.getNumeroIscritti() + numeroIscritti);
 
+            //Si può sfruttare nuovo attributo titolo in Visita?
             TipoVisita tipoVisita = visite
                 .stream()
                 .filter(t -> t.getVisiteAssociate().contains(visita))
@@ -529,7 +530,7 @@ public class Session {
 
     public void disiscrizione(Fruitore fruitore, Visita visita) {
         if (puoDisiscriversi(fruitore, visita)) {
-            visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
+            visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita.getId()).getNumeroDiIscritti());
             fruitore.rimuoviIscrizione(visita);
             visita.setStato(StatoVisita.PROPOSTA);
         }

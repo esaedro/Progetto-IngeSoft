@@ -86,7 +86,7 @@ public class Visita {
      */
     public String getIdentificativo() {
         String id = "";
-        id += Controller.getInstance().getTipoVisitaAssociato(this).getTitolo();
+        id += titolo != null ? titolo : "non specificato";
         id += " " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
         return id;
     }

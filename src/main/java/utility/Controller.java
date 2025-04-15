@@ -21,6 +21,7 @@ public class Controller {
         
         if (appview.stampaMenuOnce() == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
 
+        if (session.getUtenteAttivo() == null) return;      //uscita 0 password
         carica();
         inizializzazione();
         
@@ -138,7 +139,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 15) {
                 appview.setMenuConfiguratore(this);
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
@@ -379,7 +380,7 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
     public void iscrizioneFruitore() {
-        if (session.getUtenteAttivo() instanceof Fruitore) {
+        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
             AbstractMap.SimpleEntry<Visita, Integer> visitaConIscritti;
 
             Set<Visita> visiteProposte = new HashSet<>();
@@ -390,14 +391,16 @@ public class Controller {
                 }
             }
 
+            visiteProposte.removeIf(visita -> fruitore.getIscrizioni().containsKey(visita.getId()));
             //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
             //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
             visitaConIscritti = appview.menuIscrizione(visiteProposte, this);
             
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
+                salva();
             }
-            salva();
+            
         }
     }
 
@@ -405,15 +408,15 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
     public void annullaIscrizione() {
-        if (session.getUtenteAttivo() instanceof Fruitore) {
+        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
-            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
             Visita visitaDaCuiDisiscriversi;
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
             if (visitaDaCuiDisiscriversi != null)
                 session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
+                salva();
         }
 
     }
@@ -493,9 +496,6 @@ public class Controller {
             for (TipoVisita tipoVisita : session.getVisite()) {
                 if (tipoVisita.getVisiteAssociate().contains(visita))
                     return tipoVisita;
-                // for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
-                //     if (visitaAssociata.equals(visita)) return tipoVisita;
-                // }
             }
         }
         return null;

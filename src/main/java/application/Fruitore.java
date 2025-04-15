@@ -30,14 +30,14 @@ public class Fruitore extends Utente {
      * @ requires visita != null && iscrizione != null;
      */
     public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
-        iscrizioni.put(String.valueOf(visita.getId()), iscrizione);
+        iscrizioni.put(visita.getId(), iscrizione);
     }
 
     /**
      * @ requires visita != null;
      */
     public void rimuoviIscrizione(Visita visita) {
-        iscrizioni.remove(String.valueOf(visita.getId()));
+        iscrizioni.remove(visita.getId());
     }
 
     public HashMap<String, Iscrizione> getIscrizioni() {
