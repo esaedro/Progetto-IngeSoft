@@ -5,14 +5,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Luogo implements Serializable {
-    
+
+    /**
+     * @ invariant parametroTerritoriale != null && !parametroTerritoriale.isEmpty();
+     */
     private static String parametroTerritoriale;
+
+    /**
+     * @ invariant nome != null && !nome.isEmpty();
+     */
     private String nome;
+
+    /**
+     * @ invariant indirizzo != null && !indirizzo.isEmpty();
+     */
     private String indirizzo;
 
-    //@ public invariant visiteIds.size() > 0;
+    /**
+     * @ invariant visiteIds.size() > 0;
+     */
     private Set<String> visiteIds = new HashSet<>();
 
+    /**
+     * @ requires nome != null;
+     * @ requires indirizzo != null;
+     */
     public Luogo(String nome, String indirizzo) {
         this.nome = nome;
         this.indirizzo = indirizzo;
@@ -22,6 +39,9 @@ public class Luogo implements Serializable {
         return parametroTerritoriale;
     }
 
+    /**
+     * @ requires parametroTerritoriale != null && !parametroTerritoriale.isEmpty();
+     */
     public static void setParametroTerritoriale(String parametroTerritoriale) {
         Luogo.parametroTerritoriale = parametroTerritoriale;
     }
@@ -30,14 +50,9 @@ public class Luogo implements Serializable {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getIndirizzo() {
-        return indirizzo;
-    }
-
+    /**
+     * @ requires visiteDaAggiungere != null;
+     */
     public void addVisita(String visiteDaAggiungere) {
         visiteIds.add(visiteDaAggiungere);
     }
@@ -46,16 +61,12 @@ public class Luogo implements Serializable {
         return visiteIds;
     }
 
-    public void setVisiteIds(Set<String> visiteIds) {
-        this.visiteIds = visiteIds;
-    }
-
     public boolean haVisiteAssociate() {
         return !visiteIds.isEmpty();
     }
 
     public void rimuoviVisita(String titoloVisita) {
-        if (visiteIds != null && visiteIds.contains(titoloVisita)) {
+        if (visiteIds != null) {
             visiteIds.remove(titoloVisita);
         }
     }
@@ -63,9 +74,7 @@ public class Luogo implements Serializable {
     public void aggiungiVisite(Set<TipoVisita> visiteDaAggiungere) {
         for (TipoVisita visita : visiteDaAggiungere) {
             String titolo = visita.getTitolo();
-            if (!visiteIds.contains(titolo)) {
-                visiteIds.add(titolo);
-            }
+            visiteIds.add(titolo);
         }
     }
 

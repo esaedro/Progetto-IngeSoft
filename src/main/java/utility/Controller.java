@@ -29,6 +29,9 @@ public class Controller {
         salva();
     }
 
+    /**
+     * @ ensures session.getUtenteAttivo() != null
+     */
     public void loginCredenziali() {
         Utente utenteProvvisorio = null;
 
@@ -43,6 +46,7 @@ public class Controller {
         session.setUtenteAttivo(utenteProvvisorio);
     }
 
+
     public void registrazioneFruitore() {
         session.caricaUtenti();
         
@@ -50,7 +54,7 @@ public class Controller {
         String password = appview.inserimentoPassword("Inserire la password: ");
 
         Fruitore fruitore = new Fruitore(nomeUtente, password);
-        if (fruitore != null) session.addFruitore(fruitore);
+        session.addFruitore(fruitore);
         session.salvaUtenti();
 
         session.setUtenteAttivo(fruitore);

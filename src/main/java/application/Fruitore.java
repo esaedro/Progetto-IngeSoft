@@ -7,19 +7,31 @@ public class Fruitore extends Utente {
 
     private Map<Visita, Iscrizione> iscrizioni = new HashMap<>();
 
+    /**
+     * @ requires nomeUtente != null && password != null;
+     */
     public Fruitore(String nomeUtente, String password) {
         super(nomeUtente, password);
         iscrizioni = new HashMap<>();
     }
 
+    /**
+     * @ requires utente != null;
+     */
     public Fruitore(Utente utente) {
         super(utente.getNomeUtente(), utente.getPassword());
     }
 
+    /**
+     * @ requires visita != null && iscrizione != null;
+     */
     public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
         iscrizioni.put(visita, iscrizione);
     }
 
+    /**
+     * @ requires visita != null;
+     */
     public void rimuoviIscrizione(Visita visita) {
         iscrizioni.remove(visita);
     }
@@ -28,6 +40,9 @@ public class Fruitore extends Utente {
         return iscrizioni;
     }
 
+    /**
+     * @ requires iscrizioni != null;
+     */
     public void setIscrizioni(Map<Visita, Iscrizione> iscrizioni) {
         this.iscrizioni = iscrizioni;
     }
