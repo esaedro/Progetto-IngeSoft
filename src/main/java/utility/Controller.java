@@ -138,7 +138,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 15) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) {
                 appview.setMenuConfiguratore(this);
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
@@ -177,13 +177,12 @@ public class Controller {
         Set<Visita> visite = getAllVisite();
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
 
-        if (session.getUtenteAttivo() instanceof Volontario) {
+        if (session.getUtenteAttivo() instanceof Configuratore) {
             appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
         } else if (session.getUtenteAttivo() instanceof Fruitore) {
             visitePerStato.remove(StatoVisita.COMPLETA);
             appview.mostraVisiteStato(visitePerStato, new HashMap<>());
         }
-
 
         //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
     }
@@ -473,8 +472,8 @@ public class Controller {
                 for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
                     Visita visita = entry.getKey();
                     Iscrizione iscrizione = entry.getValue();
+                    
                     StatoVisita stato = visita.getStato();
-
                     //se non va fixare qui
                     if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
                         visiteConIscrizioniPerStato
