@@ -456,7 +456,7 @@ public class Session {
         // Per ogni data estratta creo una visita e la aggiungo al tipo di visita
         for (int i = 0; i < Math.min(dateEstratte.size(), volontariEstratti.size()); i++) {
             Calendar dataVisita = dateEstratte.get(i);
-            Visita nuovaVisita = new Visita(dataVisita, StatoVisita.PROPOSTA, 0);
+            Visita nuovaVisita = new Visita(dataVisita, StatoVisita.PROPOSTA, 0, tipoVisita.getTitolo());
             nuovaVisita.setVolontarioAssociato(volontariEstratti.get(i));
             tipoVisita.addVisita(nuovaVisita);
         }

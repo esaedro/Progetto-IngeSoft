@@ -398,6 +398,7 @@ public class Controller {
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
             }
+            salva();
         }
     }
 
@@ -471,7 +472,7 @@ public class Controller {
 
             if (iscrizioni != null && !iscrizioni.isEmpty()) {                
                 for (Map.Entry<String, Iscrizione> entry : iscrizioni.entrySet()) {
-                    Visita visita = new Visita(String.valueOf(entry.hashCode()));
+                    Visita visita = new Visita(entry.getKey());
                     Iscrizione iscrizione = entry.getValue();
                     StatoVisita stato = visita.getStato();
 

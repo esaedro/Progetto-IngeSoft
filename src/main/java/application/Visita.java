@@ -9,6 +9,7 @@ public class Visita {
     private Calendar dataVisita;
     private StatoVisita stato;
     private int numeroIscritti;
+    private String titolo;
 
     /**
      * @ invariant volontarioAssociato != null;
@@ -18,10 +19,11 @@ public class Visita {
     /**
      * @ requires volontarioAssociato != null;
      */
-    public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti) {
+    public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti, String titolo) {
         this.dataVisita = dataVisita;
         this.stato = stato;
         this.numeroIscritti = numeroIscritti;
+        this.titolo = titolo;
     }
 
     public Visita(String visitaID) {
@@ -33,11 +35,13 @@ public class Visita {
 
         this.stato = StatoVisita.valueOf(params[3]);
         this.numeroIscritti = Integer.parseInt(params[4]);
+        this.titolo = params[5];
     }
 
     public String getId() {
         return dataVisita.get(Calendar.DAY_OF_MONTH) + "-" + dataVisita.get(Calendar.MONTH)
-                + "-" + dataVisita.get(Calendar.YEAR) + "-" + stato + "-" + numeroIscritti;
+                + "-" + dataVisita.get(Calendar.YEAR) + "-" + stato + "-" + numeroIscritti +
+                "-" + titolo;
     }
     
     public Calendar getDataVisita() {

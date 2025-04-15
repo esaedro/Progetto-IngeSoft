@@ -17,21 +17,22 @@
   {
     "nomeUtente": "F01",
     "password": "frutto",
-    "type": "fruitore"
+    "type": "fruitore",
+    "iscrizioni": {}
   },
   {
-    "nomeUtente": "paolo",
-    "password": "paolopaolo",
-    "type": "fruitore"
-  },
-  {
-    "nomeUtente": "pietro",
-    "password": "popopopo",
-    "type": "fruitore"
-  },
-  {
-    "nomeUtente": "luca",
-    "password": "fruitore",
-    "type": "fruitore"
+    "nomeUtente": "F02",
+    "password": "fruttolo",
+    "type": "fruitore",
+    "iscrizioni": {
+      "3-4-2025-PROPOSTA-0-null": {
+        "codiceUnivoco": "461545",
+        "numeroDiIscritti": 2
+      },
+      "1-9-2025-PROPOSTA-76-null": {
+        "codiceUnivoco": "371110",
+        "numeroDiIscritti": 2
+      }
+    }
   }
 ]
