@@ -361,7 +361,7 @@ public class AppView {
         voci.put("Visualizza visite proposte/confermate/cancellate", controller::mostraVisitePerStato);
         voci.put("Visualizza le visite a cui hai effettuato un'iscrizione", controller::mostraIscrizioniFruitore);
         voci.put("Iscrivi persone a una visita ", controller::iscrizioneFruitore);
-        voci.put("Annulla un'iscrizione'", controller::annullaIscrizione);
+        voci.put("Annulla un'iscrizione", controller::annullaIscrizione);
 
         myMenu.addVoci(voci);
     }
@@ -385,7 +385,7 @@ public class AppView {
         else return null;
     }
 
-    public Set<Integer> menuInserimentoDate() {
+ /*    public Set<Integer> menuInserimentoDate() {
         int dataInserita;
         Set<Integer> datePrecluse = new HashSet<>();
         Month meseLavoro = CalendarManager.meseDiLavoro(3);
@@ -401,6 +401,17 @@ public class AppView {
         } while (!InputDati.conferma("Confermare inserimento date?"));
 
         return datePrecluse;
+    } */
+
+    public Set<Integer> menuInserimentoDatePrecluse(Set<Integer> datePrecluseFuture) {
+        Month meseDiLavoro = CalendarManager.meseDiLavoro(3);
+        Set<Integer> nuoveDatePrecluse = InputDati.selezionaDateDaMese(
+            CalendarManager.annoCorrente(), meseDiLavoro, Collections.emptySet(), datePrecluseFuture);
+
+        if (nuoveDatePrecluse.isEmpty()) {
+            System.out.println("Nessuna data preclusa inserita");
+        }
+        return nuoveDatePrecluse;
     }
 
     public void mostraLuoghi(Set<Luogo> luoghi) {
@@ -437,26 +448,35 @@ public class AppView {
             }
         }
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
+            System.out.println("\nVisite effettuate mantenute nell'archivio: ");
             for (Map.Entry<String, Set<Visita>> entry: storicoVisite.entrySet()) {
                 for(Visita visita: entry.getValue()) {
-                    System.out.println("\nVisita cancellata\n"+ entry.getKey() + "\t" + toString(visita));
+                    System.out.println(entry.getKey() + "\t\t" + toString(visita));
                 }
             }
         }
     }
 
-    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato) {
+    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, HashMap<String, Set<Visita>> storicoVisite) {
         if (!visitePerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
-                System.out.println("\nStato: " + entry.getKey());
+                System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + entry.getKey() + BelleStringhe.ANSI_RESET);
                 if (!entry.getValue().isEmpty()) {
                     for (Visita visita : entry.getValue()) {
                         System.out.println(toString(visita));
                     }
                 } else System.out.println("Nessuna visita associata a questo stato");
             }
-        } else {
-            System.out.println("Non ci sono visite");
+        } else System.out.println("Non ci sono visite al di fuori dell'archivio storico");
+    
+
+        if (!storicoVisite.isEmpty()) {
+            System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + StatoVisita.EFFETTUATA + BelleStringhe.ANSI_RESET);
+            for (Map.Entry<String, Set<Visita>> entry : storicoVisite.entrySet()) {
+                for (Visita visita : entry.getValue()) {
+                    System.out.println(entry.getKey() + "\t\t" + toString(visita));
+                }
+            }
         }
     }
 
@@ -474,7 +494,7 @@ public class AppView {
             
             }
         } else {
-            System.out.println("Non ci sono visite");
+            System.out.println("Non sei iscritto a nessuna visita\n");
         }
     }
 

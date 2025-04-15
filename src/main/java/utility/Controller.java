@@ -53,7 +53,7 @@ public class Controller {
         String nomeUtente = appview.inserimentoNomeUtente("Inserire il nome utente: ", session.getUtenti());
         String password = appview.inserimentoPassword("Inserire la password: ");
 
-        Fruitore fruitore = new Fruitore(nomeUtente, password);
+        Fruitore fruitore = new Fruitore(nomeUtente, password, new HashMap<>());
         session.addFruitore(fruitore);
         session.salvaUtenti();
 
@@ -138,7 +138,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 9) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 15) {
                 appview.setMenuConfiguratore(this);
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
@@ -157,8 +157,8 @@ public class Controller {
      */
     public void inserisciDatePrecluse() {
         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
-                appview.menuInserimentoDate()
-            );
+                appview.menuInserimentoDatePrecluse(TipoVisita.getDatePrecluseFuture()));
+        session.salvaParametriGlobali();
     }
 
     public void mostraLuoghi() {
@@ -176,7 +176,14 @@ public class Controller {
     public void mostraVisitePerStato() {
         Set<Visita> visite = getAllVisite();
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
-        appview.mostraVisiteStato(visitePerStato);
+
+        if (session.getUtenteAttivo() instanceof Volontario) {
+            appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
+        } else if (session.getUtenteAttivo() instanceof Fruitore) {
+            visitePerStato.remove(StatoVisita.COMPLETA);
+            appview.mostraVisiteStato(visitePerStato, new HashMap<>());
+        }
+
 
         //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
     }
@@ -211,12 +218,8 @@ public class Controller {
             }
         }
 
-        visitePerStato.remove(StatoVisita.NON_ISTANZIATA);
-
-        if (utenteAttivo instanceof Fruitore) {             //Il fruitore visualizza solo proposte, confermate e cancellate
-            visitePerStato.remove(StatoVisita.COMPLETA);   
-            visitePerStato.remove(StatoVisita.EFFETTUATA);
-        }
+        visitePerStato.remove(StatoVisita.NON_ISTANZIATA); 
+        visitePerStato.remove(StatoVisita.EFFETTUATA);      //verranno visualizzate dall'archivio
         
         return visitePerStato;
     }
@@ -314,6 +317,7 @@ public class Controller {
 
     public void aggiungiVolontariInSession(Set<Volontario> volontari) {
         session.addVolontari(volontari);
+        session.salvaUtenti();
     }
 
     /**
@@ -444,9 +448,10 @@ public class Controller {
             for (Visita visita : getAllVisite()) {
 
                 //TODO: controllare se il metodo se funziona
-                
-                if (visita.getStato() == StatoVisita.CONFERMATA && visita.getVolontarioAssociato().equals(session.getUtenteAttivo())) {
-                    visiteConfermate.add(visita);
+                if (visita.getVolontarioAssociato() != null) {
+                    if (visita.getStato() == StatoVisita.CONFERMATA && visita.getVolontarioAssociato().equals(session.getUtenteAttivo())) {
+                        visiteConfermate.add(visita);
+                    }
                 }
             }
             appview.mostraVisiteConfermateConIscrizioni(getIscrizioniPerQuesteVisite(visiteConfermate));
@@ -464,7 +469,7 @@ public class Controller {
             Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
             Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
-            if (!iscrizioni.isEmpty()) {                
+            if (iscrizioni != null && !iscrizioni.isEmpty()) {                
                 for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
                     Visita visita = entry.getKey();
                     Iscrizione iscrizione = entry.getValue();
@@ -495,4 +500,17 @@ public class Controller {
         }
         return null;
     }
+
+    //recupera il titolo del tipoVisita di una visita effettuata che sta nell'archivii
+    public String getTipoVisitaTitolo(Visita visita) {
+        if (session.getStoricoVisite() != null && !session.getStoricoVisite().isEmpty()) {
+            for (Map.Entry<String, Set<Visita>> entry : session.getStoricoVisite().entrySet()) {
+                if (entry.getValue().contains(visita)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
 }

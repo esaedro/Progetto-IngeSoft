@@ -57,16 +57,33 @@ public class Visita {
         return id;
     }
 
+    public String getDataStato() {
+        String dataStato = "";
+
+        dataStato += " " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
+        dataStato += " " + stato;
+
+        return dataStato;
+    }
+
+    public TipoVisita getTipoVisita() {
+        TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
+        return tipoVisita;
+    }
+
+    public String getTipoVisitaTitolo() {
+        return Controller.getInstance().getTipoVisitaTitolo(this);
+    }
+
     public String toString() {
-
         StringBuilder sb = new StringBuilder();
+        TipoVisita tipoVisita = getTipoVisita();
 
-        if (this.stato != StatoVisita.EFFETTUATA) {
-            TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
+        if (this.stato != StatoVisita.EFFETTUATA &&  this.stato != StatoVisita.CANCELLATA) {
             if (tipoVisita == null) {
                 return "Questa visita non è associata ad alcun tipo di visita";
             }
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t\t");
+            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t\t\t");
             sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
             sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
             sb.append("Data di svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\t\t");
@@ -75,19 +92,21 @@ public class Visita {
                 : "non specificata") + "\t\t");
             sb.append("Biglietto di ingresso" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
         }
-        else {
-            //sb.append("Visita cancellata\n");
-            //sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
-            sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
+
+        else if (this.stato == StatoVisita.EFFETTUATA) {
+            //sb.append("Titolo: " + (getTipoVisitaTitolo() != null ? getTipoVisitaTitolo() : "non trovato") + "\t\t");
+            sb.append("Data svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
         }
 
-        return sb.toString();
+        else if (this.stato == StatoVisita.CANCELLATA) {
+            if (tipoVisita == null) {
+                return "Questa visita non è associata ad alcun tipo di visita";
+            }
+            sb.append("Visita cancellata\n");
+            sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
+            sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
+        }    
 
-       /*  return ("Visita{" +
-                "dataVisita=" + (dataVisita != null? dataVisita.getTime() : "nessuna") +
-                ", stato=" + stato +
-                ", numeroIscritti=" + numeroIscritti +
-                '}'); */
-    }
-    
+        return sb.toString();
+    }    
 }

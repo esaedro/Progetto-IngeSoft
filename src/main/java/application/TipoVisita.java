@@ -305,6 +305,14 @@ public class TipoVisita implements Serializable {
             }
         }
 
+        StringBuilder visiteID = new StringBuilder();
+        for (Visita visita : visiteAssociate) {
+            visiteID.append(visita.getDataStato()).append("; ");
+        }
+        if (!visiteID.isEmpty()) {
+            visiteID.setLength(visiteID.length() - 2); // Remove trailing comma and space
+        }
+
         return  "Titolo: " + titolo +
                 ", descrizione: " + descrizione +
                 ", puntoIncontro: " + puntoIncontro +
@@ -317,7 +325,6 @@ public class TipoVisita implements Serializable {
                 ", maxPartecipanti: " + maxPartecipante +
                 ", bigliettoIngresso: " + (bigliettoIngresso ? "sì" : "no") +
                 ", volontariIdonei: [" + volontari + "]" +
-                ", visiteAssociate:\n" + (visiteAssociate != null ? visiteAssociate.toString() : "nessuna") +
-                '}';
+                ", visiteAssociate: [" + (visiteAssociate != null ? ("" + visiteID) : "nessuna") + "]";
     }
 }

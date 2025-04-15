@@ -10,9 +10,9 @@ public class Fruitore extends Utente {
     /**
      * @ requires nomeUtente != null && password != null;
      */
-    public Fruitore(String nomeUtente, String password) {
+    public Fruitore(String nomeUtente, String password, Map<Visita, Iscrizione> iscrizioni) {
         super(nomeUtente, password);
-        iscrizioni = new HashMap<>();
+        this.iscrizioni = iscrizioni;
     }
 
     /**
