@@ -416,7 +416,7 @@ public class Controller {
 
             if (visitaDaCuiDisiscriversi != null)
                 session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
-                salva();
+            salva();
         }
 
     }
@@ -474,7 +474,7 @@ public class Controller {
 
             if (iscrizioni != null && !iscrizioni.isEmpty()) {                
                 for (Map.Entry<String, Iscrizione> entry : iscrizioni.entrySet()) {
-                    Visita visita = new Visita(entry.getKey());
+                    Visita visita = null; //TODO
                     Iscrizione iscrizione = entry.getValue();
                     
                     StatoVisita stato = visita.getStato();
@@ -491,10 +491,15 @@ public class Controller {
         }
     }
 
+    public TipoVisita getTipoVisitaByTitle(String title) {
+
+    }
+
     public TipoVisita getTipoVisitaAssociato(Visita visita) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-                if (tipoVisita.getVisiteAssociate().contains(visita))
+
+                if (tipoVisita.getVisiteAssociateId().contains(visita.getId()))
                     return tipoVisita;
             }
         }

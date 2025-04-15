@@ -167,6 +167,13 @@ public class TipoVisita implements Serializable {
         return visiteAssociate;
     }
 
+    public ArrayList<String> getVisiteAssociateId() {
+        ArrayList<String> ids = new ArrayList<>();
+        visiteAssociate.forEach(visita -> ids.add(visita.getId()));
+        return ids;
+    }
+
+
     public void addVisita(Visita visita) {
         visiteAssociate.add(visita);
     }
@@ -258,6 +265,15 @@ public class TipoVisita implements Serializable {
         });
         
         return datePossibiliPerVisita;
+    }
+
+    public Visita getVisitaById(String id) {
+        for (Visita visita: visiteAssociate) {
+            if (visita.getId().equals(id)) {
+                return visita;
+            }
+        }
+        return null;
     }
 
     @Override

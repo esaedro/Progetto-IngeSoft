@@ -3,15 +3,14 @@
     "nome": "Iseo",
     "indirizzo": "asd",
     "visiteIds": [
-      "Visita1",
-      "Visita2"
+      "TitoloVisita1"
     ]
   },
   {
     "nome": "Provaglio",
     "indirizzo": "as",
     "visiteIds": [
-      "Visita3"
+      "TitoloVisita2"
     ]
   }
 ]

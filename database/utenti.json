@@ -8,31 +8,23 @@
     "nomeUtente": "V01",
     "password": "volo",
     "type": "volontario",
-    "disponibilita": [
-      2,
-      3,
-      4
-    ]
+    "disponibilita": []
   },
   {
     "nomeUtente": "F01",
     "password": "frutto",
     "type": "fruitore",
-    "iscrizioni": {}
+    "iscrizioni": {
+      "2-5-2025-PROPOSTA-7-TitoloVisita2": {
+        "codiceUnivoco": "629400",
+        "numeroDiIscritti": 13
+      }
+    }
   },
   {
     "nomeUtente": "F02",
     "password": "fruttolo",
     "type": "fruitore",
-    "iscrizioni": {
-      "3-4-2025-PROPOSTA-0-null": {
-        "codiceUnivoco": "461545",
-        "numeroDiIscritti": 2
-      },
-      "1-9-2025-PROPOSTA-76-null": {
-        "codiceUnivoco": "371110",
-        "numeroDiIscritti": 2
-      }
-    }
+    "iscrizioni": {}
   }
 ]

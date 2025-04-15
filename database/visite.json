@@ -1,104 +1,44 @@
 [
   {
-    "titolo": "Visita2",
-    "descrizione": "qw",
-    "puntoIncontro": "qwe",
+    "titolo": "TitoloVisita1",
+    "descrizione": "Descrizione1",
+    "puntoIncontro": "PuntoDiIncontro",
     "dataInizio": {
       "year": 2025,
-      "month": 8,
-      "dayOfMonth": 9,
+      "month": 4,
+      "dayOfMonth": 15,
       "hourOfDay": 0,
       "minute": 0,
       "second": 0
     },
     "dataFine": {
       "year": 2025,
-      "month": 11,
-      "dayOfMonth": 9,
+      "month": 4,
+      "dayOfMonth": 20,
       "hourOfDay": 0,
       "minute": 0,
       "second": 0
     },
     "oraInizio": {
-      "year": 2025,
+      "year": 1970,
       "month": 0,
       "dayOfMonth": 1,
-      "hourOfDay": 8,
+      "hourOfDay": 15,
       "minute": 0,
       "second": 0
     },
-    "durata": 80,
+    "durata": 60,
     "giorniSettimana": [
-      "SATURDAY",
-      "SUNDAY"
-    ],
-    "minPartecipante": 34,
-    "maxPartecipante": 345,
-    "bigliettoIngresso": false,
-    "volontariIdonei": [
-      {
-        "nomeUtente": "V01",
-        "password": "volo",
-        "type": "volontario",
-        "disponibilita": []
-      }
-    ],
-    "visiteAssociate": [
-      {
-        "dataVisita": {
-          "year": 2025,
-          "month": 9,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 0,
-          "second": 0
-        },
-        "stato": "CONFERMATA",
-        "numeroIscritti": 20,
-        "titolo": "visita2"
-      }
-    ]
-  },
-  {
-    "titolo": "Visita1",
-    "descrizione": "asdas",
-    "puntoIncontro": "adssd",
-    "dataInizio": {
-      "year": 2025,
-      "month": 0,
-      "dayOfMonth": 1,
-      "hourOfDay": 0,
-      "minute": 0,
-      "second": 0
-    },
-    "dataFine": {
-      "year": 2025,
-      "month": 11,
-      "dayOfMonth": 12,
-      "hourOfDay": 0,
-      "minute": 0,
-      "second": 0
-    },
-    "oraInizio": {
-      "year": 2025,
-      "month": 0,
-      "dayOfMonth": 1,
-      "hourOfDay": 9,
-      "minute": 0,
-      "second": 0
-    },
-    "durata": 90,
-    "giorniSettimana": [
-      "FRIDAY",
-      "TUESDAY",
-      "MONDAY",
-      "SATURDAY",
       "WEDNESDAY",
+      "MONDAY",
+      "SUNDAY",
+      "SATURDAY",
       "THURSDAY",
-      "SUNDAY"
+      "TUESDAY",
+      "FRIDAY"
     ],
-    "minPartecipante": 9,
-    "maxPartecipante": 90,
+    "minPartecipante": 5,
+    "maxPartecipante": 100,
     "bigliettoIngresso": true,
     "volontariIdonei": [
       {
@@ -112,85 +52,67 @@
       {
         "dataVisita": {
           "year": 2025,
-          "month": 9,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 0,
-          "second": 0
+          "month": 5,
+          "dayOfMonth": 15,
+          "hourOfDay": 11,
+          "minute": 4,
+          "second": 30
         },
-        "stato": "COMPLETA",
-        "numeroIscritti": 12
+        "stato": "PROPOSTA",
+        "numeroIscritti": 7,
+        "titolo": "TitoloVisita1"
       },
       {
         "dataVisita": {
           "year": 2025,
-          "month": 9,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 0,
-          "second": 0
+          "month": 5,
+          "dayOfMonth": 23,
+          "hourOfDay": 11,
+          "minute": 4,
+          "second": 30
         },
         "stato": "PROPOSTA",
-        "numeroIscritti": 78
-      },
-      {
-        "dataVisita": {
-          "year": 2025,
-          "month": 4,
-          "dayOfMonth": 3,
-          "hourOfDay": 9,
-          "minute": 0,
-          "second": 0
-        },
-        "stato": "PROPOSTA",
-        "numeroIscritti": 2,
-        "volontarioAssociato": {
-          "nomeUtente": "V01",
-          "password": "volo",
-          "type": "volontario",
-          "disponibilita": []
-        }
+        "numeroIscritti": 7,
+        "titolo": "TitoloVisita1"
       }
     ]
   },
   {
-    "titolo": "Visita3",
-    "descrizione": "asd",
-    "puntoIncontro": "qwe",
+    "titolo": "TitoloVisita2",
+    "descrizione": "Descrizione2",
+    "puntoIncontro": "PuntodiIncotnro2",
     "dataInizio": {
       "year": 2025,
-      "month": 6,
-      "dayOfMonth": 7,
+      "month": 4,
+      "dayOfMonth": 10,
       "hourOfDay": 0,
       "minute": 0,
       "second": 0
     },
     "dataFine": {
       "year": 2025,
-      "month": 6,
-      "dayOfMonth": 8,
+      "month": 4,
+      "dayOfMonth": 20,
       "hourOfDay": 0,
       "minute": 0,
       "second": 0
     },
     "oraInizio": {
-      "year": 2025,
+      "year": 1970,
       "month": 0,
       "dayOfMonth": 1,
       "hourOfDay": 12,
       "minute": 0,
       "second": 0
     },
-    "durata": 120,
+    "durata": 180,
     "giorniSettimana": [
-      "TUESDAY",
       "MONDAY",
-      "SATURDAY",
-      "WEDNESDAY",
-      "SUNDAY"
+      "THURSDAY",
+      "TUESDAY"
     ],
-    "minPartecipante": 1,
-    "maxPartecipante": 12,
+    "minPartecipante": 10,
+    "maxPartecipante": 180,
     "bigliettoIngresso": true,
     "volontariIdonei": [
       {
@@ -204,14 +126,15 @@
       {
         "dataVisita": {
           "year": 2025,
-          "month": 9,
-          "dayOfMonth": 1,
-          "hourOfDay": 10,
-          "minute": 0,
-          "second": 0
+          "month": 5,
+          "dayOfMonth": 2,
+          "hourOfDay": 11,
+          "minute": 4,
+          "second": 30
         },
-        "stato": "COMPLETA",
-        "numeroIscritti": 12
+        "stato": "PROPOSTA",
+        "numeroIscritti": 20,
+        "titolo": "TitoloVisita2"
       }
     ]
   }
