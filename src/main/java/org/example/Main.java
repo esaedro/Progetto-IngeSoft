@@ -12,6 +12,6 @@ public class Main {
         Controller controller = Controller.getInstance();
         controller.start();
 
-        // TODO: condizioni Session, TipoVisita, Controller, FileManager, UtenteSerializer, UtenteDeserializer
+        // TODO: condizioni Session, Controller, FileManager, UtenteSerializer, UtenteDeserializer
     }
 }
