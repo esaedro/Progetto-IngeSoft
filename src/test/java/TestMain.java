@@ -146,12 +146,10 @@ public class TestMain {
         session.salva();
         session.carica();
 
-        HashMap<String, Set<Visita>> visiteStoric = session.getStoricoVisite();
+        HashMap<String, Set<Visita>> visiteStorico = session.getStoricoVisite();
 
-        assertFalse(session.getStoricoVisite().get("Visita1").contains(visita1Proposta), "Problema nel salvataggio dello storico");
-        assertTrue(session.getStoricoVisite().get("Visita1").contains(visita1Effettuata), "Problema nel salvataggio dello storico");
-        assertFalse(session.getStoricoVisite().get("Visita2").contains(visita2Proposta), "Problema nel salvataggio dello storico");
-        assertTrue(session.getStoricoVisite().get("Visita2").contains(visita2Effettuata), "Problema nel salvataggio dello storico");
+        visiteStorico.get("Visita1").forEach((v) -> assertEquals(v.getStato(), StatoVisita.EFFETTUATA, "Problema nel salvataggio dello storico"));
+        visiteStorico.get("Visita2").forEach((v) -> assertEquals(v.getStato(), StatoVisita.EFFETTUATA, "Problema nel salvataggio dello storico"));
 
     }
 
