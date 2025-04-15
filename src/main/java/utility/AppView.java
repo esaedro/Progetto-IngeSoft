@@ -350,8 +350,6 @@ public class AppView {
         voci.put("Mostra i tipi di visite a cui sei associato ", controller::mostraVisiteAssociate);        
         voci.put("Mostra le tue visite confermate con le relative iscrizioni", controller::mostraVisiteConfermateConIscrizioni);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
-        voci.put("Salva sessione", controller::salva);
-        voci.put("Carica sessione", controller::carica);
 
         myMenu.addVoci(voci);
     }
@@ -364,8 +362,6 @@ public class AppView {
         voci.put("Visualizza le visite a cui hai effettuato un'iscrizione", controller::mostraIscrizioniFruitore);
         voci.put("Iscrivi persone a una visita ", controller::iscrizioneFruitore);
         voci.put("Annulla un'iscrizione", controller::annullaIscrizione);
-        voci.put("Salva sessione", controller::salva);
-        voci.put("Carica sessione", controller::carica);
 
         myMenu.addVoci(voci);
     }
@@ -561,11 +557,8 @@ public class AppView {
         return iscrizione;
     }
 
-    public Visita menuDisiscrizione(Set<String> visiteIscritteIds) {
+    public Visita menuDisiscrizione(Set<Visita> visiteIscritte) {
         Visita visitaSelezionata = null;
-        Set<Visita> visiteIscritte = new HashSet<>();
-
-        visiteIscritteIds.forEach((id) -> visiteIscritte.add(new Visita(id)));
 
         if (!visiteIscritte.isEmpty()) {
             do {

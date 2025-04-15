@@ -21,7 +21,6 @@ public class Controller {
         
         if (appview.stampaMenuOnce() == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
 
-        if (session.getUtenteAttivo() == null) return;      //uscita 0 password
         carica();
         inizializzazione();
         
@@ -178,12 +177,13 @@ public class Controller {
         Set<Visita> visite = getAllVisite();
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
 
-        if (session.getUtenteAttivo() instanceof Configuratore) {
+        if (session.getUtenteAttivo() instanceof Volontario) {
             appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
         } else if (session.getUtenteAttivo() instanceof Fruitore) {
             visitePerStato.remove(StatoVisita.COMPLETA);
             appview.mostraVisiteStato(visitePerStato, new HashMap<>());
         }
+
 
         //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
     }
@@ -400,7 +400,6 @@ public class Controller {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
                 salva();
             }
-            
         }
     }
 
@@ -408,8 +407,9 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
     public void annullaIscrizione() {
-        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
-
+        if (session.getUtenteAttivo() instanceof Fruitore) {
+            //interazione con l'utente per la scelta della visita (mostrate tutte visite a cui si è iscritti a video, quale annullare)
+            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
             Visita visitaDaCuiDisiscriversi;
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
@@ -433,8 +433,8 @@ public class Controller {
             iscrizioni.clear();
 
             for (Fruitore fruitore : session.getFruitori()) {
-                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita.getId())) {
-                    iscrizioni.add(fruitore.getIscrizioni().get(visita.getId()));
+                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita)) {
+                    iscrizioni.add(fruitore.getIscrizioni().get(visita));        
                 }
             }
             visiteConIscrizioni.put(visita, iscrizioni);
@@ -470,15 +470,15 @@ public class Controller {
         //visite nello stato proposta/confermata/cancellata a cui ha effettuato un'iscrizione
         if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
-            Map<String, Iscrizione> iscrizioni = fruitore.getIscrizioni();
+            Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
             Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
             if (iscrizioni != null && !iscrizioni.isEmpty()) {                
-                for (Map.Entry<String, Iscrizione> entry : iscrizioni.entrySet()) {
-                    Visita visita = null; //TODO
+                for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
+                    Visita visita = entry.getKey();
                     Iscrizione iscrizione = entry.getValue();
-                    
                     StatoVisita stato = visita.getStato();
+
                     //se non va fixare qui
                     if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
                         visiteConIscrizioniPerStato
@@ -492,16 +492,14 @@ public class Controller {
         }
     }
 
-    public TipoVisita getTipoVisitaByTitle(String title) {
-
-    }
-
     public TipoVisita getTipoVisitaAssociato(Visita visita) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-
-                if (tipoVisita.getVisiteAssociateId().contains(visita.getId()))
+                if (tipoVisita.getVisiteAssociate().contains(visita))
                     return tipoVisita;
+                // for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
+                //     if (visitaAssociata.equals(visita)) return tipoVisita;
+                // }
             }
         }
         return null;
