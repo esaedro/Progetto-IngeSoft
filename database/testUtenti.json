@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "nomeUtente": "Fruitore",
+    "password": "frutto",
+    "type": "fruitore",
+    "visite": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 3,
+          "dayOfMonth": 15,
+          "hourOfDay": 16,
+          "minute": 44,
+          "second": 13
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 4
+      }
+    ],
+    "iscrizioni": [
+      {
+        "codiceUnivoco": "codice",
+        "numeroDiIscritti": 2
+      }
+    ]
+  }
+]

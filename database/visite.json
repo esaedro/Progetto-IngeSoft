@@ -130,7 +130,7 @@
           "second": 0
         },
         "stato": "PROPOSTA",
-        "numeroIscritti": 5
+        "numeroIscritti": 11
       },
       {
         "dataVisita": {
@@ -142,7 +142,7 @@
           "second": 0
         },
         "stato": "PROPOSTA",
-        "numeroIscritti": 0,
+        "numeroIscritti": 4,
         "volontarioAssociato": {
           "nomeUtente": "V01",
           "password": "volo",

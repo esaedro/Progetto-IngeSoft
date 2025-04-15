@@ -16,22 +16,48 @@
   },
   {
     "nomeUtente": "F01",
-    "password": "frutto",
-    "type": "fruitore"
-  },
-  {
-    "nomeUtente": "paolo",
-    "password": "paolopaolo",
-    "type": "fruitore"
-  },
-  {
-    "nomeUtente": "pietro",
-    "password": "popopopo",
-    "type": "fruitore"
-  },
-  {
-    "nomeUtente": "luca",
-    "password": "fruitore",
-    "type": "fruitore"
+    "password": "fruttolo",
+    "type": "fruitore",
+    "visite": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 3,
+          "hourOfDay": 9,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 4,
+        "volontarioAssociato": {
+          "disponibilita": [],
+          "nomeUtente": "V01",
+          "password": "volo"
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 9,
+          "dayOfMonth": 1,
+          "hourOfDay": 10,
+          "minute": 0,
+          "second": 0
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 11
+      }
+    ],
+    "iscrizioni": [
+      {
+        "codiceUnivoco": "509635",
+        "numeroDiIscritti": 4
+      },
+      {
+        "codiceUnivoco": "135746",
+        "numeroDiIscritti": 6
+      }
+    ]
   }
 ]

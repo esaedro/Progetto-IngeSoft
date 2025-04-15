@@ -380,7 +380,7 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
     public void iscrizioneFruitore() {
-        if (session.getUtenteAttivo() instanceof Fruitore) {
+        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
             AbstractMap.SimpleEntry<Visita, Integer> visitaConIscritti;
 
             Set<Visita> visiteProposte = new HashSet<>();
@@ -391,12 +391,14 @@ public class Controller {
                 }
             }
 
+            visiteProposte.removeIf((visita -> fruitore.getIscrizioni().containsKey(visita)));
             //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
             //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
             visitaConIscritti = appview.menuIscrizione(visiteProposte, this);
             
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
+                salva();
             }
         }
     }
@@ -412,8 +414,10 @@ public class Controller {
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
-            if (visitaDaCuiDisiscriversi != null)
+            if (visitaDaCuiDisiscriversi != null) {
                 session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
+                salva();
+            }
         }
 
     }
