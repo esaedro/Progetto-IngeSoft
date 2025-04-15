@@ -304,20 +304,20 @@ public class TipoVisita implements Serializable {
                 volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
             }
         }
-        return "TipoVisita{ " +
-                "titolo='" + titolo + '\'' +
-                ", descrizione='" + descrizione + '\'' +
-                ", puntoIncontro='" + puntoIncontro + '\'' +
-                ", dataInizio=" + (dataInizio != null? dataInizio.getTime() : "nessuna") +
-                ", dataFine=" + (dataFine != null? dataFine.getTime() : "nessuna") +
-                ", oraInizio=" + (oraInizio != null? oraInizio.getTime() : "nessuna") +
-                ", durata=" + durata +
-                ", giorniSettimana=" + giorniSettimana +
-                ", maxPartecipante=" + maxPartecipante +
-                ", minPartecipante=" + minPartecipante +
-                ", bigliettoIngresso=" + bigliettoIngresso +
-                ", volontariIdonei=[" + volontari + "]" +
-                ", visiteAssociate=" + (visiteAssociate != null ? visiteAssociate.toString() : "nessuna") +
+
+        return  "Titolo: " + titolo +
+                ", descrizione: " + descrizione +
+                ", puntoIncontro: " + puntoIncontro +
+                ", dataInizio: " + (dataInizio != null? dataInizio.get(Calendar.DAY_OF_MONTH) + "/" + (dataInizio.get(Calendar.MONTH) + 1) + "/" + dataInizio.get(Calendar.YEAR) : "non specificata") +
+                ", dataFine: " + (dataFine != null? dataFine.get(Calendar.DAY_OF_MONTH) + "/" + (dataFine.get(Calendar.MONTH) + 1) + "/" + dataFine.get(Calendar.YEAR) : "non specificata") +
+                ", oraInizio: " + (oraInizio != null? oraInizio.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", oraInizio.get(Calendar.MINUTE)) : "non specificata") +
+                ", durata: " + durata +
+                ", giorniSettimana: " + giorniSettimana +
+                ", minPartecipanti: " + minPartecipante +
+                ", maxPartecipanti: " + maxPartecipante +
+                ", bigliettoIngresso: " + (bigliettoIngresso ? "sì" : "no") +
+                ", volontariIdonei: [" + volontari + "]" +
+                ", visiteAssociate:\n" + (visiteAssociate != null ? visiteAssociate.toString() : "nessuna") +
                 '}';
     }
 }

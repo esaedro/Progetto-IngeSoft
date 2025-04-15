@@ -58,14 +58,15 @@ public class Visita {
     }
 
     public String toString() {
-        TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
-        if (tipoVisita == null) {
-            return "Questa visita non è associata ad alcun tipo di visita";
-        }
+
         StringBuilder sb = new StringBuilder();
 
-        if (this.stato != StatoVisita.CANCELLATA) {
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t");
+        if (this.stato != StatoVisita.EFFETTUATA) {
+            TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
+            if (tipoVisita == null) {
+                return "Questa visita non è associata ad alcun tipo di visita";
+            }
+            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t\t");
             sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
             sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
             sb.append("Data di svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\t\t");
@@ -75,9 +76,9 @@ public class Visita {
             sb.append("Biglietto di ingresso" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
         }
         else {
-            sb.append("Visita cancellata\n");
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
-            sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\n");
+            //sb.append("Visita cancellata\n");
+            //sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
+            sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
         }
 
         return sb.toString();
