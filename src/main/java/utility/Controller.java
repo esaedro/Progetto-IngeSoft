@@ -397,6 +397,7 @@ public class Controller {
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
             }
+            salva();
         }
     }
 
@@ -405,7 +406,7 @@ public class Controller {
      */
     public void annullaIscrizione() {
         if (session.getUtenteAttivo() instanceof Fruitore) {
-            //interazione con l'utente per la scelta della visita (mostrate tutte visite a cui si è iscritti a video, quale annullare)
+
             Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
             Visita visitaDaCuiDisiscriversi;
 
@@ -428,8 +429,8 @@ public class Controller {
             iscrizioni.clear();
 
             for (Fruitore fruitore : session.getFruitori()) {
-                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita)) {
-                    iscrizioni.add(fruitore.getIscrizioni().get(visita));        
+                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita.getId())) {
+                    iscrizioni.add(fruitore.getIscrizioni().get(visita.getId()));
                 }
             }
             visiteConIscrizioni.put(visita, iscrizioni);
@@ -465,12 +466,12 @@ public class Controller {
         //visite nello stato proposta/confermata/cancellata a cui ha effettuato un'iscrizione
         if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
-            Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
+            Map<String, Iscrizione> iscrizioni = fruitore.getIscrizioni();
             Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
             if (iscrizioni != null && !iscrizioni.isEmpty()) {                
-                for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
-                    Visita visita = entry.getKey();
+                for (Map.Entry<String, Iscrizione> entry : iscrizioni.entrySet()) {
+                    Visita visita = new Visita(entry.getKey());
                     Iscrizione iscrizione = entry.getValue();
                     
                     StatoVisita stato = visita.getStato();

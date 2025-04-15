@@ -7,7 +7,7 @@ import utility.InputDati;
 public class Main {
     public static void main(String[] args) {
         BelleStringhe.colori = true;
-        InputDati.newLineDifferente = false;
+        InputDati.newLineDifferente = true;
         
         Controller controller = Controller.getInstance();
         controller.start();

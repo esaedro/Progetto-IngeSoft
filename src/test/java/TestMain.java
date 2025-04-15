@@ -70,7 +70,7 @@ public class TestMain {
                 assertFalse(disp.add(giorno), "errore lettura/scrittura disponibilità volontario"));
 
         finale = session.login("Errore", "ErroreMaPassword");
-        assertNull(finale, "Erroro volontario fruitore");
+        assertNull(finale, "Errore volontario");
 
     }
 
@@ -125,8 +125,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6);
-        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7);
+        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6, "visita1Proposta");
+        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7, "visita1Effettuata");
 
         visita1.addVisita(visita1Proposta);
         visita1.addVisita(visita1Effettuata);
@@ -136,8 +136,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8);
-        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9);
+        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8, "visita2Proposta");
+        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9, "visita2Effettuata");
 
         visita2.addVisita(visita2Proposta);
         visita2.addVisita(visita2Effettuata);
@@ -356,12 +356,18 @@ public class TestMain {
         Session session = new Session();
 
         Set<Utente> utentiTest = new HashSet<>();
-        utentiTest.add(new Configuratore("Fruitore", "frutto"));
+
+        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 14, "fruitoreTest");
+
+        HashMap<String, Iscrizione> iscrizioni = new HashMap<>();
+        iscrizioni.put(String.valueOf(visita.getId()), new Iscrizione("Codice", 5));
+
+        utentiTest.add(new Fruitore("Fruitore", "frutto", iscrizioni));
         session.setUtenti(utentiTest);
         session.salvaUtenti();
 
         Utente finale = session.login("Fruitore", "frutto");
-        assertInstanceOf(Configuratore.class, finale,"Login fruitore non restituisce i permessi");
+        assertInstanceOf(Fruitore.class, finale,"Login fruitore non restituisce i permessi");
 
         finale = session.login("Errore", "ErroreMaPassword");
         assertNull(finale, "Erroro login fruitore");
@@ -383,7 +389,7 @@ public class TestMain {
         Session session = new Session();
         session.setVisite(new HashSet<>());
 
-        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
+        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5, "scrittura");
         visita.setVolontarioAssociato(new Volontario("volontario", "volontario"));
 
         TipoVisita tipoVisita = new TipoVisita("Titolo", "Descrizione", "punto",
