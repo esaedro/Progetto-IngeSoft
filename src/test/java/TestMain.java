@@ -70,7 +70,7 @@ public class TestMain {
                 assertFalse(disp.add(giorno), "errore lettura/scrittura disponibilità volontario"));
 
         finale = session.login("Errore", "ErroreMaPassword");
-        assertNull(finale, "Errore volontario");
+        assertNull(finale, "Erroro volontario fruitore");
 
     }
 
@@ -125,8 +125,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6, "visita1Proposta");
-        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7, "visita1Effettuata");
+        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6);
+        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7);
 
         visita1.addVisita(visita1Proposta);
         visita1.addVisita(visita1Effettuata);
@@ -136,8 +136,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8, "visita2Proposta");
-        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9, "visita2Effettuata");
+        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8);
+        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9);
 
         visita2.addVisita(visita2Proposta);
         visita2.addVisita(visita2Effettuata);
@@ -377,7 +377,7 @@ public class TestMain {
         Session session = new Session();
         session.setVisite(new HashSet<>());
 
-        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5, "scrittura");
+        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
         visita.setVolontarioAssociato(new Volontario("volontario", "volontario"));
 
         TipoVisita tipoVisita = new TipoVisita("Titolo", "Descrizione", "punto",
