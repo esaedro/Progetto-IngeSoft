@@ -254,6 +254,11 @@ public class Session {
             for (Luogo luogo : luoghi) {
                 luogo.rimuoviVisita(tipoVisita.getTitolo());
             }
+            for (Utente fruitore: utenti) {
+                if (fruitore instanceof Fruitore) {
+                    tipoVisita.getVisiteAssociate().forEach((visita -> ((Fruitore) fruitore).rimuoviIscrizione(visita)));
+                }
+            }
         }
 
         this.visite.removeAll(visiteDaRimuovere);
