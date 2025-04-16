@@ -147,7 +147,7 @@ public class AppView {
 
             System.out.println("Inserire i giorni della settimana in cui si svolge la visita: ");
             for (DayOfWeek giorno : DayOfWeek.values()) {
-                System.out.print(BelleStringhe.traduciGiorno(giorno) + "\t");
+                System.out.print(BelleStringhe.traduciGiorno(giorno) + "\t\t");
                 if (InputDati.conferma("")) {
                     giorniSettimana.add(giorno);
                 }
