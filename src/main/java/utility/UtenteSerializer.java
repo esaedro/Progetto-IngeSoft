@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 class UtenteSerializer implements JsonSerializer<Utente> {
+
+    /**
+     * @ requires utente instanceof Configuratore || utente instanceof Volontario || utente instanceof Fruitore;
+     */
     @Override
     public JsonElement serialize(Utente utente, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();

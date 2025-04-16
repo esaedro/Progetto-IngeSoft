@@ -9,6 +9,12 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 
 class UtenteDeserializer implements JsonDeserializer<Utente> {
+
+    /**
+     * @ requires jsonObject.get("type").getAsString().equals("configuratore") ||
+     * jsonObject.get("type").getAsString().equals("volontario") ||
+     * jsonObject.get("type").getAsString().equals("fruitore");
+     */
     @Override
     public Utente deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
