@@ -329,14 +329,14 @@ public class Session {
     public void checkCondizioniDiClassi() {
         checkCondizioniDiLuogo();
         checkCondizioniDiTipoVisita();
-        chechCondizioniDiVolontario();
+        checkCondizioniDiVolontario();
     }
 
     private void checkCondizioniDiLuogo() {
         luoghi.removeIf(luogo -> !luogo.haVisiteAssociate());
     }
 
-    private void chechCondizioniDiVolontario() {
+    private void checkCondizioniDiVolontario() {
         Iterator<Utente> volontarioIterator = utenti.iterator();
         while (volontarioIterator.hasNext()) {
             Utente utente = volontarioIterator.next();
@@ -356,7 +356,7 @@ public class Session {
             TipoVisita tipoVisita = tipoVisitaIterator.next();
             if (!tipoVisita.haLuoghiAssociati(luoghi)) {
                 tipoVisitaIterator.remove();
-                chechCondizioniDiVolontario();
+                checkCondizioniDiVolontario();
             }
             if (!tipoVisita.haVolontariAssociati()) {
                 for (Luogo luogo : luoghi) {
