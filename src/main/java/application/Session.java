@@ -1,8 +1,8 @@
 package application;
 
-import java.util.*;
-import java.util.stream.Collectors;
 import utility.FileManager;
+
+import java.util.*;
 
 public class Session {
 
@@ -27,21 +27,6 @@ public class Session {
 
     public Session() {
         this.filemanager = new FileManager("database/");
-    }
-
-    /**
-     * @ requires utenti != null && luoghi != null && visite != null && filemanager != null;
-     */
-    public Session(
-        Set<Utente> utenti,
-        Set<Luogo> luoghi,
-        Set<TipoVisita> visite,
-        FileManager filemanager
-    ) {
-        this.utenti = utenti;
-        this.luoghi = luoghi;
-        this.visite = visite;
-        this.filemanager = filemanager;
     }
 
     public void salva() {
@@ -228,19 +213,6 @@ public class Session {
 
     public HashMap<String, Set<Visita>> getStoricoVisite() {
         return filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
-    }
-
-    /**
-     * @ requires luogo != null;
-     */
-    public ArrayList<TipoVisita> getVisiteAssociateALuogo(Luogo luogo) {
-        ArrayList<TipoVisita> visiteResult = new ArrayList<>();
-        for (TipoVisita visita : visite) {
-            if (luogo.getVisiteIds().contains(visita.getTitolo())) {
-                visiteResult.add(visita);
-            }
-        }
-        return visiteResult;
     }
 
     // TODO: realize a proxy
@@ -437,7 +409,7 @@ public class Session {
                 datePossibiliPerVisita
                     .stream()
                     .filter(date -> date.getWeekYear() == data.getWeekYear())
-                    .collect(Collectors.toList())); // Rimuovo tutte le date della stessa settimana
+                    .toList()); // Rimuovo tutte le date della stessa settimana
         }
 
         return dateEstratte;
@@ -510,9 +482,7 @@ public class Session {
     public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
         if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
             if (tipoVisita != null) {
-                if (visita.getNumeroIscritti() + numeroIscritti <= tipoVisita.getMaxPartecipante()) {
-                    return true;
-                }
+                return (visita.getNumeroIscritti() + numeroIscritti <= tipoVisita.getMaxPartecipante());
             }
         }
         return false;
@@ -523,12 +493,8 @@ public class Session {
      */
     public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
         if (fruitore.getIscrizioni().containsKey(visita)) {
-            if (
-                visita.getStato() == StatoVisita.COMPLETA ||
-                visita.getStato() == StatoVisita.PROPOSTA
-            ) {
-                return true;
-            }
+            return (visita.getStato() == StatoVisita.COMPLETA ||
+                    visita.getStato() == StatoVisita.PROPOSTA);
         }
         return false;
     }

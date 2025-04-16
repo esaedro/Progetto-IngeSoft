@@ -23,13 +23,6 @@ public class Utente implements Serializable {
         return nomeUtente;
     }
 
-    /**
-     * @ requires nomeUtente != null;
-     */
-    public void setNomeUtente(String nomeUtente) {
-        this.nomeUtente = nomeUtente;
-    }
-
     public String getPassword() {
         return password;
     }

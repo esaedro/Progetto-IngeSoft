@@ -6,5 +6,5 @@ public enum StatoVisita {
     CONFERMATA,
     CANCELLATA,
     EFFETTUATA,
-    NON_ISTANZIATA;
+    NON_ISTANZIATA
 }

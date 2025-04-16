@@ -16,13 +16,6 @@ public class Fruitore extends Utente {
     }
 
     /**
-     * @ requires utente != null;
-     */
-    public Fruitore(Utente utente) {
-        super(utente.getNomeUtente(), utente.getPassword());
-    }
-
-    /**
      * @ requires visita != null && iscrizione != null;
      */
     public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
@@ -40,10 +33,4 @@ public class Fruitore extends Utente {
         return iscrizioni;
     }
 
-    /**
-     * @ requires iscrizioni != null;
-     */
-    public void setIscrizioni(Map<Visita, Iscrizione> iscrizioni) {
-        this.iscrizioni = iscrizioni;
-    }
 }

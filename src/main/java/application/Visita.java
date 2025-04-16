@@ -7,7 +7,7 @@ public class Visita {
     private Calendar dataVisita;
     private StatoVisita stato;
     private int numeroIscritti = 0;
-    private String titolo = "Visita non associata ad alcun tipo di visita";
+    private String titolo;
 
     /**
      * @ invariant volontarioAssociato != null;
@@ -28,17 +28,9 @@ public class Visita {
     public String getTitolo() {
         return titolo;
     }
-
-    public void setTitolo(String titolo) {
-        this.titolo = titolo;
-    }
     
     public Calendar getDataVisita() {
         return dataVisita;
-    }
-
-    public void setDataVisita(Calendar dataVisita) {
-        this.dataVisita = dataVisita;
     }
 
     public StatoVisita getStato() {

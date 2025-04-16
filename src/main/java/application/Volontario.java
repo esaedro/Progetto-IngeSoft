@@ -21,23 +21,8 @@ public class Volontario extends Utente {
         this.disponibilita = disponibilita;
     }
 
-    /**
-     * @ requires utente != null;
-     */
-    public Volontario(Utente utente) {
-        super(utente.getNomeUtente(), utente.getPassword());
-    }
-
     public Set<Integer> getDisponibilita() {
         return disponibilita;
-    }
-
-    /**
-     * @ requires disponibilitaNuova != null;
-     * @ ensures disponibilita != null;
-     */
-    public void setDisponibilita(Set<Integer> disponibilitaNuova) {
-        this.disponibilita = disponibilitaNuova;
     }
 
     /**
@@ -46,13 +31,6 @@ public class Volontario extends Utente {
      */
     public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {
         this.disponibilita.addAll(disponibilitaDaAggiungere);
-    }
-
-    /**
-     * @ ensures (\forall Integer i; !disponibilita.contains(i));
-     */
-    public void removeDisponibilita(Set<Integer> disponibilitaDaRimuovere) {
-        this.disponibilita.removeAll(disponibilitaDaRimuovere);
     }
 
     public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {

@@ -10,10 +10,10 @@ import java.util.*;
 public class FruitoreDeserializer implements JsonDeserializer<Fruitore> {
 
     /**
-     * @ensures \result != null
-     * @ensures \result.getNomeUtente() != null
-     * @ensures \result.getPassword() != null
-     * @ensures \result.getMappaIscrizioni() != null
+     * @ ensures \result != null
+     * @ ensures \result.getNomeUtente() != null
+     * @ ensures \result.getPassword() != null
+     * @ ensures \result.getMappaIscrizioni() != null
      */
     @Override
     public Fruitore deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

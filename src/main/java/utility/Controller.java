@@ -208,7 +208,7 @@ public class Controller {
 
     public void mostraVisitePerStato() {
         Set<Visita> visite = getAllVisite();
-        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
+        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite);
 
         if (session.getUtenteAttivo() instanceof Configuratore) {
             appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
@@ -239,7 +239,7 @@ public class Controller {
         return visite;
     }
 
-    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite, Utente utenteAttivo) {
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
         Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
 
         for (Visita visita : visite) {
@@ -466,9 +466,8 @@ public class Controller {
      *           (visitaDaCuiDisiscriversi == null || visitaDaCuiDisiscriversi != null && !fruitore.getIscrizioni().containsKey(visitaDaCuiDisiscriversi));
      */
     public void annullaIscrizione() {
-        if (session.getUtenteAttivo() instanceof Fruitore) {
+        if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
             //interazione con l'utente per la scelta della visita (mostrate tutte visite a cui si è iscritti a video, quale annullare)
-            Fruitore fruitore = (Fruitore) session.getUtenteAttivo();
             Visita visitaDaCuiDisiscriversi;
 
             visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
@@ -508,8 +507,6 @@ public class Controller {
         if (session.getUtenteAttivo() instanceof Volontario) {
             Set<Visita> visiteConfermate = new HashSet<>();
             for (Visita visita : getAllVisite()) {
-
-                //TODO: controllare se il metodo se funziona
                 if (visita.getVolontarioAssociato() != null) {
                     if (visita.getStato() == StatoVisita.CONFERMATA && visita.getVolontarioAssociato().equals(session.getUtenteAttivo())) {
                         visiteConfermate.add(visita);

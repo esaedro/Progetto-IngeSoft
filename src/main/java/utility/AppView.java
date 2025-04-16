@@ -384,24 +384,6 @@ public class AppView {
         else return null;
     }
 
- /*    public Set<Integer> menuInserimentoDate() {
-        int dataInserita;
-        Set<Integer> datePrecluse = new HashSet<>();
-        Month meseLavoro = CalendarManager.meseDiLavoro(3);
-
-        System.out.println("\nInserire le date precluse per i giorni dal 1 al " + meseLavoro.maxLength() + " " + BelleStringhe.traduciMese(meseLavoro) + ": ");
-        do {
-            do {
-                dataInserita = InputDati.leggiInteroMinMax("Inserire una data preclusa (0 per uscire): ", 0, meseLavoro.maxLength(), "Data non valida");
-                if (dataInserita > 0) {
-                    datePrecluse.add(dataInserita);
-                }
-            } while (dataInserita!=0);
-        } while (!InputDati.conferma("Confermare inserimento date?"));
-
-        return datePrecluse;
-    } */
-
     public Set<Integer> menuInserimentoDatePrecluse(Set<Integer> datePrecluseFuture) {
         Month meseDiLavoro = CalendarManager.meseDiLavoro(3);
         Set<Integer> nuoveDatePrecluse = InputDati.selezionaDateDaMese(
@@ -481,7 +463,6 @@ public class AppView {
 
     /**
      * Stampa le visite negli stati proposta/confermata/cancellata a cui è iscritto il fruitore (utente attivo)
-     * @param visiteConIscrizioniPerStato
      */
     public void mostraVisiteStatoConIscrizioni(Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato) {
         if (!visiteConIscrizioniPerStato.isEmpty()) {
@@ -503,7 +484,6 @@ public class AppView {
 
     /**
      * Stampa le visite confermate a cui il volontario (utente attivo) deve presenziare, con le relative iscrizioni
-     * @param visiteConfermateConIscrizioni
      */
     public void mostraVisiteConfermateConIscrizioni(Map<Visita, Set<Iscrizione>> visiteConfermateConIscrizioni) {
         if (!visiteConfermateConIscrizioni.isEmpty()) {
@@ -549,7 +529,7 @@ public class AppView {
             do {
                 visita = InputDati.selezionaUnoDaLista("Selezionare una visita a cui iscriversi", visiteProposte, Visita::getIdentificativo);
                 
-                if (visita == null) return iscrizione;      //uscita dal menu
+                if (visita == null) return null;      //uscita dal menu
                 
                 TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
                 int maxIscrivibili = Math.min(tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti(), maxIscrittiperFruitore);
@@ -585,8 +565,8 @@ public class AppView {
         if (luogo == null) return "Luogo_null";
         else {  
             sb.append(luogo.getNome());
-            sb.append("\t\tIndirizzo: " + luogo.getIndirizzo() + "\n");
-            sb.append("Tipi di visita svolti qui: " + luogo.getVisiteIds());
+            sb.append("\t\tIndirizzo: ").append(luogo.getIndirizzo()).append("\n");
+            sb.append("Tipi di visita svolti qui: ").append(luogo.getVisiteIds());
         }
         
         return sb.toString();  
@@ -618,27 +598,27 @@ public class AppView {
             }
         }
 
-        sb.append("Titolo:\t\t\t" + tipoVisita.getTitolo() + "\n");
-        sb.append("Descrizione:\t\t" + tipoVisita.getDescrizione() + "\n");
-        sb.append("Punto di incontro:\t" + tipoVisita.getPuntoIncontro() + "\n");
-        sb.append("Data inizio:\t\t" + formattaData(tipoVisita.getDataInizio()) + "\n");
-        sb.append("Data fine:\t\t" + formattaData(tipoVisita.getDataFine()) + "\n");
-        sb.append("Ora inizio:\t\t" + formattaOra(tipoVisita.getOraInizio()) + "\n");
-        sb.append("Durata:\t\t\t" + tipoVisita.getDurata() + " minuti\n");
+        sb.append("Titolo:\t\t\t").append(tipoVisita.getTitolo()).append("\n");
+        sb.append("Descrizione:\t\t").append(tipoVisita.getDescrizione()).append("\n");
+        sb.append("Punto di incontro:\t").append(tipoVisita.getPuntoIncontro()).append("\n");
+        sb.append("Data inizio:\t\t").append(formattaData(tipoVisita.getDataInizio())).append("\n");
+        sb.append("Data fine:\t\t").append(formattaData(tipoVisita.getDataFine())).append("\n");
+        sb.append("Ora inizio:\t\t").append(formattaOra(tipoVisita.getOraInizio())).append("\n");
+        sb.append("Durata:\t\t\t").append(tipoVisita.getDurata()).append(" minuti\n");
 
         sb.append("Giorni della settimana:\t[");
         List<DayOfWeek> giorniOrdinati = tipoVisita.getGiorniSettimana().stream().sorted(Comparator.comparingInt(DayOfWeek::getValue)).toList();
         for (DayOfWeek giorno : giorniOrdinati) {
-            sb.append(BelleStringhe.traduciGiorno(giorno) + ", ");
+            sb.append(BelleStringhe.traduciGiorno(giorno)).append(", ");
         }
         sb.setLength(sb.length() - 2);
         sb.append("]\n");
 
-        sb.append("Minimo partecipanti:\t" + tipoVisita.getMinPartecipante() + "\n");
-        sb.append("Massimo partecipanti:\t" + tipoVisita.getMaxPartecipante() + "\n");
-        sb.append("Biglietto d'ingresso:\t" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
-        sb.append("Volontari idonei:\t[" + volontari + "]\n");
-        sb.append("Visite associate:\t[" + visiteID + "]\n");
+        sb.append("Minimo partecipanti:\t").append(tipoVisita.getMinPartecipante()).append("\n");
+        sb.append("Massimo partecipanti:\t").append(tipoVisita.getMaxPartecipante()).append("\n");
+        sb.append("Biglietto d'ingresso:\t").append(tipoVisita.getBigliettoIngresso() ? " " : " non ").append("necessario\n");
+        sb.append("Volontari idonei:\t[").append(volontari).append("]\n");
+        sb.append("Visite associate:\t[").append(visiteID).append("]\n");
 
         return sb.toString();
     }
@@ -663,30 +643,29 @@ public class AppView {
         if (visita.getStato() == StatoVisita.EFFETTUATA) return formattaVisitaArchivio(visita);
 
         if (visita.getStato() == StatoVisita.CANCELLATA) {
-            sb.append("Titolo: " + visita.getTitolo() + "\n");
-            sb.append("Data di mancato svolgimento: " + formattaData(visita.getDataVisita()) + "\n");
+            sb.append("Titolo: ").append(visita.getTitolo()).append("\n");
+            sb.append("Data di mancato svolgimento: ").append(formattaData(visita.getDataVisita())).append("\n");
             return sb.toString();
         }
 
-        sb.append("Titolo: " + visita.getTitolo() + "\n");
+        sb.append("Titolo: ").append(visita.getTitolo()).append("\n");
 
         if (tipoVisita == null) {
             sb.append("tipoVisita null");
             return sb.toString();
         }
 
-        sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
-        sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
-        sb.append("Data di svolgimento: " + formattaData(visita.getDataVisita()) + "\n");
-        sb.append("Ora inizio: " + formattaOra(tipoVisita.getOraInizio()) + "\n");
-        sb.append("Biglietto di ingresso" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
+        sb.append("Descrizione: ").append(tipoVisita.getDescrizione()).append("\t\t");
+        sb.append("Punto di incontro: ").append(tipoVisita.getPuntoIncontro()).append("\n");
+        sb.append("Data di svolgimento: ").append(formattaData(visita.getDataVisita())).append("\n");
+        sb.append("Ora inizio: ").append(formattaOra(tipoVisita.getOraInizio())).append("\n");
+        sb.append("Biglietto di ingresso").append(tipoVisita.getBigliettoIngresso() ? " " : " non ").append("necessario\n");
     
         return sb.toString();
     }
 
     public String formattaVisitaArchivio(Visita visita) {
-        String s = "Data svolgimento " + formattaData(visita.getDataVisita());
-        return s;
+        return "Data svolgimento " + formattaData(visita.getDataVisita());
     }
 
     private String formattaIscrizione(Iscrizione iscrizione) {

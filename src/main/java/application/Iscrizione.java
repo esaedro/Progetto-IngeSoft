@@ -4,7 +4,6 @@ public class Iscrizione {
 
     private String codiceUnivoco;
 
-
     /**
      * @ invariant numeroDiIscritti > 0;
      */
@@ -23,21 +22,8 @@ public class Iscrizione {
         return codiceUnivoco;
     }
 
-    /**
-     * @ requires codiceUnivoco != null && !codiceUnivoco.isEmpty();
-     */
-    public void setCodiceUnivoco(String codiceUnivoco) {
-        this.codiceUnivoco = codiceUnivoco;
-    }
-
     public int getNumeroDiIscritti() {
         return numeroDiIscritti;
     }
 
-    /**
-     * @ requires numeroDiIscritti > 0
-     */
-    public void setNumeroDiIscritti(int numeroDiIscritti) {
-        this.numeroDiIscritti = numeroDiIscritti;
-    }
 }

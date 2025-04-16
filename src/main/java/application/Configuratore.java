@@ -12,13 +12,6 @@ public class Configuratore extends Utente {
     }
 
     /**
-     * @ requires utente != null;
-     */
-    public Configuratore(Utente utente) {
-        super(utente.getNomeUtente(), utente.getPassword());
-    }
-
-    /**
      * @ requires parametroTerritoriale != null && !parametroTerritoriale.isEmpty();
      */
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
