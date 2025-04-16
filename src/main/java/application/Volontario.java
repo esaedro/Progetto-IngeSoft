@@ -34,6 +34,7 @@ public class Volontario extends Utente {
 
     /**
      * @ requires disponibilitaNuova != null;
+     * @ ensures disponibilita != null;
      */
     public void setDisponibilita(Set<Integer> disponibilitaNuova) {
         this.disponibilita = disponibilitaNuova;
@@ -41,11 +42,15 @@ public class Volontario extends Utente {
 
     /**
      * @ requires disponibilitaDaAggiungere != null;
+     * @ ensures disponibilita != null;
      */
     public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {
         this.disponibilita.addAll(disponibilitaDaAggiungere);
     }
 
+    /**
+     * @ ensures (\forall Integer i; !disponibilita.contains(i));
+     */
     public void removeDisponibilita(Set<Integer> disponibilitaDaRimuovere) {
         this.disponibilita.removeAll(disponibilitaDaRimuovere);
     }

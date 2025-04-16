@@ -11,6 +11,11 @@ class UtenteSerializer implements JsonSerializer<Utente> {
 
     /**
      * @ requires utente instanceof Configuratore || utente instanceof Volontario || utente instanceof Fruitore;
+     * @ ensures jsonObject != null;
+     * @ ensures jsonObject contiene le informazioni di base dell'utente (nomeUtente, password);
+     * @ ensures jsonObject contiene il campo "type" che identifica il tipo di utente;
+     * @ ensures se utente instanceof Volontario, jsonObject contiene la sua disponibilità;
+     * @ ensures se utente instanceof Fruitore, jsonObject contiene le sue visite e iscrizioni;
      */
     @Override
     public JsonElement serialize(Utente utente, Type typeOfSrc, JsonSerializationContext context) {

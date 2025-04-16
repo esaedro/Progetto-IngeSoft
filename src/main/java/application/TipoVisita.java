@@ -128,7 +128,8 @@ public class TipoVisita implements Serializable {
     }
 
     /**
-     *@ requires datePrecluseDaAggiungere != null
+     * @ requires datePrecluseDaAggiungere != null
+     * @ ensures datePrecluseFuture.contains(datePrecluseDaAggiungere);
      */
     public static void aggiungiDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
         datePrecluseFuture.addAll(datePrecluseDaAggiungere);
@@ -136,6 +137,7 @@ public class TipoVisita implements Serializable {
 
     /**
      * @ requires datePrecluseDaAggiungere != null
+     * @ ensures datePrecluseFuture != null && datePrecluseFuture.size() > 0
      */
     public static void setDatePrecluseFuture(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluseFuture = datePrecluseDaAggiungere;
@@ -151,6 +153,7 @@ public class TipoVisita implements Serializable {
 
     /**
      * @ requires datePrecluseDaAggiungere != null
+     * @ ensures datePrecluseAttuali.contains(datePrecluseDaAggiungere);
      */
     public static void aggiungiDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
         datePrecluseAttuali.addAll(datePrecluseDaAggiungere);
@@ -158,6 +161,7 @@ public class TipoVisita implements Serializable {
 
     /**
      * @ requires datePrecluseDaAggiungere != null
+     * @ ensures datePrecluseAttuali != null && datePrecluseAttuali.size() > 0
      */
     public static void setDatePrecluseAttuali(Set<Integer> datePrecluseDaAggiungere) {
         TipoVisita.datePrecluseAttuali = datePrecluseDaAggiungere;
@@ -186,6 +190,9 @@ public class TipoVisita implements Serializable {
 
     /**
      * @ requires volontario != null
+     * @ ensures volontariIdonei == null || !volontariIdonei.contains(volontario);
+     * @ ensures (\forall Visita v; visiteAssociate.contains(v) && v.getVolontarioAssociato() != null && v.getVolontarioAssociato().equals(volontario); 
+     *            v.getVolontarioAssociato() == null && v.getStato() == StatoVisita.CANCELLATA);
      */
     public void rimuoviVolontario(Volontario volontario) {
         if (volontariIdonei != null) {
@@ -202,6 +209,8 @@ public class TipoVisita implements Serializable {
 
     /**
      * @ requires volontariDaAggiungere != null && volontariDaAggiungere > 0
+     * @ ensures volontariIdonei != null;
+     * @ ensures (\forall Volontario v; volontariDaAggiungere.contains(v); volontariIdonei.contains(v));
      */
     public void aggiungiVolontariIdonei(Set<Volontario> volontariDaAggiungere) {
         if (volontariIdonei == null) {
