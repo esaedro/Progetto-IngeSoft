@@ -252,6 +252,11 @@ public class Session {
             for (Luogo luogo : luoghi) {
                 luogo.rimuoviVisita(tipoVisita.getTitolo());
             }
+            for (Utente fruitore: utenti) {
+                if (fruitore instanceof Fruitore) {
+                    tipoVisita.getVisiteAssociate().forEach((visita -> ((Fruitore) fruitore).rimuoviIscrizione(visita)));
+                }
+            }
         }
 
         this.visite.removeAll(visiteDaRimuovere);
@@ -493,7 +498,7 @@ public class Session {
         // Per ogni data estratta creo una visita e la aggiungo al tipo di visita
         for (int i = 0; i < Math.min(dateEstratte.size(), volontariEstratti.size()); i++) {
             Calendar dataVisita = dateEstratte.get(i);
-            Visita nuovaVisita = new Visita(dataVisita, StatoVisita.PROPOSTA, 0);
+            Visita nuovaVisita = new Visita(tipoVisita.getTitolo(), dataVisita, StatoVisita.PROPOSTA, 0);
             nuovaVisita.setVolontarioAssociato(volontariEstratti.get(i));
             tipoVisita.addVisita(nuovaVisita);
         }

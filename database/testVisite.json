@@ -6,26 +6,26 @@
     "dataInizio": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 15,
-      "minute": 19,
-      "second": 16
+      "dayOfMonth": 16,
+      "hourOfDay": 12,
+      "minute": 0,
+      "second": 11
     },
     "dataFine": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 15,
-      "minute": 19,
-      "second": 16
+      "dayOfMonth": 16,
+      "hourOfDay": 12,
+      "minute": 0,
+      "second": 11
     },
     "oraInizio": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 15,
-      "hourOfDay": 15,
-      "minute": 19,
-      "second": 16
+      "dayOfMonth": 16,
+      "hourOfDay": 12,
+      "minute": 0,
+      "second": 11
     },
     "durata": 3,
     "giorniSettimana": [],
@@ -38,14 +38,13 @@
         "dataVisita": {
           "year": 2025,
           "month": 3,
-          "dayOfMonth": 15,
-          "hourOfDay": 15,
-          "minute": 19,
-          "second": 16
+          "dayOfMonth": 16,
+          "hourOfDay": 12,
+          "minute": 0,
+          "second": 11
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 5,
-        "titolo": "scrittura",
         "volontarioAssociato": {
           "nomeUtente": "volontario",
           "password": "volontario",

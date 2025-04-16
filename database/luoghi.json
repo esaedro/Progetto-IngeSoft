@@ -1,16 +1,12 @@
 [
   {
     "nome": "Iseo",
-    "indirizzo": "asd",
-    "visiteIds": [
-      "TitoloVisita1"
-    ]
+    "indirizzo": "Indirizzo a Iseo",
+    "visiteIds": []
   },
   {
     "nome": "Provaglio",
-    "indirizzo": "as",
-    "visiteIds": [
-      "TitoloVisita2"
-    ]
+    "indirizzo": "Indirizzo di Provaglio",
+    "visiteIds": []
   }
 ]
