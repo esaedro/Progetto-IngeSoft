@@ -292,6 +292,7 @@ public class AppView {
 
         voci.put("Login", controller::loginCredenziali);
         voci.put("Registrati", controller::registrazioneFruitore);
+        voci.put("Disabilita colori e caratteri speciali (se la visualizzazione di questo menu presenta dei problemi)", controller::disabilitaColoriCaratteriSpeciali);
 
         myMenu.addVoci(voci);
     }
