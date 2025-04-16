@@ -100,6 +100,12 @@ public class Session {
         }
         salvaUtenti();
     }
+    /**
+     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==> 
+     *           utenti.stream().filter(u -> u.getNomeUtente().equals(utente.getNomeUtente()))
+     *                  .allMatch(u -> u.getPassword().equals(newPassword));
+     * @ ensures \old(salvaUtenti());
+     */
 
     public void carica() {
         visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class) != null
@@ -110,6 +116,9 @@ public class Session {
             : new HashSet<>();
         caricaParametriGlobali();
     }
+    /**
+     * @ ensures visite != null && luoghi != null && parametriGlobali != null && utenti != null;
+     */
 
     public void caricaParametriGlobali() {
         filemanager.caricaParametriGlobali();
@@ -120,6 +129,9 @@ public class Session {
         ? filemanager.carica(FileManager.fileUtenti, Utente.class)
         : new HashSet<>();
     }
+    /**
+     * @ ensures utenti != null;
+     */
 
     /**
      * @ requires nomeUtente != null && !nomeUtente.isEmpty() && password != null && !password.isEmpty();
@@ -267,15 +279,24 @@ public class Session {
         return fruitori;
     }
 
+    /**
+     * @ requires nuoviVolontari != null;
+     */
     public void addVolontari(Set<Volontario> nuoviVolontari) {
         utenti.addAll(nuoviVolontari);
     }
 
+    /**
+     * @ requires visiteDaRimuovere != null;
+     */
     public void addFruitore(Fruitore fruitore) {
         utenti.add(fruitore);
     }
 
     // TODO: realize a proxy
+    /**
+     * @ requires volontariDaRimuovere != null;
+     */
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
         for (Volontario volontario : volontariDaRimuovere) {
             for (TipoVisita tipoVisita : visite) {
@@ -293,6 +314,10 @@ public class Session {
             }
         }
     }
+    /**
+     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==> 
+     *           utente instanceof Volontario && ((Volontario) utente).getDisponibilita().isEmpty()));
+     */
 
     public void salvataggioDatePrecluseFutureInAttuali() {
         TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
@@ -346,6 +371,9 @@ public class Session {
         return filemanager;
     }
 
+    /**
+     * @ requires inizioMese != null && fineMese != null;
+     */
     public Set<TipoVisita> getTipiVisiteProssimoMese(Calendar inizioMese, Calendar fineMese) {
         // Ordino le visite in base alla data di fine per evitare che le visite che terminano a breve non vengano istanziate
         Set<TipoVisita> tipiVisite = new TreeSet<>(Comparator.comparing(TipoVisita::getDataFine));
@@ -360,6 +388,9 @@ public class Session {
         return tipiVisite;
     }
 
+    /**
+     * @ requires volontari != null && satePossibiliPerVisita != null;
+     */
     public Map<Calendar, Set<Volontario>> creaMappaVolontariPerOgniDataPossibile(
         Set<Volontario> volontari,
         Set<Calendar> datePossibiliPerVisita
@@ -379,6 +410,9 @@ public class Session {
         return mappaVolontariPerData;
     }
 
+    /**
+     * @ requires datePossibiliPerVisita != null && mappaVolontariPerVisita != null && massimo != null;
+     */
     public List<Calendar> estraiDateCausali(
         Set<Calendar> datePossibiliPerVisita,
         Map<Calendar, Set<Volontario>> mappaVolontariPerData,
@@ -408,6 +442,9 @@ public class Session {
         return dateEstratte;
     }
 
+    /**
+     * @ requires dateEstratte != null && mappaVolontariPerData != null && tipiVisite != null && massimo != null;
+     */
     public List<Volontario> estraiVolontariCasuali(
         List<Calendar> dateEstratte,
         Map<Calendar, Set<Volontario>> mappaVolontariPerData,
@@ -448,6 +485,9 @@ public class Session {
         return volontariEstratti;
     }
 
+    /**
+     * @ requires dateEstratte != null && volontariEstratti != null && tipiVisita != null;
+     */
     public void creaVisitePerDatiEstratti(
         List<Calendar> dateEstratte,
         List<Volontario> volontariEstratti,
@@ -461,7 +501,13 @@ public class Session {
             tipoVisita.addVisita(nuovaVisita);
         }
     }
+    /**
+     * @ ensures tipoVisita.getVisiteAssociate().size() >= \old(tipoVisita.getVisiteAssociate().size())
+     */
 
+    /**
+     * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
+     */
     public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti) {
         if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
             TipoVisita tipovisita = visite
@@ -478,6 +524,9 @@ public class Session {
         return false;
     }
 
+    /**
+     * @ requires fruitore != null && visita != null;
+     */
     public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
         if (fruitore.getIscrizioni().containsKey(visita)) {
             if (
@@ -490,6 +539,9 @@ public class Session {
         return false;
     }
 
+    /**
+     * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
+     */
     public void iscrizione(Fruitore fruitore, Visita visita, int numeroIscritti) {
         if (puoIscriversi(fruitore, visita, numeroIscritti)) {
             Iscrizione nuovaIscrizione;
@@ -526,7 +578,22 @@ public class Session {
             }
         }
     }
+    /**
+     * @ ensures fruitore.getIscrizioni().containsKey(visita) <==> \old(puoIscriversi(fruitore, visita, numeroIscritti));
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) ==> 
+     *           visita.getNumeroIscritti() == \old(visita.getNumeroIscritti()) + numeroIscritti;
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) ==> 
+     *           fruitore.getIscrizioni().get(visita) != null && 
+     *           fruitore.getIscrizioni().get(visita).getNumeroDiIscritti() == numeroIscritti;
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) && 
+     *           visita.getNumeroIscritti() == (\exists TipoVisita t; visite.contains(t) && t.getVisiteAssociate().contains(visita); t.getMaxPartecipante()) ==> 
+     *           visita.getStato() == StatoVisita.COMPLETA;
+     */
+    
 
+    /**
+     * @ requires fruitore != null && visita != null;
+     */
     public void disiscrizione(Fruitore fruitore, Visita visita) {
         if (puoDisiscriversi(fruitore, visita)) {
             visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
@@ -534,4 +601,10 @@ public class Session {
             visita.setStato(StatoVisita.PROPOSTA);
         }
     }
+    /**
+     * @ ensures fruitore.getIscrizioni().containsKey(visita) == false <==> \old(puoDisiscriversi(fruitore, visita));
+     * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> 
+     *           visita.getNumeroIscritti() == \old(visita.getNumeroIscritti()) - \old(fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
+     * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> visita.getStato() == StatoVisita.PROPOSTA;
+     */
 }

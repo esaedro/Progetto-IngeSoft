@@ -30,7 +30,7 @@ public class Controller {
     }
 
     /**
-     * @ ensures session.getUtenteAttivo() != null
+     * @ ensures session.getUtenteAttivo() != null;
      */
     public void loginCredenziali() {
         Utente utenteProvvisorio = null;
@@ -45,6 +45,10 @@ public class Controller {
         }
         session.setUtenteAttivo(utenteProvvisorio);
     }
+    /**
+     * @ ensures session.login(username, password) != null ==> session.getUtenteAttivo() != null;
+     * @ ensures session.login(username, password) == null && valoriUtente != null ==> 'erroreLogin' is called;
+     */
 
 
     public void registrazioneFruitore() {
@@ -59,6 +63,13 @@ public class Controller {
 
         session.setUtenteAttivo(fruitore);
     }
+    /**
+     * @ ensures session.getUtenti().contains(fruitore);
+     * @ ensures session.getFruitori().contains(fruitore);
+     * @ ensures session.getUtenteAttivo() == fruitore;
+     * @ ensures fruitore.getNome().equals(nomeUtente);
+     * @ ensures fruitore.getPassword().equals(password);
+     */
 
     public void salva() {
         session.salva();
@@ -91,9 +102,15 @@ public class Controller {
             session.salvaParametriGlobali();
         }
     }
+    /**
+     * @ ensures (session.getUtenteAttivo() instanceof Configuratore && session.getLuoghi().isEmpty()) ==> creaLuoghi() is called;
+     * @ ensures (session.getUtenteAttivo() instanceof Configuratore && Luogo.getParametroTerritoriale() == null) ==> istanziaParametroTerritoriale() is called;
+     * @ ensures (session.getUtenteAttivo() instanceof Configuratore && TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) ==> dichiaraMassimoNumeroFruitori() is called;
+     * @ ensures session.getUtenteAttivo().getPassword().startsWith("config") ==> session.cambiaPassword(session.getUtenteAttivo(), _) is called;
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void creaLuoghi() {
             Set<Luogo> luoghi = new HashSet<>();
@@ -115,9 +132,14 @@ public class Controller {
 
             session.addLuoghi(luoghi);
     }
+    /**
+     * @ ensures \forall TipoVisita tv; visite.contains(tv) ==> (\exists Luogo l; luoghi.contains(l) && l.getVisite().contains(tv.getTitolo()));
+     * @ ensures \forall Luogo l; luoghi.contains(l) ==> session.getLuoghi().contains(l);
+     * @ ensures \forall TipoVisita tv; visite.contains(tv) ==> session.getVisite().contains(tv);
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     private void istanziaParametroTerritoriale() {
         if (Luogo.getParametroTerritoriale() == null) {
@@ -126,9 +148,12 @@ public class Controller {
                 );
         }
     }
+    /**
+     * @ ensures Luogo.getParametroTerritoriale() == null ==> ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(_) is called;
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void dichiaraMassimoNumeroFruitori() {
         ((Configuratore) session.getUtenteAttivo()).setNumeroMassimoIscritti(
@@ -138,7 +163,7 @@ public class Controller {
 
     private void esecuzione() {
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 15) {
+            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) {
                 appview.setMenuConfiguratore(this);
             } else {
                 appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
@@ -153,13 +178,17 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void inserisciDatePrecluse() {
         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
                 appview.menuInserimentoDatePrecluse(TipoVisita.getDatePrecluseFuture()));
         session.salvaParametriGlobali();
     }
+    /**
+     * @ ensures (session.getUtenteAttivo() instanceof Configuratore) ==> (TipoVisita.getDatePrecluseFuture() != null);
+     * @ ensures (session.getUtenteAttivo() instanceof Configuratore) ==> session.salvaParametriGlobali() is called;
+     */
 
     public void mostraLuoghi() {
         appview.mostraLuoghi(session.getLuoghi());
@@ -225,7 +254,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Volontario
+     * @ requires session.getUtenteAttivo() instanceof Volontario;
      */
     public void mostraVisiteAssociate() {
         appview.mostraVisiteAssociateAlVolontario(
@@ -234,7 +263,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Volontario
+     * @ requires session.getUtenteAttivo() instanceof Volontario;
      */
     public void inserisciDisponibilita() {
         Volontario volontario = (Volontario) session.getUtenteAttivo();
@@ -244,7 +273,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void chiudiDisponibilitaERealizzaPianoVisite() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -299,9 +328,15 @@ public class Controller {
             session.creaVisitePerDatiEstratti(dateEstratte, volontariEstratti, tipoVisita);
         }
     }
+    /**
+     * @ ensures \forall TipoVisita tv; tipiVisite.contains(tv) ==> 
+     *           (\exists Calendar c; dateEstratte.contains(c) && volontariEstratti != null ==>
+     *           (\exists Visita v; tv.getVisiteAssociate().contains(v) && v.getData().equals(c)));
+     * @ ensures dateEstratte.isEmpty() || volontariEstratti.isEmpty() ==> (\forall TipoVisita tv; !tv.getVisiteAssociate().isEmpty());
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void aggiungiVolontario() {
         TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
@@ -319,9 +354,13 @@ public class Controller {
         session.addVolontari(volontari);
         session.salvaUtenti();
     }
+    /**
+     * @ ensures session.getVolontari().containsAll(volontari);
+     * @ ensures session.salvaUtenti() is called;
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void aggiungiTipoVisita() {
         Luogo luogoSelezionato = appview.selezioneLuogo(session.getLuoghi());  
@@ -335,9 +374,14 @@ public class Controller {
             }
         } 
     }
+    /**
+     * @ ensures luogoSelezionato.getVisite().containsAll(nuoveVisite);
+     * @ ensures session.getVisite().containsAll(nuoveVisite);
+     * @ ensures nuoveVisite == null ==> !luogoSelezionato.getVisite().containsAll(nuoveVisite) && !session.getVisite().containsAll(nuoveVisite);
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void rimuoviLuogo() {
         session.removeLuoghi(appview.menuRimozioneLuoghi(session.getLuoghi()));
@@ -345,7 +389,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void rimuoviTipoVisita() {
         //reference ai luoghi gestite nel metodo di session
@@ -355,7 +399,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void rimuoviVolontario() {
         //reference a tipoVisita e Visita gestite nel metodo di session
@@ -368,7 +412,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Configuratore
+     * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void riapriDisponibilita() {
         session.cleanDisponibilitaDeiVolontari();
@@ -377,7 +421,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     * @ requires session.getUtenteAttivo() instanceof Fruitore;
      */
     public void iscrizioneFruitore() {
         if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
@@ -402,9 +446,15 @@ public class Controller {
             }
         }
     }
+    /**
+     * @ ensures visitaConIscritti != null ==> session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue()) is called;
+     * @ ensures visitaConIscritti != null ==> salva() is called;
+     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==> 
+     *           (visitaConIscritti == null || visitaConIscritti != null && fruitore.getIscrizioni().containsKey(visitaConIscritti.getKey()));
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     * @ requires session.getUtenteAttivo() instanceof Fruitore;
      */
     public void annullaIscrizione() {
         if (session.getUtenteAttivo() instanceof Fruitore) {
@@ -419,11 +469,16 @@ public class Controller {
                 salva();
             }
         }
-
     }
+    /**
+     * @ ensures visitaDaCuiDisiscriversi != null ==> session.disiscrizione(fruitore, visitaDaCuiDisiscriversi) is called;
+     * @ ensures visitaDaCuiDisiscriversi != null ==> salva() is called;
+     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==> 
+     *           (visitaDaCuiDisiscriversi == null || visitaDaCuiDisiscriversi != null && !fruitore.getIscrizioni().containsKey(visitaDaCuiDisiscriversi));
+     */
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     * @ requires session.getUtenteAttivo() instanceof Fruitore;
      */
     public Map<Visita, Set<Iscrizione>> getIscrizioniPerQuesteVisite(Set<Visita> visite) {
         Map<Visita, Set<Iscrizione>> visiteConIscrizioni = new HashMap<>();
@@ -444,7 +499,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     * @ requires session.getUtenteAttivo() instanceof Fruitore;
      */
     public void mostraVisiteConfermateConIscrizioni() {
         if (session.getUtenteAttivo() instanceof Volontario) {
@@ -463,7 +518,7 @@ public class Controller {
     }
 
     /**
-     * @ requires session.getUtenteAttivo() instanceof Fruitore
+     * @ requires session.getUtenteAttivo() instanceof Fruitore;
      */
     public void mostraIscrizioniFruitore() {
 
@@ -492,6 +547,9 @@ public class Controller {
         }
     }
 
+    /**
+     * @ requires visita != null;
+     */
     public TipoVisita getTipoVisitaAssociato(Visita visita) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
@@ -506,6 +564,9 @@ public class Controller {
     }
 
     //recupera il titolo del tipoVisita di una visita effettuata che sta nell'archivii
+    /**
+     * @ requires visita != null;
+     */
     public String getTipoVisitaTitolo(Visita visita) {
         if (session.getStoricoVisite() != null && !session.getStoricoVisite().isEmpty()) {
             for (Map.Entry<String, Set<Visita>> entry : session.getStoricoVisite().entrySet()) {
