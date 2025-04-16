@@ -70,7 +70,12 @@ public class Controller {
 
         appview.setMenuStart(this);
         
-        if (appview.stampaMenuOnce() == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
+        Runnable selezione;
+        do {
+            selezione = appview.stampaMenuOnce();
+        } while (selezione != null && session.getUtenteAttivo() == null);
+        
+        if (selezione == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
 
         carica();
         inizializzazione();
@@ -78,6 +83,10 @@ public class Controller {
         esecuzione();
 
         salva();
+    }
+    
+    public void disabilitaColoriCaratteriSpeciali() {
+       BelleStringhe.colori = false; 
     }
 
     /**
