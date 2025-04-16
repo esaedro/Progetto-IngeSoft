@@ -8,10 +8,10 @@
         "dataVisita": {
           "year": 2025,
           "month": 3,
-          "dayOfMonth": 15,
-          "hourOfDay": 16,
-          "minute": 44,
-          "second": 13
+          "dayOfMonth": 16,
+          "hourOfDay": 12,
+          "minute": 0,
+          "second": 11
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 4
