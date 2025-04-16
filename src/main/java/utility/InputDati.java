@@ -26,22 +26,42 @@ public class InputDati {
 
     public static boolean colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
     public static boolean newLineDifferente = false; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
-    private static final String ERRORE_FORMATO = colori
+    private static String ERRORE_FORMATO = colori
         ? ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET
         : "Il dato inserito non e' nel formato corretto";
-    private static final String ERRORE_MINIMO = colori
+    private static String ERRORE_MINIMO = colori
         ? ANSI_RED + "È richiesto un valore maggiore o uguale a " + ANSI_RESET
         : "È richiesto un valore maggiore o uguale a ";
-    private static final String ERRORE_STRINGA_VUOTA = colori
+    private static String ERRORE_STRINGA_VUOTA = colori
         ? ANSI_RED + "Non hai inserito alcun carattere" + ANSI_RESET
         : "Non hai inserito alcun carattere";
-    private static final String ERRORE_MASSIMO = colori
+    private static String ERRORE_MASSIMO = colori
         ? ANSI_RED + "È richiesto un valore minore o uguale a " + ANSI_RESET
         : "È richiesto un valore minore o uguale a ";
-    private static final String MESSAGGIO_AMMISSIBILI = colori
+    private static String MESSAGGIO_AMMISSIBILI = colori
         ? ANSI_RED + "I caratteri ammissibili sono: " + ANSI_RESET
         : "I caratteri ammissibili sono: ";
     private static final char[] CARATTERI_AMMISSIBILI = { 'S', 's', 'N', 'n' };
+    
+    public static void ricaricaVariabiliStatiche() {
+        colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
+        newLineDifferente = false; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
+        ERRORE_FORMATO = colori
+            ? ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET
+            : "Il dato inserito non e' nel formato corretto";
+        ERRORE_MINIMO = colori
+            ? ANSI_RED + "È richiesto un valore maggiore o uguale a " + ANSI_RESET
+            : "È richiesto un valore maggiore o uguale a ";
+        ERRORE_STRINGA_VUOTA = colori
+            ? ANSI_RED + "Non hai inserito alcun carattere" + ANSI_RESET
+            : "Non hai inserito alcun carattere";
+        ERRORE_MASSIMO = colori
+            ? ANSI_RED + "È richiesto un valore minore o uguale a " + ANSI_RESET
+            : "È richiesto un valore minore o uguale a ";
+        MESSAGGIO_AMMISSIBILI = colori
+            ? ANSI_RED + "I caratteri ammissibili sono: " + ANSI_RESET
+            : "I caratteri ammissibili sono: ";
+    }
 
     /*
      * I metodi che contengono il parametro formale "String messaggioErrore" sono metodi

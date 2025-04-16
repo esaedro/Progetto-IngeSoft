@@ -15,12 +15,12 @@ e sia presentata in fondo al menu
 public class CliMenu<T, U> {
 
     public static boolean colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
-    public static final String VOCE_USCITA = (colori)
+    public static String VOCE_USCITA = (colori)
         ? ANSI_YELLOW + "q  " + ANSI_RESET + "per uscire"
         : "q  " + "per uscire";
-    public static final String RICHIESTA_INSERIMENTO =
+    public static String RICHIESTA_INSERIMENTO =
         "Digita il numero dell'opzione desiderata > ";
-    public static final String ERRORE_INSERIMENTO = (colori)
+    public static String ERRORE_INSERIMENTO = (colori)
         ? ANSI_RED + "Scelta non valida" + ANSI_RESET
         : "Scelta non valida";
 
@@ -40,7 +40,18 @@ public class CliMenu<T, U> {
         this.titolo = titolo;
         this.voci = voci;
     }
-
+    
+    public static void ricaricaVariabiliStatiche() {
+        colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
+        VOCE_USCITA = (colori)
+            ? ANSI_YELLOW + "q  " + ANSI_RESET + "per uscire"
+            : "q  " + "per uscire";
+        RICHIESTA_INSERIMENTO =
+            "Digita il numero dell'opzione desiderata > ";
+        ERRORE_INSERIMENTO = (colori)
+            ? ANSI_RED + "Scelta non valida" + ANSI_RESET
+            : "Scelta non valida";
+    }
     protected void stampaMenu() {
         System.out.println(BelleStringhe.incornicia(titolo));
         int i = 0;
