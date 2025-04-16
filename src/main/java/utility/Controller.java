@@ -9,57 +9,6 @@ public class Controller {
     private final Session session = new Session();
     private final AppView appview = new AppView();
 
-    public void creaVisita() {
-        carica();
-        session.getVisite().forEach(tipoVisita -> {
-            switch (tipoVisita.getTitolo()) {
-                case "Visita a Provaglio!" -> {
-                    Calendar data1 = Calendar.getInstance(), data2 = Calendar.getInstance(), data3 = Calendar.getInstance();
-                    data1.set(2025, Calendar.MAY, 14);
-                    data2.set(2025, Calendar.MAY, 17);
-                    data3.set(2025, Calendar.MAY, 18);
-                    Visita visita1 = new Visita(tipoVisita.getTitolo(), data1, StatoVisita.PROPOSTA, 0);
-                    Visita visita2 = new Visita(tipoVisita.getTitolo(), data2, StatoVisita.PROPOSTA, 0);
-                    Visita visita3 = new Visita(tipoVisita.getTitolo(), data3, StatoVisita.CONFERMATA, 0);
-                    visita1.setVolontarioAssociato(new Volontario("V02_Charlie", "qwertyuiop"));
-                    visita2.setVolontarioAssociato(new Volontario("V02_Charlie", "qwertyuiop"));
-                    visita3.setVolontarioAssociato(new Volontario("V02_Charlie", "qwertyuiop"));
-                    tipoVisita.addVisita(visita1);
-                    tipoVisita.addVisita(visita2);
-                    tipoVisita.addVisita(visita3);
-
-                }
-                case "Visita a Iseo!" -> {
-                    Calendar data1 = Calendar.getInstance(), data2 = Calendar.getInstance(), data3 = Calendar.getInstance();
-                    data1.set(2025, Calendar.MAY, 12);
-                    data2.set(2025, Calendar.MAY, 13);
-                    data3.set(2025, Calendar.MAY, 21);
-                    Visita visita1 = new Visita(tipoVisita.getTitolo(), data1, StatoVisita.PROPOSTA, 0);
-                    Visita visita2 = new Visita(tipoVisita.getTitolo(), data2, StatoVisita.PROPOSTA, 0);
-                    Visita visita3 = new Visita(tipoVisita.getTitolo(), data3, StatoVisita.CANCELLATA, 0);
-                    visita1.setVolontarioAssociato(new Volontario("V01_BOB", "qwertyuiop"));
-                    visita2.setVolontarioAssociato(new Volontario("V01_BOB", "qwertyuiop"));
-                    visita3.setVolontarioAssociato(new Volontario("V01_BOB", "qwertyuiop"));
-                    tipoVisita.addVisita(visita1);
-                    tipoVisita.addVisita(visita2);
-                    tipoVisita.addVisita(visita3);
-                }
-                case "Seconda Visita Iseo!" -> {
-                    Calendar data1 = Calendar.getInstance(), data2 = Calendar.getInstance();
-                    data1.set(2025, Calendar.MAY, 7);
-                    data2.set(2025, Calendar.MAY, 27);
-                    Visita visita1 = new Visita(tipoVisita.getTitolo(), data1, StatoVisita.PROPOSTA, 0);
-                    Visita visita2 = new Visita(tipoVisita.getTitolo(), data2, StatoVisita.CONFERMATA, 0);
-                    visita1.setVolontarioAssociato(new Volontario("V01_BOB", "qwertyuiop"));
-                    visita2.setVolontarioAssociato(new Volontario("V02_Charlie", "qwertyuiop"));
-                    tipoVisita.addVisita(visita1);
-                    tipoVisita.addVisita(visita2);
-                }
-            }
-            salva();
-        });
-    }
-
     private Controller() {}
 
     public static Controller getInstance() {
