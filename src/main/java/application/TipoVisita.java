@@ -111,6 +111,10 @@ public class TipoVisita implements Serializable {
         return minPartecipante;
     }
 
+    public Set<DayOfWeek> getGiorniSettimana() {
+        return giorniSettimana;
+    }
+    
     public Boolean getBigliettoIngresso() {
         return bigliettoIngresso;
     }
@@ -269,38 +273,6 @@ public class TipoVisita implements Serializable {
         return datePossibiliPerVisita;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder volontari = new StringBuilder();
-        if (volontariIdonei != null) {
-            for (Volontario volontario : volontariIdonei) {
-                volontari.append(volontario.getNomeUtente()).append(", ");
-            }
-            if (!volontari.isEmpty()) {
-                volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
-            }
-        }
 
-        StringBuilder visiteID = new StringBuilder();
-        for (Visita visita : visiteAssociate) {
-            visiteID.append(visita.getDataStato()).append("; ");
-        }
-        if (!visiteID.isEmpty()) {
-            visiteID.setLength(visiteID.length() - 2); // Remove trailing comma and space
-        }
 
-        return  "Titolo: " + titolo +
-                ", descrizione: " + descrizione +
-                ", puntoIncontro: " + puntoIncontro +
-                ", dataInizio: " + (dataInizio != null? dataInizio.get(Calendar.DAY_OF_MONTH) + "/" + (dataInizio.get(Calendar.MONTH) + 1) + "/" + dataInizio.get(Calendar.YEAR) : "non specificata") +
-                ", dataFine: " + (dataFine != null? dataFine.get(Calendar.DAY_OF_MONTH) + "/" + (dataFine.get(Calendar.MONTH) + 1) + "/" + dataFine.get(Calendar.YEAR) : "non specificata") +
-                ", oraInizio: " + (oraInizio != null? oraInizio.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", oraInizio.get(Calendar.MINUTE)) : "non specificata") +
-                ", durata: " + durata +
-                ", giorniSettimana: " + giorniSettimana +
-                ", minPartecipanti: " + minPartecipante +
-                ", maxPartecipanti: " + maxPartecipante +
-                ", bigliettoIngresso: " + (bigliettoIngresso ? "sì" : "no") +
-                ", volontariIdonei: [" + volontari + "]" +
-                ", visiteAssociate: [" + (visiteAssociate != null ? ("" + visiteID) : "nessuna") + "]";
-    }
 }

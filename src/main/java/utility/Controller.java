@@ -258,8 +258,8 @@ public class Controller {
     /**
      * @ requires session.getUtenteAttivo() instanceof Volontario;
      */
-    public void mostraVisiteAssociate() {
-        appview.mostraVisiteAssociateAlVolontario(
+    public void mostraTipiVisiteAssociate() {
+        appview.mostraTipiVisiteAssociateAlVolontario(
             ((Volontario) session.getUtenteAttivo()).getVisiteAssociate(session.getVisite())
         );
     }

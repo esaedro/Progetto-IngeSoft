@@ -125,8 +125,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita1Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 6);
-        Visita visita1Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 7);
+        Visita visita1Proposta = new Visita(visita1.getTitolo(), Calendar.getInstance(), StatoVisita.PROPOSTA, 6);
+        Visita visita1Effettuata = new Visita(visita1.getTitolo(), Calendar.getInstance(), StatoVisita.EFFETTUATA, 7);
 
         visita1.addVisita(visita1Proposta);
         visita1.addVisita(visita1Effettuata);
@@ -136,8 +136,8 @@ public class TestMain {
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
                 5, 10, true, new HashSet<>());
 
-        Visita visita2Proposta = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 8);
-        Visita visita2Effettuata = new Visita(Calendar.getInstance(), StatoVisita.EFFETTUATA, 9);
+        Visita visita2Proposta = new Visita(visita2.getTitolo(),Calendar.getInstance(), StatoVisita.PROPOSTA, 8);
+        Visita visita2Effettuata = new Visita(visita2.getTitolo(), Calendar.getInstance(), StatoVisita.EFFETTUATA, 9);
 
         visita2.addVisita(visita2Proposta);
         visita2.addVisita(visita2Effettuata);
@@ -357,7 +357,7 @@ public class TestMain {
 
         Set<Utente> utentiTest = new HashSet<>();
         HashMap<Visita, Iscrizione> iscrizioni = new HashMap<>();
-        iscrizioni.put(new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 4),
+        iscrizioni.put(new Visita("Titolotest1", Calendar.getInstance(), StatoVisita.PROPOSTA, 4),
                 new Iscrizione("codice", 2));
         utentiTest.add(new Fruitore("Fruitore", "frutto", iscrizioni));
         session.setUtenti(utentiTest);
@@ -377,7 +377,7 @@ public class TestMain {
         Session session = new Session();
         session.setVisite(new HashSet<>());
 
-        Visita visita = new Visita(Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
+        Visita visita = new Visita("Titolotest2", Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
         visita.setVolontarioAssociato(new Volontario("volontario", "volontario"));
 
         TipoVisita tipoVisita = new TipoVisita("Titolo", "Descrizione", "punto",
