@@ -9,6 +9,9 @@ import java.util.*;
 
 public class FruitoreDeserializer implements JsonDeserializer<Fruitore> {
 
+    /**
+     * @ ensure new Fruitore() != null
+     */
     @Override
     public Fruitore deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();

@@ -34,6 +34,9 @@ public class FileManager {
             .setPrettyPrinting()
             .create();
 
+    /**
+     * @ ensures directory.exists() == True
+     */
     public FileManager(String percorsoFile) {
         this.percorsoFile = percorsoFile;
         File directory = new File(percorsoFile);
@@ -50,6 +53,9 @@ public class FileManager {
         }
     }
 
+    /**
+     * @ ensures Set<T> != null;
+     */
     public <T> Set<T> carica (String nomeFile, Class<T> classToLoad) {
         Type arrayType = TypeToken.getParameterized(Set.class, classToLoad).getType();
         try (FileReader reader = new FileReader(percorsoFile + nomeFile)) {
@@ -59,6 +65,9 @@ public class FileManager {
         }
     }
 
+    /**
+     * @ ensures return HashMap<T, K> != null;
+     */
     public <T, K> HashMap<T, Set<K>> caricaStorico (String nomeFile, Class<T> classToLoadKey, Class<K> classToLoadValue) {
 
         Type arrayTypeSet = TypeToken.getParameterized(Set.class, classToLoadValue).getType();
@@ -70,6 +79,9 @@ public class FileManager {
         }
     }
 
+    /**
+     * @ requires Luogo.getParametroTerritoriale() != && TipoVisita.getNumeroMassimoIscrittoPerFruitore() > 0;
+     */
     public void salvaParametriGlobali() {
         JsonObject jo = new JsonObject();
         jo.addProperty("parametro_territoriale", Luogo.getParametroTerritoriale());
@@ -89,6 +101,9 @@ public class FileManager {
 
     }
 
+    /**
+     * @ ensures Luogo.getParametroTerritoriale() != && TipoVisita.getNumeroMassimoIscrittoPerFruitore() >= 0;
+     */
     public void caricaParametriGlobali() {
         try (FileReader writer = new FileReader(percorsoFile + fileParametriGlobali)) {
             JsonObject parametri = gson.fromJson(writer, JsonObject.class);

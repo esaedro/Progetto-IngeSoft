@@ -9,6 +9,7 @@ public class Visita {
     private Calendar dataVisita;
     private StatoVisita stato;
     private int numeroIscritti;
+    private String titolo = "Visita non associata ad alcun tipo di visita";
 
     /**
      * @ invariant volontarioAssociato != null;
@@ -18,10 +19,20 @@ public class Visita {
     /**
      * @ requires volontarioAssociato != null;
      */
-    public Visita(Calendar dataVisita, StatoVisita stato, int numeroIscritti) {
+    public Visita(String titolo, Calendar dataVisita, StatoVisita stato, int numeroIscritti) {
+        this.titolo = titolo;
         this.dataVisita = dataVisita;
         this.stato = stato;
         this.numeroIscritti = numeroIscritti;
+
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
     }
     
     public Calendar getDataVisita() {
@@ -70,27 +81,21 @@ public class Visita {
      */
     public String getIdentificativo() {
         String id = "";
-        id += Controller.getInstance().getTipoVisitaAssociato(this).getTitolo();
+        id += titolo;
         id += " " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
         return id;
     }
 
     public String getDataStato() {
         String dataStato = "";
-
         dataStato += " " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata");
         dataStato += " " + stato;
-
         return dataStato;
     }
 
     public TipoVisita getTipoVisita() {
-        TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(this);
+        TipoVisita tipoVisita = Controller.getInstance().getTipoVisitaAssociato(titolo);
         return tipoVisita;
-    }
-
-    public String getTipoVisitaTitolo() {
-        return Controller.getInstance().getTipoVisitaTitolo(this);
     }
 
     public String toString() {
@@ -101,7 +106,7 @@ public class Visita {
             if (tipoVisita == null) {
                 return "Questa visita non è associata ad alcun tipo di visita";
             }
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\t\t\t\t");
+            sb.append("Titolo: " + titolo + "\t\t\t");
             sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
             sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
             sb.append("Data di svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\t\t");
@@ -117,14 +122,15 @@ public class Visita {
         }
 
         else if (this.stato == StatoVisita.CANCELLATA) {
-            if (tipoVisita == null) {
-                return "Questa visita non è associata ad alcun tipo di visita";
-            }
             sb.append("Visita cancellata\n");
-            sb.append("Titolo: " + tipoVisita.getTitolo() + "\n");
+            sb.append("Titolo: " + titolo + "\n");
             sb.append("Data di mancato svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata"));
         }    
 
         return sb.toString();
-    }    
+    }
+
+
+
+    
 }

@@ -533,7 +533,7 @@ public class AppView {
         return nuoveDisponibilita;
     }
 
-    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte, Controller controller) {
+    public AbstractMap.SimpleEntry<Visita, Integer> menuIscrizione(Set<Visita> visiteProposte, Controller controller, int maxIscrittiperFruitore) {
         AbstractMap.SimpleEntry<Visita, Integer> iscrizione = null;
         Visita visita;
         int numeroIscritti;
@@ -544,9 +544,9 @@ public class AppView {
                 
                 if (visita == null) return iscrizione;      //uscita dal menu
                 
-                TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita);
-                int maxIscrivibili = tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti();
-
+                TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
+                //int maxIscrivibili = ;
+                int maxIscrivibili = Math.min(tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti(), maxIscrittiperFruitore);
                 numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere (massimo %d) ? ", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
             } while (!InputDati.conferma("Confermare iscrizione?"));
 
