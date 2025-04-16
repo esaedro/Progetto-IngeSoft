@@ -45,7 +45,7 @@ public class InputDati {
     
     public static void ricaricaVariabiliStatiche() {
         colori = BelleStringhe.colori; // Abilita la colorazione degli input e dei messaggi di errore
-        newLineDifferente = false; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
+        newLineDifferente = true; // È necessario su alcune piattaforme perché il comportamento del carattere di 'newline' è diverso
         ERRORE_FORMATO = colori
             ? ANSI_RED + "Il dato inserito non e' nel formato corretto" + ANSI_RESET
             : "Il dato inserito non e' nel formato corretto";
@@ -70,8 +70,7 @@ public class InputDati {
 
     private static Scanner creaScanner() {
         Scanner creato = new Scanner(System.in);
-        creato.useDelimiter("\n");
-//        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
+        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
         return creato;
     }
 

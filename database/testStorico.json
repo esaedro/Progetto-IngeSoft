@@ -5,12 +5,13 @@
         "year": 2025,
         "month": 3,
         "dayOfMonth": 16,
-        "hourOfDay": 12,
-        "minute": 0,
-        "second": 11
+        "hourOfDay": 14,
+        "minute": 58,
+        "second": 29
       },
       "stato": "EFFETTUATA",
-      "numeroIscritti": 7
+      "numeroIscritti": 7,
+      "titolo": "Visita1"
     }
   ],
   "Visita2": [
@@ -19,12 +20,13 @@
         "year": 2025,
         "month": 3,
         "dayOfMonth": 16,
-        "hourOfDay": 12,
-        "minute": 0,
-        "second": 11
+        "hourOfDay": 14,
+        "minute": 58,
+        "second": 29
       },
       "stato": "EFFETTUATA",
-      "numeroIscritti": 9
+      "numeroIscritti": 9,
+      "titolo": "Visita2"
     }
   ]
 }
