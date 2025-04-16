@@ -103,10 +103,14 @@ public class Visita {
         TipoVisita tipoVisita = getTipoVisita();
 
         if (this.stato != StatoVisita.EFFETTUATA &&  this.stato != StatoVisita.CANCELLATA) {
-            if (tipoVisita == null) {
-                return "Questa visita non è associata ad alcun tipo di visita";
-            }
+
             sb.append("Titolo: " + titolo + "\t\t\t");
+
+            if (tipoVisita == null) {
+                sb.append("tipoVisita null");
+                return sb.toString();
+            }
+
             sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
             sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
             sb.append("Data di svolgimento: " + (dataVisita != null ? dataVisita.get(Calendar.DAY_OF_MONTH) + "/" + (dataVisita.get(Calendar.MONTH) + 1) + "/" + dataVisita.get(Calendar.YEAR) : "non specificata") + "\t\t");
