@@ -10,6 +10,7 @@ public class Main {
         InputDati.newLineDifferente = true;
         
         Controller controller = Controller.getInstance();
+//        controller.creaVisita();
         controller.start();
 
         // TODO: condizioni Session, Controller, FileManager, UtenteSerializer, UtenteDeserializer
