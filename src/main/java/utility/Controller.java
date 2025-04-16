@@ -36,6 +36,8 @@ public class Controller {
     
     public void disabilitaColoriCaratteriSpeciali() {
        BelleStringhe.colori = false; 
+       InputDati.colori = false;
+       CliMenu.colori = false;
     }
 
     /**
