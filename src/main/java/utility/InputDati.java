@@ -50,8 +50,8 @@ public class InputDati {
 
     private static Scanner creaScanner() {
         Scanner creato = new Scanner(System.in);
-        creato.useDelimiter("\n");
-//        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
+        //creato.useDelimiter("\n");
+        creato.useDelimiter(newLineDifferente ? "\n" : System.getProperty("line.separator"));
         return creato;
     }
 
@@ -629,7 +629,7 @@ public class InputDati {
             "Risposta non valida"
         );
 
-        System.out.print(ANSI_RESET);
+        if (colori) System.out.print(ANSI_RESET);
         return (valoreLetto == CARATTERI_AMMISSIBILI[0] || valoreLetto == CARATTERI_AMMISSIBILI[1])
             ? true
             : false;
