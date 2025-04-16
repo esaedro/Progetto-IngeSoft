@@ -1,0 +1,151 @@
+[
+  {
+    "titolo": "Visita a Provaglio!",
+    "descrizione": "Descrizione Provaglio",
+    "puntoIncontro": "Comune di Provaglio",
+    "dataInizio": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 3,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 23,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 16,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 300,
+    "giorniSettimana": [
+      "WEDNESDAY",
+      "SUNDAY",
+      "SATURDAY",
+      "THURSDAY"
+    ],
+    "minPartecipante": 2,
+    "maxPartecipante": 6,
+    "bigliettoIngresso": true,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V02_Charlie",
+        "password": "qwertyuiop",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": []
+  },
+  {
+    "titolo": "Visita a Iseo!",
+    "descrizione": "Descrizione Iseo",
+    "puntoIncontro": "Piazza a Iseo",
+    "dataInizio": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 1,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 31,
+      "hourOfDay": 1,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 12,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 60,
+    "giorniSettimana": [
+      "MONDAY",
+      "WEDNESDAY",
+      "SUNDAY",
+      "TUESDAY"
+    ],
+    "minPartecipante": 5,
+    "maxPartecipante": 30,
+    "bigliettoIngresso": true,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V01_Bob",
+        "password": "qwertyuiop",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": []
+  },
+  {
+    "titolo": "Seconda Visita Iseo!",
+    "descrizione": "Descrizione 2 Iseo",
+    "puntoIncontro": "Un\u0027altra piazza a Iseo",
+    "dataInizio": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 5,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "dataFine": {
+      "year": 2025,
+      "month": 4,
+      "dayOfMonth": 28,
+      "hourOfDay": 0,
+      "minute": 0,
+      "second": 0
+    },
+    "oraInizio": {
+      "year": 1970,
+      "month": 0,
+      "dayOfMonth": 1,
+      "hourOfDay": 15,
+      "minute": 0,
+      "second": 0
+    },
+    "durata": 120,
+    "giorniSettimana": [
+      "WEDNESDAY",
+      "TUESDAY",
+      "THURSDAY"
+    ],
+    "minPartecipante": 8,
+    "maxPartecipante": 20,
+    "bigliettoIngresso": false,
+    "volontariIdonei": [
+      {
+        "nomeUtente": "V01_Bob",
+        "password": "qwertyuiop",
+        "type": "volontario",
+        "disponibilita": []
+      },
+      {
+        "nomeUtente": "V02_Charlie",
+        "password": "qwertyuiop",
+        "type": "volontario",
+        "disponibilita": []
+      }
+    ],
+    "visiteAssociate": []
+  }
+]
