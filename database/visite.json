@@ -45,7 +45,65 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": []
+    "visiteAssociate": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 14,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Provaglio!",
+        "volontarioAssociato": {
+          "nomeUtente": "V02_Charlie",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 17,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Provaglio!",
+        "volontarioAssociato": {
+          "nomeUtente": "V02_Charlie",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 18,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "CONFERMATA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Provaglio!",
+        "volontarioAssociato": {
+          "nomeUtente": "V02_Charlie",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      }
+    ]
   },
   {
     "titolo": "Visita a Iseo!",
@@ -93,7 +151,65 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": []
+    "visiteAssociate": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 12,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Iseo!",
+        "volontarioAssociato": {
+          "nomeUtente": "V01_BOB",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 13,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Iseo!",
+        "volontarioAssociato": {
+          "nomeUtente": "V01_BOB",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 21,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "CANCELLATA",
+        "numeroIscritti": 0,
+        "titolo": "Visita a Iseo!",
+        "volontarioAssociato": {
+          "nomeUtente": "V01_BOB",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      }
+    ]
   },
   {
     "titolo": "Seconda Visita Iseo!",
@@ -146,6 +262,45 @@
         "disponibilita": []
       }
     ],
-    "visiteAssociate": []
+    "visiteAssociate": [
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 7,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "PROPOSTA",
+        "numeroIscritti": 0,
+        "titolo": "Seconda Visita Iseo!",
+        "volontarioAssociato": {
+          "nomeUtente": "V01_BOB",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      },
+      {
+        "dataVisita": {
+          "year": 2025,
+          "month": 4,
+          "dayOfMonth": 27,
+          "hourOfDay": 14,
+          "minute": 46,
+          "second": 18
+        },
+        "stato": "CONFERMATA",
+        "numeroIscritti": 0,
+        "titolo": "Seconda Visita Iseo!",
+        "volontarioAssociato": {
+          "nomeUtente": "V02_Charlie",
+          "password": "qwertyuiop",
+          "type": "volontario",
+          "disponibilita": []
+        }
+      }
+    ]
   }
 ]

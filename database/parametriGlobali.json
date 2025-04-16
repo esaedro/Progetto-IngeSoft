@@ -1,7 +1,11 @@
 {
   "parametro_territoriale": "Brescia",
-  "numero_massimo_iscritti": 34,
-  "date_precluse_future": [],
+  "numero_massimo_iscritti": 54,
+  "date_precluse_future": [
+    1,
+    2,
+    3
+  ],
   "date_precluse_attuali": [
     16,
     18,

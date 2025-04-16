@@ -9,12 +9,13 @@
           "year": 2025,
           "month": 3,
           "dayOfMonth": 16,
-          "hourOfDay": 12,
-          "minute": 0,
-          "second": 11
+          "hourOfDay": 14,
+          "minute": 58,
+          "second": 29
         },
         "stato": "PROPOSTA",
-        "numeroIscritti": 4
+        "numeroIscritti": 4,
+        "titolo": "Titolotest1"
       }
     ],
     "iscrizioni": [
