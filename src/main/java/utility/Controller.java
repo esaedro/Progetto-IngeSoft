@@ -124,6 +124,7 @@ public class Controller {
             ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
                     appview.menuInserimentoParametroTerritoriale()
                 );
+            salva();
         }
     }
 
@@ -134,6 +135,7 @@ public class Controller {
         ((Configuratore) session.getUtenteAttivo()).setNumeroMassimoIscritti(
                 appview.menuInserimentoMassimoIscritti()
             );
+        salva();
     }
 
     private void esecuzione() {
@@ -177,7 +179,7 @@ public class Controller {
         Set<Visita> visite = getAllVisite();
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite, session.getUtenteAttivo());
 
-        if (session.getUtenteAttivo() instanceof Volontario) {
+        if (session.getUtenteAttivo() instanceof Configuratore) {
             appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
         } else if (session.getUtenteAttivo() instanceof Fruitore) {
             visitePerStato.remove(StatoVisita.COMPLETA);
@@ -394,7 +396,7 @@ public class Controller {
             visiteProposte.removeIf((visita -> fruitore.getIscrizioni().containsKey(visita)));
             //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
             //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
-            visitaConIscritti = appview.menuIscrizione(visiteProposte, this);
+            visitaConIscritti = appview.menuIscrizione(visiteProposte, this, TipoVisita.getNumeroMassimoIscrittoPerFruitore());
             
             if (visitaConIscritti != null) {
                 session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
@@ -466,7 +468,6 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore
      */
     public void mostraIscrizioniFruitore() {
-
         //visite nello stato proposta/confermata/cancellata a cui ha effettuato un'iscrizione
         if (session.getUtenteAttivo() instanceof Fruitore fruitore) {
 
@@ -492,29 +493,17 @@ public class Controller {
         }
     }
 
-    public TipoVisita getTipoVisitaAssociato(Visita visita) {
+    public TipoVisita getTipoVisitaAssociato(String titolo) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-                if (tipoVisita.getVisiteAssociate().contains(visita))
+                if(tipoVisita.getTitolo().equals(titolo)) {
                     return tipoVisita;
-                // for (Visita visitaAssociata : tipoVisita.getVisiteAssociate()) {
-                //     if (visitaAssociata.equals(visita)) return tipoVisita;
-                // }
+                }
+
             }
         }
         return null;
     }
 
-    //recupera il titolo del tipoVisita di una visita effettuata che sta nell'archivii
-    public String getTipoVisitaTitolo(Visita visita) {
-        if (session.getStoricoVisite() != null && !session.getStoricoVisite().isEmpty()) {
-            for (Map.Entry<String, Set<Visita>> entry : session.getStoricoVisite().entrySet()) {
-                if (entry.getValue().contains(visita)) {
-                    return entry.getKey();
-                }
-            }
-        }
-        return null;
-    }
 
 }
