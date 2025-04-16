@@ -507,15 +507,10 @@ public class Session {
     /**
      * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
      */
-    public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti) {
+    public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
         if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
-            TipoVisita tipovisita = visite
-                .stream()
-                .filter(t -> t.getVisiteAssociate().contains(visita))
-                .findFirst()
-                .orElse(null);
-            if (tipovisita != null) {
-                if (visita.getNumeroIscritti() + numeroIscritti < tipovisita.getMaxPartecipante()) {
+            if (tipoVisita != null) {
+                if (visita.getNumeroIscritti() + numeroIscritti <= tipoVisita.getMaxPartecipante()) {
                     return true;
                 }
             }
@@ -550,8 +545,8 @@ public class Session {
      *           visita.getNumeroIscritti() == (\exists TipoVisita t; visite.contains(t) && t.getVisiteAssociate().contains(visita); t.getMaxPartecipante()) ==> 
      *           visita.getStato() == StatoVisita.COMPLETA;
      */
-    public void iscrizione(Fruitore fruitore, Visita visita, int numeroIscritti) {
-        if (puoIscriversi(fruitore, visita, numeroIscritti)) {
+    public void iscrizione(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
+        if (puoIscriversi(fruitore, visita, numeroIscritti, tipoVisita)) {
             Iscrizione nuovaIscrizione;
             String codiceIscrizione;
             Set<Fruitore> fruitori = getFruitori();
@@ -576,18 +571,12 @@ public class Session {
             fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
             visita.setNumeroIscritti(visita.getNumeroIscritti() + numeroIscritti);
 
-            TipoVisita tipoVisita = visite
-                .stream()
-                .filter(t -> t.getVisiteAssociate().contains(visita))
-                .findFirst()
-                .orElse(null);
             if (tipoVisita != null && visita.getNumeroIscritti() == tipoVisita.getMaxPartecipante()) {
                 visita.setStato(StatoVisita.COMPLETA);
             }
         }
     }
     
-
     /**
      * @ requires fruitore != null && visita != null;
      * @ ensures fruitore.getIscrizioni().containsKey(visita) == false <==> \old(puoDisiscriversi(fruitore, visita));

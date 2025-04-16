@@ -447,7 +447,12 @@ public class Controller {
             visitaConIscritti = appview.menuIscrizione(visiteProposte, this, TipoVisita.getNumeroMassimoIscrittoPerFruitore());
             
             if (visitaConIscritti != null) {
-                session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue());
+                Visita visitaSelezionata = visitaConIscritti.getKey();
+                int numeroIscritti = visitaConIscritti.getValue();
+                session.iscrizione(fruitore, visitaSelezionata, numeroIscritti,
+                                        getTipoVisitaAssociato(visitaSelezionata.getTitolo()));
+
+                                    
                 salva();
             }
         }
@@ -532,7 +537,7 @@ public class Controller {
                     StatoVisita stato = visita.getStato();
 
                     //se non va fixare qui
-                    if (stato == StatoVisita.PROPOSTA || stato == StatoVisita.CONFERMATA || stato == StatoVisita.CANCELLATA) {
+                    if (stato != StatoVisita.EFFETTUATA && stato != StatoVisita.NON_ISTANZIATA) {
                         visiteConIscrizioniPerStato
                             .computeIfAbsent(stato, k -> new HashMap<>())
                             .put(visita, iscrizione);

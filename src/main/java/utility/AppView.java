@@ -459,7 +459,7 @@ public class AppView {
     public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, HashMap<String, Set<Visita>> storicoVisite) {
         if (!visitePerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
-                System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + entry.getKey() + BelleStringhe.ANSI_RESET);
+                System.out.println("\nStato: " + entry.getKey());
                 if (!entry.getValue().isEmpty()) {
                     for (Visita visita : entry.getValue()) {
                         System.out.println(formattaVisita(visita));
@@ -470,7 +470,7 @@ public class AppView {
     
 
         if (!storicoVisite.isEmpty()) {
-            System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + StatoVisita.EFFETTUATA + BelleStringhe.ANSI_RESET);
+            System.out.println("\nStato: " + StatoVisita.EFFETTUATA);
             for (Map.Entry<String, Set<Visita>> entry : storicoVisite.entrySet()) {
                 for (Visita visita : entry.getValue()) {
                     System.out.println(entry.getKey() + "\t\t" + formattaVisitaArchivio(visita));
@@ -491,7 +491,7 @@ public class AppView {
 
                     for (Map.Entry<Visita, Iscrizione> visiteIscrizioni : entry.getValue().entrySet()) {
                         System.out.println(formattaVisita(visiteIscrizioni.getKey()));
-                        System.out.println("Iscrizione #" + visiteIscrizioni.getValue().getCodiceUnivoco() + " : " + visiteIscrizioni.getValue().getNumeroDiIscritti() + " iscritti");
+                        System.out.println(formattaIscrizione(visiteIscrizioni.getValue()));
                     }
                 } else System.out.println("Nessuna iscrizione a visite in questo stato");
             
@@ -511,7 +511,7 @@ public class AppView {
                 System.out.println("\n" + formattaVisita(entry.getKey()));
                 if (!entry.getValue().isEmpty()) {
                     for (Iscrizione iscrizione : entry.getValue()) {
-                        System.out.println("Iscrizione #" + iscrizione.getCodiceUnivoco() + " : " + iscrizione.getNumeroDiIscritti() + " iscritti");
+                        System.out.println(formattaIscrizione(iscrizione));
                     }
                 } else System.out.println("Nessuna iscrizione a questa visita");
             }
@@ -553,7 +553,8 @@ public class AppView {
                 
                 TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
                 int maxIscrivibili = Math.min(tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti(), maxIscrittiperFruitore);
-                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere (massimo %d) ? ", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
+                numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere (massimo %d) ? ", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");        
+                if (numeroIscritti == 0) return null;    
             } while (!InputDati.conferma("Confermare iscrizione?"));
 
             iscrizione = new AbstractMap.SimpleEntry<>(visita, numeroIscritti);
@@ -662,7 +663,6 @@ public class AppView {
         if (visita.getStato() == StatoVisita.EFFETTUATA) return formattaVisitaArchivio(visita);
 
         if (visita.getStato() == StatoVisita.CANCELLATA) {
-            sb.append("Visita cancellata\n");
             sb.append("Titolo: " + visita.getTitolo() + "\n");
             sb.append("Data di mancato svolgimento: " + formattaData(visita.getDataVisita()) + "\n");
             return sb.toString();
@@ -686,6 +686,15 @@ public class AppView {
 
     public String formattaVisitaArchivio(Visita visita) {
         String s = "Data svolgimento " + formattaData(visita.getDataVisita());
+        return s;
+    }
+
+    private String formattaIscrizione(Iscrizione iscrizione) {
+        if (iscrizione == null) return "Iscrizione_null";
+
+        String s = "Iscrizione #";
+        s += iscrizione.getCodiceUnivoco() + " : ";
+        s += iscrizione.getNumeroDiIscritti() + " iscritti\n";
         return s;
     }
 }

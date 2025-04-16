@@ -6,7 +6,7 @@ public class Visita {
     
     private Calendar dataVisita;
     private StatoVisita stato;
-    private int numeroIscritti;
+    private int numeroIscritti = 0;
     private String titolo = "Visita non associata ad alcun tipo di visita";
 
     /**
