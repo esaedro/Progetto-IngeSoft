@@ -9,7 +9,5 @@ public class Main {
         
         Controller controller = Controller.getInstance();
         controller.start();
-
-        // TODO: condizioni Session, Controller, FileManager, UtenteSerializer, UtenteDeserializer
     }
 }
