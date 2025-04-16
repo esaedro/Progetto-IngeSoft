@@ -345,9 +345,7 @@ public class AppView {
         myMenu.removeAllVoci();
         myMenu.setTitolo("Menu volontario");
         LinkedHashMap<String, Runnable> voci = new LinkedHashMap<>();
-        voci.put("Salva sessione", controller::salva);
-        voci.put("Carica sessione", controller::carica);
-        voci.put("Mostra i tipi di visite a cui sei associato ", controller::mostraVisiteAssociate);        
+        voci.put("Mostra i tipi di visite a cui sei associato", controller::mostraTipiVisiteAssociate);        
         voci.put("Mostra le tue visite confermate con le relative iscrizioni", controller::mostraVisiteConfermateConIscrizioni);
         voci.put("Inserisci disponibilita'", controller::inserisciDisponibilita);
 
@@ -418,9 +416,9 @@ public class AppView {
         if (luoghi == null || luoghi.isEmpty()) {
             System.out.println("Non ci sono luoghi disponibili");
         } else {
-            System.out.println(BelleStringhe.incornicia("Luoghi Presenti: "));
+            System.out.println(BelleStringhe.incornicia("Luoghi Presenti nel territorio di " + Luogo.getParametroTerritoriale()));
             for (Luogo luogo : luoghi) {
-                System.out.println(toString(luogo) + "\n");
+                System.out.println(formattaLuogo(luogo) + "\n");
             }
         }
     }
@@ -444,14 +442,14 @@ public class AppView {
 
         if (tipiVisita != null && !tipiVisita.isEmpty()) {
             for(TipoVisita tipoVisita : tipiVisita) {
-                System.out.println("\n" + toString(tipoVisita));
+                System.out.println("\n" + formattaTipoVisita(tipoVisita));
             }
         }
         if (storicoVisite != null && !storicoVisite.isEmpty()) {
             System.out.println("\nVisite effettuate mantenute nell'archivio: ");
             for (Map.Entry<String, Set<Visita>> entry: storicoVisite.entrySet()) {
                 for(Visita visita: entry.getValue()) {
-                    System.out.println(entry.getKey() + "\t\t" + toString(visita));
+                    System.out.println(entry.getKey() + "\t\t" + formattaVisitaArchivio(visita));
                 }
             }
         }
@@ -463,7 +461,7 @@ public class AppView {
                 System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + entry.getKey() + BelleStringhe.ANSI_RESET);
                 if (!entry.getValue().isEmpty()) {
                     for (Visita visita : entry.getValue()) {
-                        System.out.println(toString(visita));
+                        System.out.println(formattaVisita(visita));
                     }
                 } else System.out.println("Nessuna visita associata a questo stato");
             }
@@ -474,12 +472,16 @@ public class AppView {
             System.out.println("\nStato: " + BelleStringhe.ANSI_CYAN + StatoVisita.EFFETTUATA + BelleStringhe.ANSI_RESET);
             for (Map.Entry<String, Set<Visita>> entry : storicoVisite.entrySet()) {
                 for (Visita visita : entry.getValue()) {
-                    System.out.println(entry.getKey() + "\t\t" + toString(visita));
+                    System.out.println(entry.getKey() + "\t\t" + formattaVisitaArchivio(visita));
                 }
             }
         }
     }
 
+    /**
+     * Stampa le visite negli stati proposta/confermata/cancellata a cui è iscritto il fruitore (utente attivo)
+     * @param visiteConIscrizioniPerStato
+     */
     public void mostraVisiteStatoConIscrizioni(Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato) {
         if (!visiteConIscrizioniPerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, Map<Visita, Iscrizione>> entry : visiteConIscrizioniPerStato.entrySet()) {
@@ -487,7 +489,7 @@ public class AppView {
                 if (!entry.getValue().isEmpty()) {
 
                     for (Map.Entry<Visita, Iscrizione> visiteIscrizioni : entry.getValue().entrySet()) {
-                        System.out.println(toString(visiteIscrizioni.getKey()));
+                        System.out.println(formattaVisita(visiteIscrizioni.getKey()));
                         System.out.println("Iscrizione #" + visiteIscrizioni.getValue().getCodiceUnivoco() + " : " + visiteIscrizioni.getValue().getNumeroDiIscritti() + " iscritti");
                     }
                 } else System.out.println("Nessuna iscrizione a visite in questo stato");
@@ -498,10 +500,14 @@ public class AppView {
         }
     }
 
+    /**
+     * Stampa le visite confermate a cui il volontario (utente attivo) deve presenziare, con le relative iscrizioni
+     * @param visiteConfermateConIscrizioni
+     */
     public void mostraVisiteConfermateConIscrizioni(Map<Visita, Set<Iscrizione>> visiteConfermateConIscrizioni) {
         if (!visiteConfermateConIscrizioni.isEmpty()) {
             for (Map.Entry<Visita, Set<Iscrizione>> entry : visiteConfermateConIscrizioni.entrySet()) {
-                System.out.println("\n" + toString(entry.getKey()));
+                System.out.println("\n" + formattaVisita(entry.getKey()));
                 if (!entry.getValue().isEmpty()) {
                     for (Iscrizione iscrizione : entry.getValue()) {
                         System.out.println("Iscrizione #" + iscrizione.getCodiceUnivoco() + " : " + iscrizione.getNumeroDiIscritti() + " iscritti");
@@ -513,10 +519,10 @@ public class AppView {
         }
     }
    
-    public void mostraVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
+    public void mostraTipiVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
         if (!visiteAssociate.isEmpty()) {
             for (TipoVisita tipoVisita : visiteAssociate) {
-                System.out.println("\n" + toString(tipoVisita));
+                System.out.println("\n" + formattaTipoVisita(tipoVisita));
             }
             System.out.println();
         } else System.out.println("Non ci sono visite associate al volontario");
@@ -545,7 +551,6 @@ public class AppView {
                 if (visita == null) return iscrizione;      //uscita dal menu
                 
                 TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
-                //int maxIscrivibili = ;
                 int maxIscrivibili = Math.min(tipoVisita.getMaxPartecipante() - visita.getNumeroIscritti(), maxIscrittiperFruitore);
                 numeroIscritti = InputDati.leggiInteroMinMax(String.format("Quante persone si vogliono iscrivere (massimo %d) ? ", maxIscrivibili), 0, maxIscrivibili, "Numero non valido");            
             } while (!InputDati.conferma("Confermare iscrizione?"));
@@ -572,12 +577,114 @@ public class AppView {
         return visitaSelezionata;
     }
 
-    public String toString(Object obj) {
-        if (obj == null) {
-            return "null";
+    public String formattaLuogo(Luogo luogo) {
+        StringBuilder sb = new StringBuilder();
+
+        if (luogo == null) return "Luogo_null";
+        else {  
+            sb.append(luogo.getNome());
+            sb.append("\t\tIndirizzo: " + luogo.getIndirizzo() + "\n");
+            sb.append("Tipi di visita svolti qui: " + luogo.getVisiteIds());
         }
-        return obj.toString();
+        
+        return sb.toString();  
     }
 
 
+    public String formattaTipoVisita(TipoVisita tipoVisita) {
+        if (tipoVisita == null) return "TipoVisita_null";
+        
+        StringBuilder sb = new StringBuilder();
+        
+        StringBuilder volontari = new StringBuilder();
+        if (tipoVisita.getVolontariIdonei() != null) {
+            for (Volontario volontario : tipoVisita.getVolontariIdonei()) {
+                volontari.append(volontario.getNomeUtente()).append(", ");
+            }
+            if (!volontari.isEmpty()) {
+                volontari.setLength(volontari.length() - 2); // Remove trailing comma and space
+            }
+        }
+
+        StringBuilder visiteID = new StringBuilder("\n");
+        if (tipoVisita.getVisiteAssociate() != null) {        
+            for (Visita visita : tipoVisita.getVisiteAssociate()) {
+                visiteID.append(visita.getDataStato()).append("; ");
+            }
+            if (!visiteID.isEmpty()) {
+                visiteID.setLength(visiteID.length() - 2); // Remove trailing comma and space
+            }
+        }
+
+        sb.append("Titolo:\t\t\t" + tipoVisita.getTitolo() + "\n");
+        sb.append("Descrizione:\t\t" + tipoVisita.getDescrizione() + "\n");
+        sb.append("Punto di incontro:\t" + tipoVisita.getPuntoIncontro() + "\n");
+        sb.append("Data inizio:\t\t" + formattaData(tipoVisita.getDataInizio()) + "\n");
+        sb.append("Data fine:\t\t" + formattaData(tipoVisita.getDataFine()) + "\n");
+        sb.append("Ora inizio:\t\t" + formattaOra(tipoVisita.getOraInizio()) + "\n");
+        sb.append("Durata:\t\t\t" + tipoVisita.getDurata() + " minuti\n");
+
+        sb.append("Giorni della settimana:\t[");
+        List<DayOfWeek> giorniOrdinati = tipoVisita.getGiorniSettimana().stream().sorted(Comparator.comparingInt(DayOfWeek::getValue)).toList();
+        for (DayOfWeek giorno : giorniOrdinati) {
+            sb.append(BelleStringhe.traduciGiorno(giorno) + ", ");
+        }
+        sb.setLength(sb.length() - 2);
+        sb.append("]\n");
+
+        sb.append("Minimo partecipanti:\t" + tipoVisita.getMinPartecipante() + "\n");
+        sb.append("Massimo partecipanti:\t" + tipoVisita.getMaxPartecipante() + "\n");
+        sb.append("Biglietto d'ingresso:\t" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
+        sb.append("Volontari idonei:\t[" + volontari + "]\n");
+        sb.append("Visite associate:\t[" + visiteID + "]\n");
+
+        return sb.toString();
+    }
+
+    public String formattaData(Calendar data) {
+        if (data == null) return "Data_null";
+        return data.get(Calendar.DAY_OF_MONTH) + "/" + (data.get(Calendar.MONTH) + 1) + "/" + data.get(Calendar.YEAR);
+    }
+
+    public String formattaOra(Calendar ora) {
+        if (ora == null) return "Ora_null";
+        return ora.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", ora.get(Calendar.MINUTE));
+    }
+
+    public String formattaVisita(Visita visita) {
+
+        Controller controller = Controller.getInstance();
+        TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
+    
+        StringBuilder sb = new StringBuilder();
+        
+        if (visita.getStato() == StatoVisita.EFFETTUATA) return formattaVisitaArchivio(visita);
+
+        if (visita.getStato() == StatoVisita.CANCELLATA) {
+            sb.append("Visita cancellata\n");
+            sb.append("Titolo: " + visita.getTitolo() + "\n");
+            sb.append("Data di mancato svolgimento: " + formattaData(visita.getDataVisita()) + "\n");
+            return sb.toString();
+        }
+
+        sb.append("Titolo: " + visita.getTitolo() + "\n");
+
+        if (tipoVisita == null) {
+            sb.append("tipoVisita null");
+            return sb.toString();
+        }
+
+        sb.append("Descrizione: " + tipoVisita.getDescrizione() + "\t\t");
+        sb.append("Punto di incontro: " + tipoVisita.getPuntoIncontro() + "\n");
+        sb.append("Data di svolgimento: " + formattaData(visita.getDataVisita()) + "\n");
+        sb.append("Ora inizio: " + formattaOra(tipoVisita.getOraInizio()) + "\n");
+        sb.append("Biglietto di ingresso" + (tipoVisita.getBigliettoIngresso() ? " " : " non ") + "necessario\n");
+    
+        return sb.toString();
+    }
+
+    public String formattaVisitaArchivio(Visita visita) {
+        String s = "Data svolgimento " + formattaData(visita.getDataVisita());
+        return s;
+    }
 }

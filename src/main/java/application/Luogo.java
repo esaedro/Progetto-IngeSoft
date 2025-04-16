@@ -35,6 +35,10 @@ public class Luogo implements Serializable {
         this.indirizzo = indirizzo;
     }
 
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
     public static String getParametroTerritoriale() {
         return parametroTerritoriale;
     }
@@ -80,13 +84,4 @@ public class Luogo implements Serializable {
             visiteIds.add(titolo);
         }
     }
-
-    @Override
-    public String toString() {
-        return  nome +
-                "\t\tIndirizzo: " + indirizzo + 
-                "\nTipi di visita svolti qui: " + visiteIds
-                ;
-    }
-
 }
