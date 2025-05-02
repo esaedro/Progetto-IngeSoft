@@ -1,6 +1,7 @@
 package utility;
 
 import application.*;
+import com.sun.source.doctree.CommentTree;
 
 import java.time.DayOfWeek;
 import java.time.Month;
@@ -438,13 +439,13 @@ public class AppView {
         }
     }
 
-    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, HashMap<String, Set<Visita>> storicoVisite) {
+    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, HashMap<String, Set<Visita>> storicoVisite, Controller controller) {
         if (!visitePerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
                 System.out.println("\nStato: " + entry.getKey());
                 if (!entry.getValue().isEmpty()) {
                     for (Visita visita : entry.getValue()) {
-                        System.out.println(formattaVisita(visita));
+                        System.out.println(formattaVisita(visita, controller));
                     }
                 } else System.out.println("Nessuna visita associata a questo stato");
             }
@@ -464,14 +465,14 @@ public class AppView {
     /**
      * Stampa le visite negli stati proposta/confermata/cancellata a cui è iscritto il fruitore (utente attivo)
      */
-    public void mostraVisiteStatoConIscrizioni(Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato) {
+    public void mostraVisiteStatoConIscrizioni(Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato, Controller controller) {
         if (!visiteConIscrizioniPerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, Map<Visita, Iscrizione>> entry : visiteConIscrizioniPerStato.entrySet()) {
                 System.out.println("\nStato: " + entry.getKey());
                 if (!entry.getValue().isEmpty()) {
 
                     for (Map.Entry<Visita, Iscrizione> visiteIscrizioni : entry.getValue().entrySet()) {
-                        System.out.println(formattaVisita(visiteIscrizioni.getKey()));
+                        System.out.println(formattaVisita(visiteIscrizioni.getKey(), controller));
                         System.out.println(formattaIscrizione(visiteIscrizioni.getValue()));
                     }
                 } else System.out.println("Nessuna iscrizione a visite in questo stato");
@@ -485,10 +486,10 @@ public class AppView {
     /**
      * Stampa le visite confermate a cui il volontario (utente attivo) deve presenziare, con le relative iscrizioni
      */
-    public void mostraVisiteConfermateConIscrizioni(Map<Visita, Set<Iscrizione>> visiteConfermateConIscrizioni) {
+    public void mostraVisiteConfermateConIscrizioni(Map<Visita, Set<Iscrizione>> visiteConfermateConIscrizioni, Controller controller) {
         if (!visiteConfermateConIscrizioni.isEmpty()) {
             for (Map.Entry<Visita, Set<Iscrizione>> entry : visiteConfermateConIscrizioni.entrySet()) {
-                System.out.println("\n" + formattaVisita(entry.getKey()));
+                System.out.println("\n" + formattaVisita(entry.getKey(), controller));
                 if (!entry.getValue().isEmpty()) {
                     for (Iscrizione iscrizione : entry.getValue()) {
                         System.out.println(formattaIscrizione(iscrizione));
@@ -633,9 +634,9 @@ public class AppView {
         return ora.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", ora.get(Calendar.MINUTE));
     }
 
-    public String formattaVisita(Visita visita) {
+    public String formattaVisita(Visita visita, Controller controller) {
 
-        Controller controller = Controller.getInstance();
+        // TODO remove getInstance
         TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
     
         StringBuilder sb = new StringBuilder();

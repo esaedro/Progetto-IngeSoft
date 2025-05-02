@@ -12,7 +12,8 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class FileManager {
-    
+
+    private static final FileManager fileManager = new FileManager("database/");
     private final String percorsoFile;
     static public final String fileUtenti = getFileName("fileUtenti", "utenti.json");
     static public final String fileVisite = getFileName("fileVisite", "visite.json");
@@ -20,29 +21,38 @@ public class FileManager {
     static public final String fileStorico = getFileName("fileStorico", "storico.json");
     static public final String fileParametriGlobali = getFileName("fileParametriGlobali", "parametriGlobali.json");
 
+    private final JsonSerializer<Utente> utenteJsonSerializer = new UtenteSerializer();
+
+    private final JsonDeserializer<Utente> utenteJsonDeserializer = new UtenteDeserializer();
+    private final JsonDeserializer<Fruitore> fruitoreJsonDeserializer = new FruitoreDeserializer();
+
     private static String getFileName(String property, String defaultFileName) {
         return System.getProperty(property, defaultFileName);
     }
 
     private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Utente.class, new UtenteSerializer())
-            .registerTypeAdapter(Configuratore.class, new UtenteSerializer())
-            .registerTypeAdapter(Volontario.class, new UtenteSerializer())
-            .registerTypeAdapter(Fruitore.class, new UtenteSerializer())
-            .registerTypeAdapter(Utente.class, new UtenteDeserializer())
-            .registerTypeAdapter(Fruitore.class, new FruitoreDeserializer())
+            .registerTypeAdapter(Utente.class, utenteJsonSerializer)
+            .registerTypeAdapter(Configuratore.class, utenteJsonSerializer)
+            .registerTypeAdapter(Volontario.class, utenteJsonSerializer)
+            .registerTypeAdapter(Fruitore.class, utenteJsonSerializer)
+            .registerTypeAdapter(Utente.class, utenteJsonDeserializer)
+            .registerTypeAdapter(Fruitore.class, fruitoreJsonDeserializer)
             .setPrettyPrinting()
             .create();
 
     /**
      * @ ensures directory.exists() == True
      */
-    public FileManager(String percorsoFile) {
+    private FileManager(String percorsoFile) {
         this.percorsoFile = percorsoFile;
         File directory = new File(percorsoFile);
         if (!directory.exists()) {
             directory.mkdirs();
         }
+    }
+
+    public static FileManager getInstance() {
+        return fileManager;
     }
 
     public void salva(String nomeFile, Object object) {

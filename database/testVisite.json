@@ -6,26 +6,26 @@
     "dataInizio": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 16,
-      "hourOfDay": 14,
-      "minute": 58,
-      "second": 29
+      "dayOfMonth": 30,
+      "hourOfDay": 11,
+      "minute": 22,
+      "second": 44
     },
     "dataFine": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 16,
-      "hourOfDay": 14,
-      "minute": 58,
-      "second": 29
+      "dayOfMonth": 30,
+      "hourOfDay": 11,
+      "minute": 22,
+      "second": 44
     },
     "oraInizio": {
       "year": 2025,
       "month": 3,
-      "dayOfMonth": 16,
-      "hourOfDay": 14,
-      "minute": 58,
-      "second": 29
+      "dayOfMonth": 30,
+      "hourOfDay": 11,
+      "minute": 22,
+      "second": 44
     },
     "durata": 3,
     "giorniSettimana": [],
@@ -38,10 +38,10 @@
         "dataVisita": {
           "year": 2025,
           "month": 3,
-          "dayOfMonth": 16,
-          "hourOfDay": 14,
-          "minute": 58,
-          "second": 29
+          "dayOfMonth": 30,
+          "hourOfDay": 11,
+          "minute": 22,
+          "second": 44
         },
         "stato": "PROPOSTA",
         "numeroIscritti": 5,

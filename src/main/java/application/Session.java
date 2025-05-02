@@ -26,7 +26,7 @@ public class Session {
     private Utente utenteAttivo;
 
     public Session() {
-        this.filemanager = new FileManager("database/");
+        this.filemanager = FileManager.getInstance();
     }
 
     public void salva() {

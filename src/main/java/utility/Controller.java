@@ -5,15 +5,13 @@ import java.util.*;
 
 public class Controller {
 
-    private static final Controller controller = new Controller();
     private final Session session = new Session();
     private final AppView appview = new AppView();
 
-    private Controller() {}
+    public Controller() {
 
-    public static Controller getInstance() {
-        return controller;
     }
+
 
     public void start() { //Prima impostazione password
 
@@ -211,16 +209,17 @@ public class Controller {
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite);
 
         if (session.getUtenteAttivo() instanceof Configuratore) {
-            appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite());
+            appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite(), this);
         } else if (session.getUtenteAttivo() instanceof Fruitore) {
             visitePerStato.remove(StatoVisita.COMPLETA);
-            appview.mostraVisiteStato(visitePerStato, new HashMap<>());
+            appview.mostraVisiteStato(visitePerStato, new HashMap<>(), this);
         }
 
 
         //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
     }
 
+    // TODO: sposta in sessione
     private Set<Visita> getAllVisite() {
         Set<Visita> visite = new HashSet<>();
         if (session.getVisite() != null) {
@@ -239,6 +238,7 @@ public class Controller {
         return visite;
     }
 
+    // TODO: sposta in sessione
     public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
         Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
 
@@ -287,6 +287,7 @@ public class Controller {
         }));
 
 
+        //TODO: aggiungi un esperto di dominio
         inizializzaPianoViste();
         appview.setMenuConfiguratoreEditor(this);
     }
@@ -513,7 +514,7 @@ public class Controller {
                     }
                 }
             }
-            appview.mostraVisiteConfermateConIscrizioni(getIscrizioniPerQuesteVisite(visiteConfermate));
+            appview.mostraVisiteConfermateConIscrizioni(getIscrizioniPerQuesteVisite(visiteConfermate), this);
         }
     }
 
@@ -542,7 +543,7 @@ public class Controller {
                 }
             }
 
-            appview.mostraVisiteStatoConIscrizioni(visiteConIscrizioniPerStato);
+            appview.mostraVisiteStatoConIscrizioni(visiteConIscrizioniPerStato, this);
         }
     }
 
