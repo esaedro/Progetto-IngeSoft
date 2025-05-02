@@ -3,11 +3,11 @@
     {
       "dataVisita": {
         "year": 2025,
-        "month": 3,
-        "dayOfMonth": 30,
-        "hourOfDay": 11,
-        "minute": 22,
-        "second": 44
+        "month": 4,
+        "dayOfMonth": 2,
+        "hourOfDay": 18,
+        "minute": 6,
+        "second": 39
       },
       "stato": "EFFETTUATA",
       "numeroIscritti": 7,
@@ -18,11 +18,11 @@
     {
       "dataVisita": {
         "year": 2025,
-        "month": 3,
-        "dayOfMonth": 30,
-        "hourOfDay": 11,
-        "minute": 22,
-        "second": 44
+        "month": 4,
+        "dayOfMonth": 2,
+        "hourOfDay": 18,
+        "minute": 6,
+        "second": 39
       },
       "stato": "EFFETTUATA",
       "numeroIscritti": 9,

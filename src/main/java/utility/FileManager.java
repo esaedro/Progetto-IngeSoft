@@ -21,7 +21,9 @@ public class FileManager {
     static public final String fileStorico = getFileName("fileStorico", "storico.json");
     static public final String fileParametriGlobali = getFileName("fileParametriGlobali", "parametriGlobali.json");
 
-    private final JsonSerializer<Utente> utenteJsonSerializer = new UtenteSerializer();
+    private final JsonSerializer<Configuratore> configuratoreSerializer = new ConfiguratoreSerializer();
+    private final JsonSerializer<Volontario> volontarioSerializer = new VolontarioSerializer();
+    private final JsonSerializer<Fruitore> fruitoreJsonSerializer = new FruitoreSerializer();
 
     private final JsonDeserializer<Utente> utenteJsonDeserializer = new UtenteDeserializer();
     private final JsonDeserializer<Fruitore> fruitoreJsonDeserializer = new FruitoreDeserializer();
@@ -31,10 +33,9 @@ public class FileManager {
     }
 
     private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Utente.class, utenteJsonSerializer)
-            .registerTypeAdapter(Configuratore.class, utenteJsonSerializer)
-            .registerTypeAdapter(Volontario.class, utenteJsonSerializer)
-            .registerTypeAdapter(Fruitore.class, utenteJsonSerializer)
+            .registerTypeAdapter(Configuratore.class, configuratoreSerializer)
+            .registerTypeAdapter(Volontario.class, volontarioSerializer)
+            .registerTypeAdapter(Fruitore.class, fruitoreJsonSerializer)
             .registerTypeAdapter(Utente.class, utenteJsonDeserializer)
             .registerTypeAdapter(Fruitore.class, fruitoreJsonDeserializer)
             .setPrettyPrinting()
