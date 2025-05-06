@@ -14,6 +14,7 @@ public class Configuratore extends Utente {
     /**
      * @ requires parametroTerritoriale != null && !parametroTerritoriale.isEmpty();
      */
+    @Override
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {
         Luogo.setParametroTerritoriale(parametroTerritoriale);
     }
@@ -21,6 +22,7 @@ public class Configuratore extends Utente {
     /**
      * @ requires parametroTerritoriale > 0;
      */
+    @Override
     public void setNumeroMassimoIscritti(int numeroMassimoIscritti) {
         TipoVisita.setNumeroMassimoIscrittoPerFruitore(numeroMassimoIscritti);
     }
@@ -28,6 +30,7 @@ public class Configuratore extends Utente {
     /**
      * @ requires datePrecluse != null;
      */
+    @Override
     public void impostaDatePrecluse(Set<Integer> datePrecluse) {
         TipoVisita.aggiungiDatePrecluseFuture(datePrecluse);
     }

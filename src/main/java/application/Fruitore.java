@@ -18,6 +18,7 @@ public class Fruitore extends Utente {
     /**
      * @ requires visita != null && iscrizione != null;
      */
+    @Override
     public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
         iscrizioni.put(visita, iscrizione);
     }
@@ -25,10 +26,12 @@ public class Fruitore extends Utente {
     /**
      * @ requires visita != null;
      */
+    @Override
     public void rimuoviIscrizione(Visita visita) {
         iscrizioni.remove(visita);
     }
 
+    @Override  
     public Map<Visita, Iscrizione> getIscrizioni() {
         return iscrizioni;
     }

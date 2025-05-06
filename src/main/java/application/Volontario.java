@@ -33,16 +33,19 @@ public class Volontario extends Utente {
         this.disponibilita.addAll(disponibilitaDaAggiungere);
     }
 
+    @Override
     public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
         Set<TipoVisita> visiteTemp = new HashSet<>(visite);
         visiteTemp.removeIf(luogo -> !luogo.getVolontariIdonei().contains(this));
         return visiteTemp;
     }
 
+    @Override
     public boolean haVisiteAssociate(Set<TipoVisita> visite) {
         return !getVisiteAssociate(visite).isEmpty();
     }
 
+    @Override
     public void clearDisponibilita() {
         disponibilita.clear();
     }
