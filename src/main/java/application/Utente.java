@@ -1,7 +1,6 @@
 package application;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,12 +47,16 @@ public class Utente implements Serializable {
     public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {}
     public void clearDisponibilita() {}
 
+    public Set<Integer> getDisponibilita() {
+        throw new UnsupportedOperationException("Metodo getDisponibilita() non implementato per la classe Utente");
+    }
+
     public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
-        throw new UnsupportedOperationException("Metodo getVisiteAssociate() implementato per la classe Utente");
+        throw new UnsupportedOperationException("Metodo getVisiteAssociate() non implementato per la classe Utente");
     }
 
     public boolean haVisiteAssociate(Set<TipoVisita> visite) {
-        throw new UnsupportedOperationException("Metodo haVisiteAssociate() implementato per la classe Utente");
+        throw new UnsupportedOperationException("Metodo haVisiteAssociate() non implementato per la classe Utente");
 
     }
 
@@ -62,7 +65,7 @@ public class Utente implements Serializable {
     public void rimuoviIscrizione(Visita visita) {}
 
     public Map<Visita, Iscrizione> getIscrizioni() {
-        throw new UnsupportedOperationException("Metodo getIscrizioni() implementato per la classe Utente");
+        throw new UnsupportedOperationException("Metodo getIscrizioni() non implementato per la classe Utente");
     }
 
 }

@@ -21,6 +21,7 @@ public class Volontario extends Utente {
         this.disponibilita = disponibilita;
     }
 
+    @Override
     public Set<Integer> getDisponibilita() {
         return disponibilita;
     }
@@ -29,6 +30,7 @@ public class Volontario extends Utente {
      * @ requires disponibilitaDaAggiungere != null;
      * @ ensures disponibilita != null;
      */
+    @Override
     public void addDisponibilita(Set<Integer> disponibilitaDaAggiungere) {
         this.disponibilita.addAll(disponibilitaDaAggiungere);
     }
@@ -41,12 +43,12 @@ public class Volontario extends Utente {
     }
 
     @Override
-    public boolean haVisiteAssociate(Set<TipoVisita> visite) {
+    public boolean haVisiteAssociate(Set<TipoVisita> visite) { //TODO: togliere instanceof in session
         return !getVisiteAssociate(visite).isEmpty();
     }
 
     @Override
-    public void clearDisponibilita() {
+    public void clearDisponibilita() {      //TODO: togliere instanceof in session
         disponibilita.clear();
     }
 

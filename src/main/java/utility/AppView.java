@@ -1,8 +1,6 @@
 package utility;
 
 import application.*;
-import com.sun.source.doctree.CommentTree;
-
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.*;
@@ -589,7 +587,7 @@ public class AppView {
             }
         }
 
-        StringBuilder visiteID = new StringBuilder("\n");
+        StringBuilder visiteID = new StringBuilder();
         if (tipoVisita.getVisiteAssociate() != null) {        
             for (Visita visita : tipoVisita.getVisiteAssociate()) {
                 visiteID.append(visita.getDataStato()).append("; ");
@@ -617,7 +615,7 @@ public class AppView {
 
         sb.append("Minimo partecipanti:\t").append(tipoVisita.getMinPartecipante()).append("\n");
         sb.append("Massimo partecipanti:\t").append(tipoVisita.getMaxPartecipante()).append("\n");
-        sb.append("Biglietto d'ingresso:\t").append(tipoVisita.getBigliettoIngresso() ? " " : " non ").append("necessario\n");
+        sb.append("Biglietto d'ingresso:\t").append(tipoVisita.getBigliettoIngresso() ? "" : "non ").append("necessario\n");
         sb.append("Volontari idonei:\t[").append(volontari).append("]\n");
         sb.append("Visite associate:\t[").append(visiteID).append("]\n");
 

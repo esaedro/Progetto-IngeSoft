@@ -15,11 +15,17 @@ public class Fruitore extends Utente {
         this.iscrizioni = iscrizioni;
     }
 
+    
+    @Override  
+    public Map<Visita, Iscrizione> getIscrizioni() {
+        return iscrizioni;
+    }
+
     /**
      * @ requires visita != null && iscrizione != null;
      */
     @Override
-    public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {
+    public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {  //TODO: togliere instanceof in session
         iscrizioni.put(visita, iscrizione);
     }
 
@@ -27,13 +33,7 @@ public class Fruitore extends Utente {
      * @ requires visita != null;
      */
     @Override
-    public void rimuoviIscrizione(Visita visita) {
+    public void rimuoviIscrizione(Visita visita) {  //TODO: togliere instanceof in session
         iscrizioni.remove(visita);
     }
-
-    @Override  
-    public Map<Visita, Iscrizione> getIscrizioni() {
-        return iscrizioni;
-    }
-
 }
