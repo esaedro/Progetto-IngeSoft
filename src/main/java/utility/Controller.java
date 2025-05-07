@@ -208,20 +208,17 @@ public class Controller {
         appview.mostraTipiVisite(session.getVisite(), session.getStoricoVisite());
     }
 
-    //TODO: refactoring per togliere instanceof, spostare filtraggio come metodi utente
+    //Metodo rifatto per togliere instanceof, spostare filtraggio come metodi utente, rispetta Liskov
     public void mostraVisitePerStato() {
-        Set<Visita> visite = getAllVisite();
-        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(visite);
-
-        if (session.getUtenteAttivo() instanceof Configuratore) {
-            appview.mostraVisiteStato(visitePerStato, session.getStoricoVisite(), this);
-        } else if (session.getUtenteAttivo() instanceof Fruitore) {
-            visitePerStato.remove(StatoVisita.COMPLETA);
-            appview.mostraVisiteStato(visitePerStato, new HashMap<>(), this);
-        }
-        //appview.mostraVisiteStato(separaVisitePerStato(visite, session.getUtenteAttivo()));
+        Utente utente = session.getUtenteAttivo();
+        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(getAllVisite());
+        Map<StatoVisita, List<Visita>> visitePerStatoFiltrate = utente.filtraVisitePerStato(visitePerStato);
+    
+        Map<String, Set<Visita>> storicoDaMostrare = utente.getStoricoVisiteDaVisualizzare(session.getStoricoVisite());
+    
+        appview.mostraVisiteStato(visitePerStatoFiltrate, storicoDaMostrare, this);
     }
-
+    
     // TODO: sposta in sessione
     private Set<Visita> getAllVisite() {
         Set<Visita> visite = new HashSet<>();

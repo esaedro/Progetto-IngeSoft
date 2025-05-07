@@ -1,6 +1,7 @@
 package application;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,6 +67,14 @@ public class Utente implements Serializable {
 
     public Map<Visita, Iscrizione> getIscrizioni() {
         throw new UnsupportedOperationException("Metodo getIscrizioni() non implementato per la classe Utente");
+    }
+
+    public Map<StatoVisita, List<Visita>> filtraVisitePerStato(Map<StatoVisita, List<Visita>> tutteLeVisite) {
+        return tutteLeVisite; // default: mostra tutto
+    }
+
+    public Map<String, Set<Visita>> getStoricoVisiteDaVisualizzare(Map<String, Set<Visita>> storicoVisite) {
+        return storicoVisite; // default: mostra storico completo
     }
 
 }

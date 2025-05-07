@@ -437,7 +437,7 @@ public class AppView {
         }
     }
 
-    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, HashMap<String, Set<Visita>> storicoVisite, Controller controller) {
+    public void mostraVisiteStato(Map<StatoVisita, List<Visita>> visitePerStato, Map<String, Set<Visita>> storicoVisite, Controller controller) {
         if (!visitePerStato.isEmpty()) {
             for (Map.Entry<StatoVisita, List<Visita>> entry : visitePerStato.entrySet()) {
                 System.out.println("\nStato: " + entry.getKey());
