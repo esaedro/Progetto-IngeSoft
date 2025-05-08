@@ -53,6 +53,11 @@ public class Volontario extends Utente {
     }
 
     @Override
+    public TipoMenu getTipoMenu() {
+        return TipoMenu.VOLONTARIO;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;

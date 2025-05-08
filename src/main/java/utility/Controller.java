@@ -167,20 +167,34 @@ public class Controller {
     }
 
     private void esecuzione() {
-        if (session.getUtenteAttivo() instanceof Configuratore) {
-            if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) {
-                appview.setMenuConfiguratore(this);
-            } else {
-                appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
-            }
-        } else if (session.getUtenteAttivo() instanceof Volontario) {
-            appview.setMenuVolontario(this);
-        } else if (session.getUtenteAttivo() instanceof Fruitore) {
-            appview.setMenuFruitore(this);
+        TipoMenu tipoMenu = session.getUtenteAttivo().getTipoMenu();
+        switch (tipoMenu) {
+            case CONFIGURATORE -> appview.setMenuConfiguratore(this);
+            case CONFIGURATORE_RACCOLTA -> appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
+            case VOLONTARIO -> appview.setMenuVolontario(this);
+            case FRUITORE -> appview.setMenuFruitore(this);
+            default -> {} //nessun menu 
         }
-
+    
         appview.stampaMenu();
     }
+    
+
+    /*     private void esecuzione() {
+            if (session.getUtenteAttivo() instanceof Configuratore) {
+                if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) {
+                    appview.setMenuConfiguratore(this);
+                } else {
+                    appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
+                }
+            } else if (session.getUtenteAttivo() instanceof Volontario) {
+                appview.setMenuVolontario(this);
+            } else if (session.getUtenteAttivo() instanceof Fruitore) {
+                appview.setMenuFruitore(this);
+            }
+
+            appview.stampaMenu();
+        } */
 
     /**
      * @ requires session.getUtenteAttivo() instanceof Configuratore;

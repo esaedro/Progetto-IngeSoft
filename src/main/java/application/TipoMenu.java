@@ -1,0 +1,6 @@
+package application;
+
+public enum TipoMenu {
+    CONFIGURATORE, CONFIGURATORE_RACCOLTA, VOLONTARIO, FRUITORE, NESSUNO
+}
+

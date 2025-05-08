@@ -50,4 +50,9 @@ public class Fruitore extends Utente {
     public Map<String, Set<Visita>> getStoricoVisiteDaVisualizzare(Map<String, Set<Visita>> storicoVisite) {
         return new HashMap<>(); //Per il frutore non viene stampato lo storico
     }
+
+    @Override
+    public TipoMenu getTipoMenu() {
+        return TipoMenu.FRUITORE;
+    }
 }

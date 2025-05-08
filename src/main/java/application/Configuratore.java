@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Calendar;
 import java.util.Set;
 
 public class Configuratore extends Utente {
@@ -33,5 +34,12 @@ public class Configuratore extends Utente {
     @Override
     public void impostaDatePrecluse(Set<Integer> datePrecluse) {
         TipoVisita.aggiungiDatePrecluseFuture(datePrecluse);
+    }
+
+    @Override
+    public TipoMenu getTipoMenu() {
+        return (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 8) 
+            ? TipoMenu.CONFIGURATORE
+            : TipoMenu.CONFIGURATORE_RACCOLTA;
     }
 }

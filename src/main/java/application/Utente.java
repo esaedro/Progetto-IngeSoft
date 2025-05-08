@@ -77,4 +77,9 @@ public class Utente implements Serializable {
         return storicoVisite; // default: mostra storico completo
     }
 
+    public TipoMenu getTipoMenu() {
+        throw new UnsupportedOperationException("Metodo getTipoMenu() non implementato per la classe Utente");
+        //return TipoMenu.NESSUNO;
+    }
+
 }
