@@ -1,11 +1,14 @@
 package application;
 
-import utility.FileManager;
-
 import java.util.*;
+import utility.FileManager;
 
 public class Session {
 
+    private final IUserService userService;
+    private final IVisitService visitService;
+    private final IPlaceService placeService;
+    private final IPersistenceService persistenceService;
     /**
      * @ invariant utenti != null && !utenti.isEmpty();
      */
@@ -26,57 +29,32 @@ public class Session {
     private Utente utenteAttivo;
 
     public Session() {
+        ServiceFactory factory = new ServiceFactory();
+        userService = factory.createUserService();
+        visitService = factory.createVisitService();
+        placeService = factory.createPlaceService();
+        persistenceService = factory.createPersistenceService();
         this.filemanager = FileManager.getInstance();
     }
 
     public void salva() {
-        salvaStoricoVisite();
-        filemanager.salva(FileManager.fileVisite, visite);
-        filemanager.salva(FileManager.fileLuoghi, luoghi);
+        visitService.salvaStoricoVisite();
+        visitService.salvaVisite();
+        placeService.salvaLuoghi();
         salvaParametriGlobali();
     }
 
     public void salvaUtenti() {
-        filemanager.salva(FileManager.fileUtenti, utenti);
-    }
-
-    private void salvaStoricoVisite() {
-        // Set<Visita> visiteDaSalvare = new HashSet<>();
-        HashMap<String, Set<Visita>> visiteDaSalvare = new HashMap<>();
-        for (TipoVisita tipoVisita : visite) {
-            Iterator<Visita> visiteIterator = tipoVisita.getVisiteAssociate().iterator();
-            while (visiteIterator.hasNext()) {
-                Visita visita = visiteIterator.next();
-                if (visita.getStato() == StatoVisita.EFFETTUATA) {
-                    Set<Visita> visiteTemp = new HashSet<>();
-                    if (visiteDaSalvare.get(tipoVisita.getTitolo()) != null) {
-                        visiteTemp = visiteDaSalvare.get(tipoVisita.getTitolo());
-                    }
-                    visiteTemp.add(visita);
-                    visiteDaSalvare.put(tipoVisita.getTitolo(), visiteTemp);
-                    visiteIterator.remove();
-                }
-            }
-        }
-
-        if (!visiteDaSalvare.isEmpty()) {
-            HashMap<String, Set<Visita>> storicoVisite = filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
-            if (storicoVisite != null) {
-                // visiteDaSalvare.addAll(storicoVisite);
-                visiteDaSalvare.putAll(storicoVisite);
-            }
-            filemanager.salva(FileManager.fileStorico, visiteDaSalvare);
-            visiteDaSalvare.clear();
-        }
+        userService.salvaUtenti();
     }
 
     public void salvaParametriGlobali() {
-        filemanager.salvaParametriGlobali();
+        persistenceService.salvaParametriGlobali();
     }
 
     /**
      * @ requires utente != null && newPassword != null && !newPassword.isEmpty();
-     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==> 
+     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==>
      *           utenti.stream().filter(u -> u.getNomeUtente().equals(utente.getNomeUtente()))
      *                  .allMatch(u -> u.getPassword().equals(newPassword));
      * @ ensures \old(salvaUtenti());
@@ -94,26 +72,17 @@ public class Session {
      * @ ensures visite != null && luoghi != null && parametriGlobali != null && utenti != null;
      */
     public void carica() {
-        visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class) != null
-            ? filemanager.carica(FileManager.fileVisite, TipoVisita.class)
-            : new HashSet<>();
-        luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
-            ? filemanager.carica(FileManager.fileLuoghi, Luogo.class)
-            : new HashSet<>();
+        visitService.caricaVisite();
+        placeService.caricaLuoghi();
         caricaParametriGlobali();
     }
 
     public void caricaParametriGlobali() {
-        filemanager.caricaParametriGlobali();
+        persistenceService.caricaParametriGlobali();
     }
 
-    /**
-     * @ ensures utenti != null;
-     */
     public void caricaUtenti() {
-        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
-        ? filemanager.carica(FileManager.fileUtenti, Utente.class)
-        : new HashSet<>();
+        userService.caricaUtenti();
     }
 
     /**
@@ -122,7 +91,7 @@ public class Session {
     public Utente login(String nomeUtente, String password) {
         caricaUtenti();
 
-        for (Utente user : utenti) {
+        for (Utente user : getUtenti()) {
             if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
                 return user;
             }
@@ -132,50 +101,50 @@ public class Session {
     }
 
     public Set<Utente> getUtenti() {
-        return utenti;
+        return userService.getUtenti();
     }
 
     /**
      * @ requires utenti != null;
      */
     public void setUtenti(Set<Utente> utenti) {
-        this.utenti = utenti;
+        userService.setUtenti(utenti);
     }
 
     public Utente getUtenteAttivo() {
-        return utenteAttivo;
+        return userService.getUtenteAttivo();
     }
 
     /**
      * @ requires utenteAttivo != null;
      */
     public void setUtenteAttivo(Utente utenteAttivo) {
-        this.utenteAttivo = utenteAttivo;
+        userService.setUtenteAttivo(utenteAttivo);
     }
 
     public Set<Luogo> getLuoghi() {
-        return luoghi;
+        return placeService.getLuoghi();
     }
 
     /**
      * @ requires luoghi != null;
      */
     public void setLuoghi(Set<Luogo> luoghi) {
-        this.luoghi = luoghi;
+        placeService.setLuoghi(luoghi);
     }
 
     /**
      * @ requires luoghiDaAggiungere != null;
      */
     public void addLuoghi(Set<Luogo> luoghiDaAggiungere) {
-        this.luoghi.addAll(luoghiDaAggiungere);
+        placeService.aggiungiLuoghi(luoghiDaAggiungere);
     }
 
     /**
      * @ requires luogo != null;
      */
     public void addLuogo(Luogo luogo) {
-        this.luoghi.add(luogo);
+        placeService.aggiungiLuogo(luogo);
     }
 
     // TODO: realize a proxy
@@ -183,36 +152,36 @@ public class Session {
      * @ requires luoghiDaRimuovere != null;
      */
     public void removeLuoghi(Set<Luogo> luoghiDaRimuovere) {
-        this.luoghi.removeAll(luoghiDaRimuovere);
+        placeService.rimuoviLuoghi(luoghiDaRimuovere);
     }
 
     public Set<TipoVisita> getVisite() {
-        return visite;
+        return visitService.getTipiVisita();
     }
 
     /**
      * @ requires visite != null;
      */
     public void setVisite(Set<TipoVisita> visite) {
-        this.visite = visite;
+        visitService.setTipiVisita(visite);
     }
 
     /**
      * @ requires visite != null;
      */
-    public void addVisita(TipoVisita visite) {
-        this.visite.add(visite);
+    public void addVisita(TipoVisita visita) {
+        visitService.aggiungiTipoVisita(visita);
     }
 
     /**
      * @ requires tipoVisiteDaAggiungere != null;
      */
-    public void addTipoVisite(Set<TipoVisita> tipoVisiteDaAggiungere) {
-        visite.addAll(tipoVisiteDaAggiungere);
+    public void addTipoVisite(Set<TipoVisita> tipiVisitaDaAggiungere) {
+        visitService.aggiungiTipiVisita(tipiVisitaDaAggiungere);
     }
 
     public HashMap<String, Set<Visita>> getStoricoVisite() {
-        return filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
+        return persistenceService.caricaDatiArchioStorico(String.class, Visita.class);
     }
 
     // TODO: realize a proxy
@@ -220,124 +189,63 @@ public class Session {
      * @ requires visiteDaRimuovere != null;
      */
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
-        for (TipoVisita tipoVisita : visiteDaRimuovere) {
-            for (Luogo luogo : luoghi) {
-                luogo.rimuoviVisita(tipoVisita.getTitolo());
-            }
-            for (Utente fruitore: utenti) {
-                if (fruitore instanceof Fruitore) {
-                    tipoVisita.getVisiteAssociate().forEach((visita -> ((Fruitore) fruitore).rimuoviIscrizione(visita)));
-                }
-            }
-        }
-
-        this.visite.removeAll(visiteDaRimuovere);
+        visitService.rimuoviTipiVisita(visiteDaRimuovere, placeService, userService);
     }
 
     public Set<Volontario> getVolontari() {
-        Set<Volontario> volontari = new HashSet<>();
-        for (Utente utente : utenti) {
-            if (utente instanceof Volontario) {
-                volontari.add((Volontario) utente);
-            }
-        }
-        return volontari;
+        return userService.getVolontari();
     }
 
     public Set<Fruitore> getFruitori() {
-        Set<Fruitore> fruitori = new HashSet<>();
-        for (Utente utente : utenti) {
-            if (utente instanceof Fruitore) {
-                fruitori.add((Fruitore) utente);
-            }
-        }
-        return fruitori;
+        return userService.getFruitori();
     }
 
     /**
      * @ requires nuoviVolontari != null;
      */
     public void addVolontari(Set<Volontario> nuoviVolontari) {
-        utenti.addAll(nuoviVolontari);
+        userService.aggiungiVolontari(nuoviVolontari);
     }
 
     /**
      * @ requires visiteDaRimuovere != null;
      */
     public void addFruitore(Fruitore fruitore) {
-        utenti.add(fruitore);
+        userService.aggiungiFruitore(fruitore);
     }
 
     // TODO: realize a proxy
     /**
      * @ requires volontariDaRimuovere != null;
-     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==> 
+     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==>
      *           utente instanceof Volontario && ((Volontario) utente).getDisponibilita().isEmpty()));
      */
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
-        for (Volontario volontario : volontariDaRimuovere) {
-            for (TipoVisita tipoVisita : visite) {
-                tipoVisita.rimuoviVolontario(volontario);
-            }
-        }
-
-        utenti.removeAll(volontariDaRimuovere);
+        userService.rimuoviVolontari(volontariDaRimuovere, visitService);
     }
 
     public void cleanDisponibilitaDeiVolontari() {
-        for (Utente utente : utenti) {
-            if (utente instanceof Volontario) {
-                ((Volontario) utente).clearDisponibilita();
-            }
-        }
+        userService.cleanDisponibilitaVolontari();
     }
 
     public void salvataggioDatePrecluseFutureInAttuali() {
-        TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
-        TipoVisita.clearDatePrecluseFuture();
-        salvaParametriGlobali();
+        visitService.salvaDatePrecluseFutureInAttuali();
     }
 
     public void checkCondizioniDiClassi() {
         checkCondizioniDiLuogo();
         checkCondizioniDiTipoVisita();
-        checkCondizioniDiVolontario();
+        userService.checkCondizioniDiVolontario(visitService.getTipiVisita());
     }
 
     private void checkCondizioniDiLuogo() {
-        luoghi.removeIf(luogo -> !luogo.haVisiteAssociate());
-    }
-
-    private void checkCondizioniDiVolontario() {
-        Iterator<Utente> volontarioIterator = utenti.iterator();
-        while (volontarioIterator.hasNext()) {
-            Utente utente = volontarioIterator.next();
-            if (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)) {
-                volontarioIterator.remove();
-
-                for (TipoVisita tipoVisita : visite) {
-                    tipoVisita.rimuoviVolontario((Volontario) utente);
-                }
-            }
-        }
+        placeService.controllaCondizioniLuogo();
     }
 
     private void checkCondizioniDiTipoVisita() {
-        Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
-        while (tipoVisitaIterator.hasNext()) {
-            TipoVisita tipoVisita = tipoVisitaIterator.next();
-            if (!tipoVisita.haLuoghiAssociati(luoghi)) {
-                tipoVisitaIterator.remove();
-                checkCondizioniDiVolontario();
-            }
-            if (!tipoVisita.haVolontariAssociati()) {
-                for (Luogo luogo : luoghi) {
-                    luogo.rimuoviVisita(tipoVisita.getTitolo());
-                }
-                tipoVisitaIterator.remove();
-                checkCondizioniDiLuogo();
-            }
-        }
+        visitService.controllaCondizioniTipiVisita(placeService.getLuoghi());
+        userService.checkCondizioniDiVolontario(visitService.getTipiVisita());
+        placeService.controllaCondizioniLuogo();
     }
 
     public FileManager getFilemanager() {
