@@ -1,6 +1,8 @@
-package application;
+package services;
 
 import java.util.Set;
+
+import application.Luogo;
 
 public interface IPlaceService {
     Set<Luogo> getLuoghi();

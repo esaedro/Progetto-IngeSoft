@@ -1,8 +1,13 @@
-package application;
+package services;
 
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import application.Fruitore;
+import application.TipoVisita;
+import application.Utente;
+import application.Volontario;
 
 public class UserServiceImpl implements IUserService {
 
@@ -16,9 +21,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public Utente login(String username, String password) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    public Utente login(String nomeUtente, String password) {
+        for (Utente user : getUtenti()) {
+            if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -97,9 +107,13 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void changePassword(Utente user, String newPassword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
+    public void cambiaPassword(Utente utente, String newPassword) {
+        for (Utente user : utenti) {
+            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
+                user.setPassword(newPassword);
+            }
+        }
+        salvaUtenti();
     }
 
     @Override

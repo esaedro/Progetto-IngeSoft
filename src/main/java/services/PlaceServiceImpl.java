@@ -1,6 +1,8 @@
-package application;
+package services;
 
 import java.util.Set;
+
+import application.Luogo;
 
 public class PlaceServiceImpl implements IPlaceService {
 

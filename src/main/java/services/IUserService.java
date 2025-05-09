@@ -1,9 +1,14 @@
-package application;
+package services;
 
 import java.util.*;
 
+import application.Fruitore;
+import application.TipoVisita;
+import application.Utente;
+import application.Volontario;
+
 public interface IUserService {
-    Utente login(String username, String password);
+    Utente login(String nomeUtente, String password);
     void setUtenti(Set<Utente> utenti);
     Utente getUtenteAttivo();
     void setUtenteAttivo(Utente utente);
@@ -15,7 +20,7 @@ public interface IUserService {
     void aggiungiVolontari(Set<Volontario> volontari);
     void aggiungiFruitore(Fruitore fruitore);
     void rimuoviVolontari(Set<Volontario> volontari, IVisitService visitService);
-    void changePassword(Utente user, String newPassword);
+    void cambiaPassword(Utente utente, String password);
     void cleanDisponibilitaVolontari();
     void checkCondizioniDiVolontario(Set<TipoVisita> tipiVisita);
 }
