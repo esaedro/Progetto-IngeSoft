@@ -1,119 +1,71 @@
 package application;
 
-import utility.FileManager;
-
 import java.util.*;
+import services.*;
+
+import services.IBookingService;
+import services.IPlaceService;
+import services.IVisitService;
+import services.ServiceFactory;
 
 public class Session {
 
-    /**
-     * @ invariant utenti != null && !utenti.isEmpty();
-     */
-    private Set<Utente> utenti;
-    /**
-     * @ invariant luoghi != null;
-     */
-    private Set<Luogo> luoghi;
-    /**
-     * @ invariant visite != null;
-     */
-    private Set<TipoVisita> visite;
-    /**
-     * @ invariant filemanager != null;
-     */
-    private final FileManager filemanager;
-
-    private Utente utenteAttivo;
+    public final IUserService userService;
+    public final IVisitService visitService;
+    public final IPlaceService placeService;
+    public final IPersistenceService persistenceService;
+    public final IBookingService bookingService;
 
     public Session() {
-        this.filemanager = FileManager.getInstance();
+        ServiceFactory factory = new ServiceFactory();
+        userService = factory.createUserService();
+        visitService = factory.createVisitService();
+        placeService = factory.createPlaceService();
+        persistenceService = factory.createPersistenceService();
+        bookingService = factory.createBookingService();
     }
 
     public void salva() {
-        salvaStoricoVisite();
-        filemanager.salva(FileManager.fileVisite, visite);
-        filemanager.salva(FileManager.fileLuoghi, luoghi);
+        visitService.salvaStoricoVisite();
+        visitService.salvaVisite();
+        placeService.salvaLuoghi();
         salvaParametriGlobali();
     }
 
     public void salvaUtenti() {
-        filemanager.salva(FileManager.fileUtenti, utenti);
-    }
-
-    private void salvaStoricoVisite() {
-        // Set<Visita> visiteDaSalvare = new HashSet<>();
-        HashMap<String, Set<Visita>> visiteDaSalvare = new HashMap<>();
-        for (TipoVisita tipoVisita : visite) {
-            Iterator<Visita> visiteIterator = tipoVisita.getVisiteAssociate().iterator();
-            while (visiteIterator.hasNext()) {
-                Visita visita = visiteIterator.next();
-                if (visita.getStato() == StatoVisita.EFFETTUATA) {
-                    Set<Visita> visiteTemp = new HashSet<>();
-                    if (visiteDaSalvare.get(tipoVisita.getTitolo()) != null) {
-                        visiteTemp = visiteDaSalvare.get(tipoVisita.getTitolo());
-                    }
-                    visiteTemp.add(visita);
-                    visiteDaSalvare.put(tipoVisita.getTitolo(), visiteTemp);
-                    visiteIterator.remove();
-                }
-            }
-        }
-
-        if (!visiteDaSalvare.isEmpty()) {
-            HashMap<String, Set<Visita>> storicoVisite = filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
-            if (storicoVisite != null) {
-                // visiteDaSalvare.addAll(storicoVisite);
-                visiteDaSalvare.putAll(storicoVisite);
-            }
-            filemanager.salva(FileManager.fileStorico, visiteDaSalvare);
-            visiteDaSalvare.clear();
-        }
+        userService.salvaUtenti();
     }
 
     public void salvaParametriGlobali() {
-        filemanager.salvaParametriGlobali();
+        persistenceService.salvaParametriGlobali();
     }
 
     /**
      * @ requires utente != null && newPassword != null && !newPassword.isEmpty();
-     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==> 
+     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==>
      *           utenti.stream().filter(u -> u.getNomeUtente().equals(utente.getNomeUtente()))
      *                  .allMatch(u -> u.getPassword().equals(newPassword));
      * @ ensures \old(salvaUtenti());
      */
     public void cambiaPassword(Utente utente, String newPassword) {
-        for (Utente user : utenti) {
-            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
-                user.setPassword(newPassword);
-            }
-        }
-        salvaUtenti();
+        userService.cambiaPassword(utente, newPassword);
     }
 
     /**
      * @ ensures visite != null && luoghi != null && parametriGlobali != null && utenti != null;
      */
     public void carica() {
-        visite = filemanager.carica(FileManager.fileVisite, TipoVisita.class) != null
-            ? filemanager.carica(FileManager.fileVisite, TipoVisita.class)
-            : new HashSet<>();
-        luoghi = filemanager.carica(FileManager.fileLuoghi, Luogo.class) != null
-            ? filemanager.carica(FileManager.fileLuoghi, Luogo.class)
-            : new HashSet<>();
+        visitService.caricaVisite();
+        placeService.caricaLuoghi();
         caricaParametriGlobali();
     }
 
     public void caricaParametriGlobali() {
-        filemanager.caricaParametriGlobali();
+        persistenceService.caricaParametriGlobali();
     }
 
-    /**
-     * @ ensures utenti != null;
-     */
     public void caricaUtenti() {
-        utenti = filemanager.carica(FileManager.fileUtenti, Utente.class) != null
-        ? filemanager.carica(FileManager.fileUtenti, Utente.class)
-        : new HashSet<>();
+        userService.caricaUtenti();
     }
 
     /**
@@ -121,61 +73,54 @@ public class Session {
      */
     public Utente login(String nomeUtente, String password) {
         caricaUtenti();
-
-        for (Utente user : utenti) {
-            if (user.getNomeUtente().equals(nomeUtente) && user.getPassword().equals(password)) {
-                return user;
-            }
-        }
-
-        return null;
+        return userService.login(nomeUtente, password);
     }
 
     public Set<Utente> getUtenti() {
-        return utenti;
+        return userService.getUtenti();
     }
 
     /**
      * @ requires utenti != null;
      */
     public void setUtenti(Set<Utente> utenti) {
-        this.utenti = utenti;
+        userService.setUtenti(utenti);
     }
 
     public Utente getUtenteAttivo() {
-        return utenteAttivo;
+        return userService.getUtenteAttivo();
     }
 
     /**
      * @ requires utenteAttivo != null;
      */
     public void setUtenteAttivo(Utente utenteAttivo) {
-        this.utenteAttivo = utenteAttivo;
+        userService.setUtenteAttivo(utenteAttivo);
     }
 
     public Set<Luogo> getLuoghi() {
-        return luoghi;
+        return placeService.getLuoghi();
     }
 
     /**
      * @ requires luoghi != null;
      */
     public void setLuoghi(Set<Luogo> luoghi) {
-        this.luoghi = luoghi;
+        placeService.setLuoghi(luoghi);
     }
 
     /**
      * @ requires luoghiDaAggiungere != null;
      */
     public void addLuoghi(Set<Luogo> luoghiDaAggiungere) {
-        this.luoghi.addAll(luoghiDaAggiungere);
+        placeService.aggiungiLuoghi(luoghiDaAggiungere);
     }
 
     /**
      * @ requires luogo != null;
      */
     public void addLuogo(Luogo luogo) {
-        this.luoghi.add(luogo);
+        placeService.aggiungiLuogo(luogo);
     }
 
     // TODO: realize a proxy
@@ -183,36 +128,36 @@ public class Session {
      * @ requires luoghiDaRimuovere != null;
      */
     public void removeLuoghi(Set<Luogo> luoghiDaRimuovere) {
-        this.luoghi.removeAll(luoghiDaRimuovere);
+        placeService.rimuoviLuoghi(luoghiDaRimuovere);
     }
 
     public Set<TipoVisita> getVisite() {
-        return visite;
+        return visitService.getTipiVisita();
     }
 
     /**
      * @ requires visite != null;
      */
     public void setVisite(Set<TipoVisita> visite) {
-        this.visite = visite;
+        visitService.setTipiVisita(visite);
     }
 
     /**
      * @ requires visite != null;
      */
-    public void addVisita(TipoVisita visite) {
-        this.visite.add(visite);
+    public void addVisita(TipoVisita visita) {
+        visitService.aggiungiTipoVisita(visita);
     }
 
     /**
      * @ requires tipoVisiteDaAggiungere != null;
      */
-    public void addTipoVisite(Set<TipoVisita> tipoVisiteDaAggiungere) {
-        visite.addAll(tipoVisiteDaAggiungere);
+    public void addTipoVisite(Set<TipoVisita> tipiVisitaDaAggiungere) {
+        visitService.aggiungiTipiVisita(tipiVisitaDaAggiungere);
     }
 
     public HashMap<String, Set<Visita>> getStoricoVisite() {
-        return filemanager.caricaStorico(FileManager.fileStorico, String.class, Visita.class);
+        return persistenceService.caricaDatiArchioStorico(String.class, Visita.class);
     }
 
     // TODO: realize a proxy
@@ -220,145 +165,70 @@ public class Session {
      * @ requires visiteDaRimuovere != null;
      */
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
-        for (TipoVisita tipoVisita : visiteDaRimuovere) {
-            for (Luogo luogo : luoghi) {
-                luogo.rimuoviVisita(tipoVisita.getTitolo());
-            }
-            for (Utente fruitore: utenti) {
-                if (fruitore instanceof Fruitore) {
-                    tipoVisita.getVisiteAssociate().forEach((visita -> ((Fruitore) fruitore).rimuoviIscrizione(visita)));
-                }
-            }
-        }
-
-        this.visite.removeAll(visiteDaRimuovere);
+        visitService.rimuoviTipiVisita(visiteDaRimuovere, placeService, userService);
     }
 
     public Set<Volontario> getVolontari() {
-        Set<Volontario> volontari = new HashSet<>();
-        for (Utente utente : utenti) {
-            if (utente instanceof Volontario) {
-                volontari.add((Volontario) utente);
-            }
-        }
-        return volontari;
+        return userService.getVolontari();
     }
 
     public Set<Fruitore> getFruitori() {
-        Set<Fruitore> fruitori = new HashSet<>();
-        for (Utente utente : utenti) {
-            if (utente instanceof Fruitore) {
-                fruitori.add((Fruitore) utente);
-            }
-        }
-        return fruitori;
+        return userService.getFruitori();
     }
 
     /**
      * @ requires nuoviVolontari != null;
      */
     public void addVolontari(Set<Volontario> nuoviVolontari) {
-        utenti.addAll(nuoviVolontari);
+        userService.aggiungiVolontari(nuoviVolontari);
     }
 
     /**
      * @ requires visiteDaRimuovere != null;
      */
     public void addFruitore(Fruitore fruitore) {
-        utenti.add(fruitore);
+        userService.aggiungiFruitore(fruitore);
     }
 
     // TODO: realize a proxy
     /**
      * @ requires volontariDaRimuovere != null;
-     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==> 
+     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==>
      *           utente instanceof Volontario && ((Volontario) utente).getDisponibilita().isEmpty()));
      */
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
-        for (Volontario volontario : volontariDaRimuovere) {
-            for (TipoVisita tipoVisita : visite) {
-                tipoVisita.rimuoviVolontario(volontario);
-            }
-        }
-
-        utenti.removeAll(volontariDaRimuovere);
+        userService.rimuoviVolontari(volontariDaRimuovere, visitService);
     }
 
     public void cleanDisponibilitaDeiVolontari() {
-        for (Utente utente : utenti) {
-            if (utente instanceof Volontario) {
-                ((Volontario) utente).clearDisponibilita();
-            }
-        }
+        userService.cleanDisponibilitaVolontari();
     }
 
     public void salvataggioDatePrecluseFutureInAttuali() {
-        TipoVisita.aggiungiDatePrecluseAttuali(TipoVisita.getDatePrecluseFuture());
-        TipoVisita.clearDatePrecluseFuture();
-        salvaParametriGlobali();
+        visitService.salvaDatePrecluseFutureInAttuali();
     }
 
     public void checkCondizioniDiClassi() {
         checkCondizioniDiLuogo();
         checkCondizioniDiTipoVisita();
-        checkCondizioniDiVolontario();
+        userService.checkCondizioniDiVolontario(visitService.getTipiVisita());
     }
 
     private void checkCondizioniDiLuogo() {
-        luoghi.removeIf(luogo -> !luogo.haVisiteAssociate());
-    }
-
-    private void checkCondizioniDiVolontario() {
-        Iterator<Utente> volontarioIterator = utenti.iterator();
-        while (volontarioIterator.hasNext()) {
-            Utente utente = volontarioIterator.next();
-            if (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(visite)) {
-                volontarioIterator.remove();
-
-                for (TipoVisita tipoVisita : visite) {
-                    tipoVisita.rimuoviVolontario((Volontario) utente);
-                }
-            }
-        }
+        placeService.controllaCondizioniLuogo();
     }
 
     private void checkCondizioniDiTipoVisita() {
-        Iterator<TipoVisita> tipoVisitaIterator = visite.iterator();
-        while (tipoVisitaIterator.hasNext()) {
-            TipoVisita tipoVisita = tipoVisitaIterator.next();
-            if (!tipoVisita.haLuoghiAssociati(luoghi)) {
-                tipoVisitaIterator.remove();
-                checkCondizioniDiVolontario();
-            }
-            if (!tipoVisita.haVolontariAssociati()) {
-                for (Luogo luogo : luoghi) {
-                    luogo.rimuoviVisita(tipoVisita.getTitolo());
-                }
-                tipoVisitaIterator.remove();
-                checkCondizioniDiLuogo();
-            }
-        }
-    }
-
-    public FileManager getFilemanager() {
-        return filemanager;
+        visitService.controllaCondizioniTipiVisita(placeService.getLuoghi());
+        userService.checkCondizioniDiVolontario(visitService.getTipiVisita());
+        placeService.controllaCondizioniLuogo();
     }
 
     /**
      * @ requires inizioMese != null && fineMese != null;
      */
     public Set<TipoVisita> getTipiVisiteProssimoMese(Calendar inizioMese, Calendar fineMese) {
-        // Ordino le visite in base alla data di fine per evitare che le visite che terminano a breve non vengano istanziate
-        Set<TipoVisita> tipiVisite = new TreeSet<>(Comparator.comparing(TipoVisita::getDataFine));
-        tipiVisite.addAll(visite);
-
-        // Rimuovo tutti i tipi di vista che finiscono entro questo mese
-        tipiVisite.removeIf(tipoVisita -> tipoVisita.getDataFine().before(inizioMese.getTime()));
-
-        // Rimuovo tutti tipi di visita che iniziano a più di due mesi da oggi
-        tipiVisite.removeIf(tipoVisita -> tipoVisita.getDataInizio().after(fineMese.getTime()));
-
-        return tipiVisite;
+        return visitService.getTipiVisitaProssimoMese(inizioMese, fineMese);
     }
 
     /**
@@ -368,19 +238,7 @@ public class Session {
         Set<Volontario> volontari,
         Set<Calendar> datePossibiliPerVisita
     ) {
-        // Creo una mappa che lega le date possibili per la vista con i volontari disponibili per le rispettive date
-        Map<Calendar, Set<Volontario>> mappaVolontariPerData = new HashMap<>();
-        for (Calendar data : datePossibiliPerVisita) {
-            Set<Volontario> volontariDisponibili = new HashSet<>();
-            for (Volontario volontario : volontari) {
-                if (volontario.getDisponibilita().contains(data.get(Calendar.DAY_OF_MONTH))) {
-                    volontariDisponibili.add(volontario);
-                }
-            }
-            mappaVolontariPerData.put(data, volontariDisponibili);
-        }
-
-        return mappaVolontariPerData;
+        return visitService.creaMappaVolontariPerOgniDataPossibile(volontari, datePossibiliPerVisita);
     }
 
     /**
@@ -391,28 +249,7 @@ public class Session {
         Map<Calendar, Set<Volontario>> mappaVolontariPerData,
         int massimo
     ) {
-        // Creo un contentore per le date e le ore estratte
-        List<Calendar> dateEstratte = new ArrayList<>();
-
-        // Estraggo a caso due date e due ore possibili per questa visita (non nella stessa settimana)
-        for (int i = 0; i < datePossibiliPerVisita.size() && dateEstratte.size() < massimo; i++) {
-            Calendar data = datePossibiliPerVisita
-                .stream()
-                .skip(new Random().nextInt(datePossibiliPerVisita.size()))
-                .findFirst()
-                .orElse(null); // Prendo una data casuale
-            if (mappaVolontariPerData.get(data).isEmpty()) { // Controllo se c'è almeno un volontario disponibile per quella data
-                continue;
-            }
-            dateEstratte.add(data); // Aggiungo la data estratta alla lista
-            datePossibiliPerVisita.removeAll(
-                datePossibiliPerVisita
-                    .stream()
-                    .filter(date -> date.getWeekYear() == data.getWeekYear())
-                    .toList()); // Rimuovo tutte le date della stessa settimana
-        }
-
-        return dateEstratte;
+        return visitService.estraiDateCasuali(datePossibiliPerVisita, mappaVolontariPerData, massimo);
     }
 
     /**
@@ -421,41 +258,10 @@ public class Session {
     public List<Volontario> estraiVolontariCasuali(
         List<Calendar> dateEstratte,
         Map<Calendar, Set<Volontario>> mappaVolontariPerData,
-        Set<TipoVisita> tipiVisite,
+        Set<TipoVisita> tipiVisita,
         int massimo
     ) {
-        List<Volontario> volontariEstratti = new ArrayList<>();
-        // Estraggo a caso due volontari per ogni data estratta (controllando che non siano già impegnati in altre visite per le stesse date)
-        for (int i = 0; i < dateEstratte.size() && volontariEstratti.size() < massimo; i++) {
-            Calendar data = dateEstratte.get(i);
-            Volontario volontarioEstratto = mappaVolontariPerData
-                .get(data)
-                .stream()
-                .skip(new Random().nextInt(mappaVolontariPerData.get(data).size()))
-                .findFirst()
-                .orElse(null);
-            // Controllo se il volontario è già impegnato in altre visite per la stessa data
-            boolean impegnato = false;
-            if (volontarioEstratto != null) {
-                for (TipoVisita tipoV : volontarioEstratto.getVisiteAssociate(tipiVisite)) {
-                    for (Visita visita : tipoV.getVisiteAssociate()) {
-                        if (
-                            visita.getDataVisita().get(Calendar.DAY_OF_MONTH) ==
-                            data.get(Calendar.DAY_OF_MONTH)
-                        ) {
-                            impegnato = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (!impegnato) {
-                volontariEstratti.add(volontarioEstratto);
-            }
-        }
-
-        return volontariEstratti;
+        return visitService.estraiVolontariCasuali(dateEstratte, mappaVolontariPerData, tipiVisita, massimo);
     }
 
     /**
@@ -467,36 +273,21 @@ public class Session {
         List<Volontario> volontariEstratti,
         TipoVisita tipoVisita
     ) {
-        // Per ogni data estratta creo una visita e la aggiungo al tipo di visita
-        for (int i = 0; i < Math.min(dateEstratte.size(), volontariEstratti.size()); i++) {
-            Calendar dataVisita = dateEstratte.get(i);
-            Visita nuovaVisita = new Visita(tipoVisita.getTitolo(), dataVisita, StatoVisita.PROPOSTA, 0);
-            nuovaVisita.setVolontarioAssociato(volontariEstratti.get(i));
-            tipoVisita.addVisita(nuovaVisita);
-        }
+        visitService.creaVisitePerDatiEstratti(dateEstratte, volontariEstratti, tipoVisita);
     }
 
     /**
      * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
      */
     public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
-        if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
-            if (tipoVisita != null) {
-                return (visita.getNumeroIscritti() + numeroIscritti <= tipoVisita.getMaxPartecipante());
-            }
-        }
-        return false;
+        return bookingService.puoIscriversi(fruitore, visita, numeroIscritti, tipoVisita);
     }
 
     /**
      * @ requires fruitore != null && visita != null;
      */
     public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
-        if (fruitore.getIscrizioni().containsKey(visita)) {
-            return (visita.getStato() == StatoVisita.COMPLETA ||
-                    visita.getStato() == StatoVisita.PROPOSTA);
-        }
-        return false;
+        return bookingService.puoDisiscriversi(fruitore, visita);
     }
 
     /**
@@ -512,35 +303,7 @@ public class Session {
      *           visita.getStato() == StatoVisita.COMPLETA;
      */
     public void iscrizione(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
-        if (puoIscriversi(fruitore, visita, numeroIscritti, tipoVisita)) {
-            Iscrizione nuovaIscrizione;
-            String codiceIscrizione;
-            Set<Fruitore> fruitori = getFruitori();
-            List<Iscrizione> iscrizioniVisita = new ArrayList<>(); // Lista di tutte le iscrizioni per la visita fornita in input
-            List<String> codiciIscrizioniVisita = new ArrayList<>(); // Lista di tutti i codici di iscrizione per la visita fornita in input
-
-            for (Fruitore f : fruitori) {
-                if (f.getIscrizioni().containsKey(visita)) {
-                    iscrizioniVisita.add(f.getIscrizioni().get(visita));
-                }
-            }
-            for (Iscrizione i : iscrizioniVisita) {
-                codiciIscrizioniVisita.add(i.getCodiceUnivoco());
-            }
-
-            // Controllo che il codice creato non sia già presente per le iscrizioni alla stessa visita
-            do {
-                codiceIscrizione = String.format("%06d", new Random().nextInt(1000000));
-            } while (codiciIscrizioniVisita.stream().anyMatch(codiceIscrizione::equals));
-
-            nuovaIscrizione = new Iscrizione(codiceIscrizione, numeroIscritti);
-            fruitore.aggiungiIscrizione(visita, nuovaIscrizione);
-            visita.setNumeroIscritti(visita.getNumeroIscritti() + numeroIscritti);
-
-            if (tipoVisita != null && visita.getNumeroIscritti() == tipoVisita.getMaxPartecipante()) {
-                visita.setStato(StatoVisita.COMPLETA);
-            }
-        }
+        bookingService.iscrizione(fruitore, getFruitori(), visita, numeroIscritti, tipoVisita);
     }
     
     /**
@@ -551,10 +314,6 @@ public class Session {
      * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> visita.getStato() == StatoVisita.PROPOSTA;
      */
     public void disiscrizione(Fruitore fruitore, Visita visita) {
-        if (puoDisiscriversi(fruitore, visita)) {
-            visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
-            fruitore.rimuoviIscrizione(visita);
-            visita.setStato(StatoVisita.PROPOSTA);
-        }
+        bookingService.disiscrizione(fruitore, visita);
     }
 }

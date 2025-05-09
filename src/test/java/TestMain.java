@@ -119,7 +119,8 @@ public class TestMain {
     void backupStorico() {
         Session session = new Session();
         session.setVisite(new HashSet<>());
-        session.getFilemanager().salva(FileManager.fileStorico, null);
+        session.visitService.salvaStoricoVisite();
+        // session.getFilemanager().salva(FileManager.fileStorico, null);
 
         TipoVisita visita1 = new TipoVisita("Visita1", "Disneyland", "",
                 Calendar.getInstance(), Calendar.getInstance(), Calendar.getInstance(), 2, new HashSet<>(),
