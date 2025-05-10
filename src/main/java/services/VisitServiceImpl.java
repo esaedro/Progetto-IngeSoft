@@ -40,21 +40,33 @@ public class VisitServiceImpl implements IVisitService {
         tipiVisita = persistenceService.caricaDati(TipoVisita.class);
     }
 
+    /**
+     * @ requires tipoVisita != null;
+     */
     @Override
     public void aggiungiTipoVisita(TipoVisita tipoVisita) {
         tipiVisita.add(tipoVisita);
     }
 
+    /**
+     * @ requires tipoVisitaDaAggiungere != null;
+     */
     @Override
     public void aggiungiTipiVisita(Set<TipoVisita> tipiVisitaDaAggiungere) {
         tipiVisita.addAll(tipiVisitaDaAggiungere);
     }
 
+    /**
+     * @ requires tipiVisita != null;
+     */
     @Override
     public void setTipiVisita(Set<TipoVisita> tipiVisita) {
         this.tipiVisita = tipiVisita;
     }
 
+    /**
+     * @ requires visiteDaRimuovere != null;
+     */
     @Override
     public void rimuoviTipiVisita(
         Set<TipoVisita> visiteDaRimuovere,
@@ -117,6 +129,9 @@ public class VisitServiceImpl implements IVisitService {
         }
     }
 
+    /**
+     * @ requires inizioMese != null && fineMese != null;
+     */
     @Override
     public Set<TipoVisita> getTipiVisitaProssimoMese(Calendar inizioMese, Calendar fineMese) {
         // Ordino le visite in base alla data di fine per evitare che le visite che terminano a breve non vengano istanziate
@@ -158,6 +173,9 @@ public class VisitServiceImpl implements IVisitService {
         }
     }
 
+    /**
+     * @ requires datePossibiliPerVisita != null && mappaVolontariPerVisita != null && massimo != null;
+     */
     @Override
     public List<Calendar> estraiDateCasuali(
         Set<Calendar> datePossibiliPerVisita,
@@ -189,6 +207,9 @@ public class VisitServiceImpl implements IVisitService {
         return dateEstratte;
     }
 
+    /**
+     * @ requires dateEstratte != null && mappaVolontariPerData != null && tipiVisite != null && massimo != null;
+     */
     @Override
     public List<Volontario> estraiVolontariCasuali(
         List<Calendar> dateEstratte,
@@ -230,6 +251,10 @@ public class VisitServiceImpl implements IVisitService {
         return volontariEstratti;
     }
 
+    /**
+     * @ requires dateEstratte != null && volontariEstratti != null && tipiVisita != null;
+     * @ ensures tipoVisita.getVisiteAssociate().size() >= \old(tipoVisita.getVisiteAssociate().size())
+     */
     @Override
     public void creaVisitePerDatiEstratti(
         List<Calendar> dateEstratte,
@@ -250,6 +275,9 @@ public class VisitServiceImpl implements IVisitService {
         }
     }
 
+    /**
+     * @ requires volontari != null && datePossibiliPerVisita != null;
+     */
     @Override
     public Map<Calendar, Set<Volontario>> creaMappaVolontariPerOgniDataPossibile(
         Set<Volontario> volontari,

@@ -5,37 +5,33 @@ import java.util.*;
 
 public class Controller {
 
-    private final Session session = new Session();
+    private final SessionController session = new SessionController();
     private final AppView appview = new AppView();
 
-    public Controller() {
-
-    }
-
+    public Controller() {}
 
     public void start() { //Prima impostazione password
-
         appview.setMenuStart(this);
-        
+
         Runnable selezione;
         do {
             selezione = appview.stampaMenuOnce();
         } while (selezione != null && session.getUtenteAttivo() == null);
-        
-        if (selezione == null) return;       //si esegue login/registrazione a seconda di cosa inserisce l'utente
+
+        if (selezione == null) return; //si esegue login/registrazione a seconda di cosa inserisce l'utente
 
         carica();
         inizializzazione();
-        
+
         esecuzione();
 
         salva();
     }
-    
+
     public void disabilitaColoriCaratteriSpeciali() {
-       BelleStringhe.colori = false; 
-       InputDati.ricaricaVariabiliStatiche();
-       CliMenu.ricaricaVariabiliStatiche();
+        BelleStringhe.colori = false;
+        InputDati.ricaricaVariabiliStatiche();
+        CliMenu.ricaricaVariabiliStatiche();
     }
 
     /**
@@ -57,17 +53,20 @@ public class Controller {
         session.setUtenteAttivo(utenteProvvisorio);
     }
 
-     /**
-      * @ ensures session.getUtenti().contains(fruitore);
-      * @ ensures session.getFruitori().contains(fruitore);
-      * @ ensures session.getUtenteAttivo() == fruitore;
-      * @ ensures fruitore.getNome().equals(nomeUtente);
-      * @ ensures fruitore.getPassword().equals(password);
-      */
+    /**
+     * @ ensures session.getUtenti().contains(fruitore);
+     * @ ensures session.getFruitori().contains(fruitore);
+     * @ ensures session.getUtenteAttivo() == fruitore;
+     * @ ensures fruitore.getNome().equals(nomeUtente);
+     * @ ensures fruitore.getPassword().equals(password);
+     */
     public void registrazioneFruitore() {
         session.caricaUtenti();
-        
-        String nomeUtente = appview.inserimentoNomeUtente("Inserire il nome utente: ", session.getUtenti());
+
+        String nomeUtente = appview.inserimentoNomeUtente(
+            "Inserire il nome utente: ",
+            session.getUtenti()
+        );
         String password = appview.inserimentoPassword("Inserire la password: ");
 
         Fruitore fruitore = new Fruitore(nomeUtente, password, new HashMap<>());
@@ -99,7 +98,7 @@ public class Controller {
      */
     private void inizializzazione() {
         appview.benvenutoMsg(session.getUtenteAttivo());
-        
+
         if (session.getUtenteAttivo().getPassword().startsWith("config")) {
             session.cambiaPassword(
                 session.getUtenteAttivo(),
@@ -110,7 +109,9 @@ public class Controller {
         if (session.getUtenteAttivo() instanceof Configuratore) {
             if (session.getLuoghi().isEmpty()) creaLuoghi();
             istanziaParametroTerritoriale();
-            if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
+            if (
+                TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0
+            ) dichiaraMassimoNumeroFruitori();
             session.salvaParametriGlobali();
         }
     }
@@ -122,24 +123,28 @@ public class Controller {
      * @ ensures \forall TipoVisita tv; visite.contains(tv) ==> session.getVisite().contains(tv);
      */
     public void creaLuoghi() {
-            Set<Luogo> luoghi = new HashSet<>();
-            Set<TipoVisita> visite;
+        Set<Luogo> luoghi = new HashSet<>();
+        Set<TipoVisita> visite;
 
-            do {
-                Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
-                visite = appview.menuInserimentoTipiVisita(session.getUtenteAttivo(), session.getUtenti(),
-                        session.getVolontari(), this);
-                
-                if (visite == null) return;
-                
-                for (TipoVisita tipoVisita : visite) {
-                    luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
-                }
-                luoghi.add(luogoDaAggiungere);
-                session.addTipoVisite(visite);
-            } while (appview.confermaLuoghi());
+        do {
+            Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
+            visite = appview.menuInserimentoTipiVisita(
+                session.getUtenteAttivo(),
+                session.getUtenti(),
+                session.getVolontari(),
+                this
+            );
 
-            session.addLuoghi(luoghi);
+            if (visite == null) return;
+
+            for (TipoVisita tipoVisita : visite) {
+                luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
+            }
+            luoghi.add(luogoDaAggiungere);
+            session.addTipoVisite(visite);
+        } while (appview.confermaLuoghi());
+
+        session.addLuoghi(luoghi);
     }
 
     /**
@@ -148,10 +153,11 @@ public class Controller {
      */
     private void istanziaParametroTerritoriale() {
         if (Luogo.getParametroTerritoriale() == null) {
+            session
+                .getUtenteAttivo()
+                .inizializzaParametroTerritoriale(appview.menuInserimentoParametroTerritoriale());
 
-            session.getUtenteAttivo().inizializzaParametroTerritoriale(appview.menuInserimentoParametroTerritoriale());
-
-           /*  ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
+            /*  ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
                     appview.menuInserimentoParametroTerritoriale()
                 ); */
             salva();
@@ -162,7 +168,9 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void dichiaraMassimoNumeroFruitori() {
-        session.getUtenteAttivo().setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
+        session
+            .getUtenteAttivo()
+            .setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
         salva();
     }
 
@@ -170,15 +178,16 @@ public class Controller {
         TipoMenu tipoMenu = session.getUtenteAttivo().getTipoMenu();
         switch (tipoMenu) {
             case CONFIGURATORE -> appview.setMenuConfiguratore(this);
-            case CONFIGURATORE_RACCOLTA -> appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
+            case CONFIGURATORE_RACCOLTA -> appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(
+                this
+            );
             case VOLONTARIO -> appview.setMenuVolontario(this);
             case FRUITORE -> appview.setMenuFruitore(this);
-            default -> {} //nessun menu 
+            default -> {} //nessun menu
         }
-    
+
         appview.stampaMenu();
     }
-    
 
     /*     private void esecuzione() {
             if (session.getUtenteAttivo() instanceof Configuratore) {
@@ -202,10 +211,12 @@ public class Controller {
      * @ ensures (session.getUtenteAttivo() instanceof Configuratore) ==> session.salvaParametriGlobali() is called;
      */
     public void inserisciDatePrecluse() {
-        Set<Integer> dateInserite = appview.menuInserimentoDatePrecluse(TipoVisita.getDatePrecluseFuture());
+        Set<Integer> dateInserite = appview.menuInserimentoDatePrecluse(
+            TipoVisita.getDatePrecluseFuture()
+        );
         session.getUtenteAttivo().impostaDatePrecluse(dateInserite);
 
-/*         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
+        /*         ((Configuratore) session.getUtenteAttivo()).impostaDatePrecluse(
                 appview.menuInserimentoDatePrecluse(TipoVisita.getDatePrecluseFuture())); */
         session.salvaParametriGlobali();
     }
@@ -226,13 +237,17 @@ public class Controller {
     public void mostraVisitePerStato() {
         Utente utente = session.getUtenteAttivo();
         Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(getAllVisite());
-        Map<StatoVisita, List<Visita>> visitePerStatoFiltrate = utente.filtraVisitePerStato(visitePerStato);
-    
-        Map<String, Set<Visita>> storicoDaMostrare = utente.getStoricoVisiteDaVisualizzare(session.getStoricoVisite());
-    
+        Map<StatoVisita, List<Visita>> visitePerStatoFiltrate = utente.filtraVisitePerStato(
+            visitePerStato
+        );
+
+        Map<String, Set<Visita>> storicoDaMostrare = utente.getStoricoVisiteDaVisualizzare(
+            session.getStoricoVisite()
+        );
+
         appview.mostraVisiteStato(visitePerStatoFiltrate, storicoDaMostrare, this);
     }
-    
+
     // TODO: sposta in sessione
     private Set<Visita> getAllVisite() {
         Set<Visita> visite = new HashSet<>();
@@ -244,8 +259,8 @@ public class Controller {
             }
         }
 
-        for (Map.Entry<String, Set<Visita>> entry: session.getStoricoVisite().entrySet()) {
-            if (entry.getValue() != null && !entry.getValue().isEmpty()){
+        for (Map.Entry<String, Set<Visita>> entry : session.getStoricoVisite().entrySet()) {
+            if (entry.getValue() != null && !entry.getValue().isEmpty()) {
                 visite.addAll(entry.getValue());
             }
         }
@@ -265,9 +280,9 @@ public class Controller {
             }
         }
 
-        visitePerStato.remove(StatoVisita.NON_ISTANZIATA); 
-        visitePerStato.remove(StatoVisita.EFFETTUATA);      //verranno visualizzate dall'archivio
-        
+        visitePerStato.remove(StatoVisita.NON_ISTANZIATA);
+        visitePerStato.remove(StatoVisita.EFFETTUATA); //verranno visualizzate dall'archivio
+
         return visitePerStato;
     }
 
@@ -286,11 +301,13 @@ public class Controller {
     public void inserisciDisponibilita() {
         Utente volontario = session.getUtenteAttivo();
 
-        Set<Integer> disponibilitaInserite = appview.menuInserimentoDisponibilita(volontario.getDisponibilita());
+        Set<Integer> disponibilitaInserite = appview.menuInserimentoDisponibilita(
+            volontario.getDisponibilita()
+        );
         volontario.addDisponibilita(disponibilitaInserite);
 
         session.salvaUtenti();
-/*         Volontario volontario = (Volontario) session.getUtenteAttivo();
+        /*         Volontario volontario = (Volontario) session.getUtenteAttivo();
         volontario.addDisponibilita(
             appview.menuInserimentoDisponibilita(volontario.getDisponibilita())
         ); */
@@ -300,12 +317,14 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void chiudiDisponibilitaERealizzaPianoVisite() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            gestisciEffettiCollaterali();
-            riapriDisponibilita();
-            salva();
-        }));
-
+        Runtime.getRuntime()
+            .addShutdownHook(
+                new Thread(() -> {
+                    gestisciEffettiCollaterali();
+                    riapriDisponibilita();
+                    salva();
+                })
+            );
 
         //TODO: aggiungi un esperto di dominio
         inizializzaPianoViste();
@@ -313,7 +332,7 @@ public class Controller {
     }
 
     /**
-     * @ ensures \forall TipoVisita tv; tipiVisite.contains(tv) ==> 
+     * @ ensures \forall TipoVisita tv; tipiVisite.contains(tv) ==>
      *           (\exists Calendar c; dateEstratte.contains(c) && volontariEstratti != null ==>
      *           (\exists Visita v; tv.getVisiteAssociate().contains(v) && v.getData().equals(c)));
      * @ ensures dateEstratte.isEmpty() || volontariEstratti.isEmpty() ==> (\forall TipoVisita tv; !tv.getVisiteAssociate().isEmpty());
@@ -340,12 +359,11 @@ public class Controller {
             Map<Calendar, Set<Volontario>> mappaVolontariPerData =
                 session.creaMappaVolontariPerOgniDataPossibile(volontari, datePossibiliPerVisita);
 
-            List<Calendar> dateEstratte =
-                session.estraiDateCausali(
-                    datePossibiliPerVisita,
-                    mappaVolontariPerData,
-                    maxVisitePerTipo
-                );
+            List<Calendar> dateEstratte = session.estraiDateCausali(
+                datePossibiliPerVisita,
+                mappaVolontariPerData,
+                maxVisitePerTipo
+            );
             List<Volontario> volontariEstratti = session.estraiVolontariCasuali(
                 dateEstratte,
                 mappaVolontariPerData,
@@ -371,8 +389,8 @@ public class Controller {
 
             tipoVisitaSelezionato.aggiungiVolontariIdonei(nuoviVolontari);
             aggiungiVolontariInSession(nuoviVolontari);
-            //session.addVolontari(nuoviVolontari); 
-        }       
+            //session.addVolontari(nuoviVolontari);
+        }
     }
 
     /**
@@ -391,16 +409,20 @@ public class Controller {
      * @ ensures nuoveVisite == null ==> !luogoSelezionato.getVisite().containsAll(nuoveVisite) && !session.getVisite().containsAll(nuoveVisite);
      */
     public void aggiungiTipoVisita() {
-        Luogo luogoSelezionato = appview.selezioneLuogo(session.getLuoghi());  
+        Luogo luogoSelezionato = appview.selezioneLuogo(session.getLuoghi());
 
         if (!session.getLuoghi().isEmpty()) {
             Set<TipoVisita> nuoveVisite = appview.menuInserimentoTipiVisita(
-                session.getUtenteAttivo(), session.getUtenti(), session.getVolontari(), this);
+                session.getUtenteAttivo(),
+                session.getUtenti(),
+                session.getVolontari(),
+                this
+            );
             if (nuoveVisite != null) {
                 luogoSelezionato.aggiungiVisite(nuoveVisite);
                 session.addTipoVisite(nuoveVisite);
             }
-        } 
+        }
     }
 
     /**
@@ -418,7 +440,6 @@ public class Controller {
         //reference ai luoghi gestite nel metodo di session
         session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
         gestisciEffettiCollaterali();
-        
     }
 
     /**
@@ -447,7 +468,7 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore;
      * @ ensures visitaConIscritti != null ==> session.iscrizione((Fruitore)session.getUtenteAttivo(), visitaConIscritti.getKey(), visitaConIscritti.getValue()) is called;
      * @ ensures visitaConIscritti != null ==> salva() is called;
-     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==> 
+     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==>
      *           (visitaConIscritti == null || visitaConIscritti != null && fruitore.getIscrizioni().containsKey(visitaConIscritti.getKey()));
      */
     public void iscrizioneFruitore() {
@@ -465,15 +486,22 @@ public class Controller {
         visiteProposte.removeIf((visita -> fruitore.getIscrizioni().containsKey(visita)));
         //interazione con l'utente per la scelta della visita (tutte visite, quale iscriversi)
         //menuIscrizione restituisce sia la visita selezionata che il numero di iscritti.
-        visitaConIscritti = appview.menuIscrizione(visiteProposte, this, TipoVisita.getNumeroMassimoIscrittoPerFruitore());
-        
+        visitaConIscritti = appview.menuIscrizione(
+            visiteProposte,
+            this,
+            TipoVisita.getNumeroMassimoIscrittoPerFruitore()
+        );
+
         if (visitaConIscritti != null) {
             Visita visitaSelezionata = visitaConIscritti.getKey();
             int numeroIscritti = visitaConIscritti.getValue();
-            session.iscrizione((Fruitore)fruitore, visitaSelezionata, numeroIscritti,
-                                    getTipoVisitaAssociato(visitaSelezionata.getTitolo()));
+            session.iscrizione(
+                (Fruitore) fruitore,
+                visitaSelezionata,
+                numeroIscritti,
+                getTipoVisitaAssociato(visitaSelezionata.getTitolo())
+            );
 
-                                
             salva();
         }
     }
@@ -482,7 +510,7 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Fruitore;
      * @ ensures visitaDaCuiDisiscriversi != null ==> session.disiscrizione(fruitore, visitaDaCuiDisiscriversi) is called;
      * @ ensures visitaDaCuiDisiscriversi != null ==> salva() is called;
-     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==> 
+     * @ ensures session.getUtenteAttivo() instanceof Fruitore ==>
      *           (visitaDaCuiDisiscriversi == null || visitaDaCuiDisiscriversi != null && !fruitore.getIscrizioni().containsKey(visitaDaCuiDisiscriversi));
      */
     public void annullaIscrizione() {
@@ -493,10 +521,9 @@ public class Controller {
         visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
         if (visitaDaCuiDisiscriversi != null) {
-            session.disiscrizione((Fruitore)fruitore, visitaDaCuiDisiscriversi);
+            session.disiscrizione((Fruitore) fruitore, visitaDaCuiDisiscriversi);
             salva();
         }
-        
     }
 
     /**
@@ -510,8 +537,10 @@ public class Controller {
             iscrizioni.clear();
 
             for (Fruitore fruitore : session.getFruitori()) {
-                if (fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita)) {
-                    iscrizioni.add(fruitore.getIscrizioni().get(visita));        
+                if (
+                    fruitore.getIscrizioni() != null && fruitore.getIscrizioni().containsKey(visita)
+                ) {
+                    iscrizioni.add(fruitore.getIscrizioni().get(visita));
                 }
             }
             visiteConIscrizioni.put(visita, iscrizioni);
@@ -527,13 +556,18 @@ public class Controller {
         Set<Visita> visiteConfermate = new HashSet<>();
         for (Visita visita : getAllVisite()) {
             if (visita.getVolontarioAssociato() != null) {
-                if (visita.getStato() == StatoVisita.CONFERMATA && visita.getVolontarioAssociato().equals(session.getUtenteAttivo())) {
+                if (
+                    visita.getStato() == StatoVisita.CONFERMATA &&
+                    visita.getVolontarioAssociato().equals(session.getUtenteAttivo())
+                ) {
                     visiteConfermate.add(visita);
                 }
             }
         }
-        appview.mostraVisiteConfermateConIscrizioni(getIscrizioniPerQuesteVisite(visiteConfermate), this);
-        
+        appview.mostraVisiteConfermateConIscrizioni(
+            getIscrizioniPerQuesteVisite(visiteConfermate),
+            this
+        );
     }
 
     /**
@@ -547,7 +581,7 @@ public class Controller {
         Map<Visita, Iscrizione> iscrizioni = fruitore.getIscrizioni();
         Map<StatoVisita, Map<Visita, Iscrizione>> visiteConIscrizioniPerStato = new TreeMap<>();
 
-        if (iscrizioni != null && !iscrizioni.isEmpty()) {                
+        if (iscrizioni != null && !iscrizioni.isEmpty()) {
             for (Map.Entry<Visita, Iscrizione> entry : iscrizioni.entrySet()) {
                 Visita visita = entry.getKey();
                 Iscrizione iscrizione = entry.getValue();
@@ -571,14 +605,11 @@ public class Controller {
     public TipoVisita getTipoVisitaAssociato(String titolo) {
         if (session.getVisite() != null && !session.getVisite().isEmpty()) {
             for (TipoVisita tipoVisita : session.getVisite()) {
-                if(tipoVisita.getTitolo().equals(titolo)) {
+                if (tipoVisita.getTitolo().equals(titolo)) {
                     return tipoVisita;
                 }
-
             }
         }
         return null;
     }
-
-
 }

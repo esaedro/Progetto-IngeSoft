@@ -13,6 +13,9 @@ import application.Visita;
 
 public class BookingServiceImpl implements IBookingService {
 
+    /**
+     * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
+     */
 	@Override
 	public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
 	    if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
@@ -23,6 +26,9 @@ public class BookingServiceImpl implements IBookingService {
         return false;
 	}
 
+	/**
+     * @ requires fruitore != null && visita != null;
+     */
 	@Override
 	public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
 	    if (fruitore.getIscrizioni().containsKey(visita)) {
@@ -32,6 +38,18 @@ public class BookingServiceImpl implements IBookingService {
         return false;
 	}
 
+	/**
+     * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
+     * @ ensures fruitore.getIscrizioni().containsKey(visita) <==> \old(puoIscriversi(fruitore, visita, numeroIscritti));
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) ==> 
+     *           visita.getNumeroIscritti() == \old(visita.getNumeroIscritti()) + numeroIscritti;
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) ==> 
+     *           fruitore.getIscrizioni().get(visita) != null && 
+     *           fruitore.getIscrizioni().get(visita).getNumeroDiIscritti() == numeroIscritti;
+     * @ ensures \old(puoIscriversi(fruitore, visita, numeroIscritti)) && 
+     *           visita.getNumeroIscritti() == (\exists TipoVisita t; visite.contains(t) && t.getVisiteAssociate().contains(visita); t.getMaxPartecipante()) ==> 
+     *           visita.getStato() == StatoVisita.COMPLETA;
+     */
 	@Override
 	public void iscrizione(Fruitore fruitore, Set<Fruitore> tuttiIFruitori, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
 	    if (puoIscriversi(fruitore, visita, numeroIscritti, tipoVisita)) {
@@ -65,6 +83,13 @@ public class BookingServiceImpl implements IBookingService {
         }
 	}
 
+	/**
+     * @ requires fruitore != null && visita != null;
+     * @ ensures fruitore.getIscrizioni().containsKey(visita) == false <==> \old(puoDisiscriversi(fruitore, visita));
+     * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> 
+     *           visita.getNumeroIscritti() == \old(visita.getNumeroIscritti()) - \old(fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
+     * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> visita.getStato() == StatoVisita.PROPOSTA;
+     */
 	@Override
 	public void disiscrizione(Fruitore fruitore, Visita visita) {
 	    if (puoDisiscriversi(fruitore, visita)) {

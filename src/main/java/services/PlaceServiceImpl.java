@@ -23,16 +23,25 @@ public class PlaceServiceImpl implements IPlaceService {
         luoghi = persistenceService.caricaDati(Luogo.class);
     }
 
+    /**
+     * @ requires luogo != null;
+     */
     @Override
     public void aggiungiLuogo(Luogo luogo) {
         luoghi.add(luogo);
     }
 
+    /**
+     * @ requires luoghi != null;
+     */
     @Override
-    public void setLuoghi(Set<Luogo> luoghiDaAggiungere) {
-        luoghi = luoghiDaAggiungere;
+    public void setLuoghi(Set<Luogo> luoghi) {
+        this.luoghi = luoghi;
     }
 
+    /**
+     * @ requires luoghiDaRimuovere != null;
+     */
     @Override
     public void rimuoviLuoghi(Set<Luogo> luoghiDaRimuovere) {
         luoghi.removeAll(luoghiDaRimuovere);
@@ -43,6 +52,9 @@ public class PlaceServiceImpl implements IPlaceService {
         luoghi.removeIf(luogo -> !luogo.haVisiteAssociate());
     }
 
+    /**
+     * @ requires luoghiDaAggiungere != null;
+     */
     @Override
     public void aggiungiLuoghi(Set<Luogo> luoghiDaAggiungere) {
         luoghi.addAll(luoghiDaAggiungere);

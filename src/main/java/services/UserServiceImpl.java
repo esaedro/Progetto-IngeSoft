@@ -20,6 +20,9 @@ public class UserServiceImpl implements IUserService {
         this.persistenceService = factory.createPersistenceService();
     }
 
+    /**
+     * @ requires nomeUtente != null && !nomeUtente.isEmpty() && password != null && !password.isEmpty();
+     */
     @Override
     public Utente login(String nomeUtente, String password) {
         for (Utente user : getUtenti()) {
@@ -31,6 +34,9 @@ public class UserServiceImpl implements IUserService {
         return null;
     }
 
+    /**
+     * @ requires utenti != null;
+     */
     @Override
     public void setUtenti(Set<Utente> utenti) {
         this.utenti = utenti;
@@ -46,6 +52,9 @@ public class UserServiceImpl implements IUserService {
         return utenteAttivo;
     }
 
+    /**
+     * @ requires utente != null;
+     */
     @Override
     public void setUtenteAttivo(Utente utente) {
         utenteAttivo = utente;
@@ -85,16 +94,27 @@ public class UserServiceImpl implements IUserService {
         persistenceService.salvaDati(utenti);
     }
 
+    /**
+     * @ requires nuoviVolontari != null;
+     */
     @Override
-    public void aggiungiVolontari(Set<Volontario> volontari) {
-        utenti.addAll(volontari);
+    public void aggiungiVolontari(Set<Volontario> nuoviVolontari) {
+        utenti.addAll(nuoviVolontari);
     }
 
+    /**
+     * @ requires fruitore != null;
+     */
     @Override
     public void aggiungiFruitore(Fruitore fruitore) {
         utenti.add(fruitore);
     }
 
+    /**
+     * @ requires volontariDaRimuovere != null;
+     * @ ensures utenti != null && utenti.stream().allMatch(utente -> utente instanceof Volontario ==>
+     *           utente instanceof Volontario && ((Volontario) utente).getDisponibilita().isEmpty()));
+     */
     @Override
     public void rimuoviVolontari(Set<Volontario> volontariDaRimuovere, IVisitService visitService) {
         for (Volontario volontario : volontariDaRimuovere) {
@@ -106,6 +126,13 @@ public class UserServiceImpl implements IUserService {
         utenti.removeAll(volontariDaRimuovere);
     }
 
+    /**
+     * @ requires utente != null && newPassword != null && !newPassword.isEmpty();
+     * @ ensures utenti.stream().anyMatch(u -> u.getNomeUtente().equals(utente.getNomeUtente())) ==>
+     *           utenti.stream().filter(u -> u.getNomeUtente().equals(utente.getNomeUtente()))
+     *                  .allMatch(u -> u.getPassword().equals(newPassword));
+     * @ ensures \old(salvaUtenti());
+     */
     @Override
     public void cambiaPassword(Utente utente, String newPassword) {
         for (Utente user : utenti) {
