@@ -98,20 +98,15 @@ public class Controller {
      */
     private void inizializzazione() {
         appview.benvenutoMsg(session.getUtenteAttivo());
-
+        
         if (session.getUtenteAttivo().getPassword().startsWith("config")) {
-            session.cambiaPassword(
-                session.getUtenteAttivo(),
-                appview.menuCambioPassword(session.getUtenteAttivo())
-            );
+            session.cambiaPassword(appview.menuCambioPassword(session.getUtenteAttivo()));
         }
 
         if (session.getUtenteAttivo() instanceof Configuratore) {
             if (session.getLuoghi().isEmpty()) creaLuoghi();
-            istanziaParametroTerritoriale();
-            if (
-                TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0
-            ) dichiaraMassimoNumeroFruitori();
+            if (Luogo.getParametroTerritoriale() == null) istanziaParametroTerritoriale();
+            if (TipoVisita.getNumeroMassimoIscrittoPerFruitore() == 0) dichiaraMassimoNumeroFruitori();
             session.salvaParametriGlobali();
         }
     }
@@ -124,24 +119,24 @@ public class Controller {
      */
     public void creaLuoghi() {
         Set<Luogo> luoghi = new HashSet<>();
-        Set<TipoVisita> visite;
+        Set<TipoVisita> tipiVisita;
 
         do {
             Luogo luogoDaAggiungere = appview.menuInserimentoLuogo(session.getLuoghi());
-            visite = appview.menuInserimentoTipiVisita(
+            tipiVisita = appview.menuInserimentoTipiVisita(
                 session.getUtenteAttivo(),
                 session.getUtenti(),
                 session.getVolontari(),
                 this
             );
 
-            if (visite == null) return;
+            if (tipiVisita == null) return;
 
-            for (TipoVisita tipoVisita : visite) {
+            for (TipoVisita tipoVisita : tipiVisita) {
                 luogoDaAggiungere.addVisita(tipoVisita.getTitolo());
             }
             luoghi.add(luogoDaAggiungere);
-            session.addTipoVisite(visite);
+            session.addTipiVisita(tipiVisita);
         } while (appview.confermaLuoghi());
 
         session.addLuoghi(luoghi);
@@ -152,24 +147,20 @@ public class Controller {
      * @ ensures Luogo.getParametroTerritoriale() == null ==> ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(_) is called;
      */
     private void istanziaParametroTerritoriale() {
-        if (Luogo.getParametroTerritoriale() == null) {
-            session
-                .getUtenteAttivo()
+            session.getUtenteAttivo()
                 .inizializzaParametroTerritoriale(appview.menuInserimentoParametroTerritoriale());
 
             /*  ((Configuratore) session.getUtenteAttivo()).inizializzaParametroTerritoriale(
                     appview.menuInserimentoParametroTerritoriale()
                 ); */
             salva();
-        }
     }
 
     /**
      * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void dichiaraMassimoNumeroFruitori() {
-        session
-            .getUtenteAttivo()
+        session.getUtenteAttivo()
             .setNumeroMassimoIscritti(appview.menuInserimentoMassimoIscritti());
         salva();
     }
@@ -178,9 +169,7 @@ public class Controller {
         TipoMenu tipoMenu = session.getUtenteAttivo().getTipoMenu();
         switch (tipoMenu) {
             case CONFIGURATORE -> appview.setMenuConfiguratore(this);
-            case CONFIGURATORE_RACCOLTA -> appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(
-                this
-            );
+            case CONFIGURATORE_RACCOLTA -> appview.setMenuConfiguratoreGestioneRaccoltaDisponibilitaStart(this);
             case VOLONTARIO -> appview.setMenuVolontario(this);
             case FRUITORE -> appview.setMenuFruitore(this);
             default -> {} //nessun menu
@@ -230,60 +219,18 @@ public class Controller {
     }
 
     public void mostraTipiVisite() {
-        appview.mostraTipiVisite(session.getVisite(), session.getStoricoVisite());
+        appview.mostraTipiVisite(session.getTipiVisita(), session.getStoricoVisite());
     }
 
     //Metodo rifatto per togliere instanceof, spostare filtraggio come metodi utente, rispetta Liskov
     public void mostraVisitePerStato() {
         Utente utente = session.getUtenteAttivo();
-        Map<StatoVisita, List<Visita>> visitePerStato = separaVisitePerStato(getAllVisite());
-        Map<StatoVisita, List<Visita>> visitePerStatoFiltrate = utente.filtraVisitePerStato(
-            visitePerStato
-        );
+        Map<StatoVisita, List<Visita>> visitePerStato = session.separaVisitePerStato(session.getAllVisite());
 
-        Map<String, Set<Visita>> storicoDaMostrare = utente.getStoricoVisiteDaVisualizzare(
-            session.getStoricoVisite()
-        );
+        Map<StatoVisita, List<Visita>> visitePerStatoFiltrate = utente.filtraVisitePerStato(visitePerStato);
+        Map<String, Set<Visita>> storicoDaMostrare = utente.getStoricoVisiteDaVisualizzare(session.getStoricoVisite());
 
         appview.mostraVisiteStato(visitePerStatoFiltrate, storicoDaMostrare, this);
-    }
-
-    // TODO: sposta in sessione
-    private Set<Visita> getAllVisite() {
-        Set<Visita> visite = new HashSet<>();
-        if (session.getVisite() != null) {
-            for (TipoVisita tipoVisita : session.getVisite()) {
-                if (tipoVisita.getVisiteAssociate() != null) {
-                    visite.addAll(tipoVisita.getVisiteAssociate());
-                }
-            }
-        }
-
-        for (Map.Entry<String, Set<Visita>> entry : session.getStoricoVisite().entrySet()) {
-            if (entry.getValue() != null && !entry.getValue().isEmpty()) {
-                visite.addAll(entry.getValue());
-            }
-        }
-        return visite;
-    }
-
-    // TODO: sposta in sessione
-    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
-        Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
-
-        for (Visita visita : visite) {
-            visitePerStato.computeIfAbsent(visita.getStato(), k -> new ArrayList<>()).add(visita);
-        }
-        for (StatoVisita stato : StatoVisita.values()) {
-            if (!visitePerStato.containsKey(stato)) {
-                visitePerStato.put(stato, new ArrayList<>());
-            }
-        }
-
-        visitePerStato.remove(StatoVisita.NON_ISTANZIATA);
-        visitePerStato.remove(StatoVisita.EFFETTUATA); //verranno visualizzate dall'archivio
-
-        return visitePerStato;
     }
 
     /**
@@ -291,7 +238,7 @@ public class Controller {
      */
     public void mostraTipiVisiteAssociate() {
         appview.mostraTipiVisiteAssociateAlVolontario(
-            session.getUtenteAttivo().getVisiteAssociate(session.getVisite())
+            session.getUtenteAttivo().getTipiVisiteAssociate(session.getTipiVisita())
         );
     }
 
@@ -382,9 +329,9 @@ public class Controller {
      * @ requires session.getUtenteAttivo() instanceof Configuratore;
      */
     public void aggiungiVolontario() {
-        TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getVisite());
+        TipoVisita tipoVisitaSelezionato = appview.selezioneTipoVisita(session.getTipiVisita());
 
-        if (!session.getVisite().isEmpty()) {
+        if (!session.getTipiVisita().isEmpty()) {
             Set<Volontario> nuoviVolontari = appview.menuInserimentoVolontari(session.getUtenti());
 
             tipoVisitaSelezionato.aggiungiVolontariIdonei(nuoviVolontari);
@@ -419,8 +366,8 @@ public class Controller {
                 this
             );
             if (nuoveVisite != null) {
-                luogoSelezionato.aggiungiVisite(nuoveVisite);
-                session.addTipoVisite(nuoveVisite);
+                luogoSelezionato.aggiungiIdVisite(nuoveVisite);
+                session.addTipiVisita(nuoveVisite);
             }
         }
     }
@@ -438,7 +385,7 @@ public class Controller {
      */
     public void rimuoviTipoVisita() {
         //reference ai luoghi gestite nel metodo di session
-        session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getVisite()));
+        session.removeTipoVisita(appview.menuRimozioneTipoVisita(session.getTipiVisita()));
         gestisciEffettiCollaterali();
     }
 
@@ -477,7 +424,7 @@ public class Controller {
 
         Set<Visita> visiteProposte = new HashSet<>();
 
-        for (Visita visita : getAllVisite()) {
+        for (Visita visita : session.getAllVisite()) {
             if (visita.getStato() == StatoVisita.PROPOSTA) {
                 visiteProposte.add(visita);
             }
@@ -496,7 +443,7 @@ public class Controller {
             Visita visitaSelezionata = visitaConIscritti.getKey();
             int numeroIscritti = visitaConIscritti.getValue();
             session.iscrizione(
-                (Fruitore) fruitore,
+                fruitore,
                 visitaSelezionata,
                 numeroIscritti,
                 getTipoVisitaAssociato(visitaSelezionata.getTitolo())
@@ -521,7 +468,7 @@ public class Controller {
         visitaDaCuiDisiscriversi = appview.menuDisiscrizione(fruitore.getIscrizioni().keySet());
 
         if (visitaDaCuiDisiscriversi != null) {
-            session.disiscrizione((Fruitore) fruitore, visitaDaCuiDisiscriversi);
+            session.disiscrizione(fruitore, visitaDaCuiDisiscriversi);
             salva();
         }
     }
@@ -554,7 +501,7 @@ public class Controller {
      */
     public void mostraVisiteConfermateConIscrizioni() {
         Set<Visita> visiteConfermate = new HashSet<>();
-        for (Visita visita : getAllVisite()) {
+        for (Visita visita : session.getAllVisite()) {
             if (visita.getVolontarioAssociato() != null) {
                 if (
                     visita.getStato() == StatoVisita.CONFERMATA &&
@@ -603,8 +550,9 @@ public class Controller {
      * @ requires titolo != null;
      */
     public TipoVisita getTipoVisitaAssociato(String titolo) {
-        if (session.getVisite() != null && !session.getVisite().isEmpty()) {
-            for (TipoVisita tipoVisita : session.getVisite()) {
+        Set<TipoVisita> tipiVisita = session.getTipiVisita();
+        if (tipiVisita != null && !tipiVisita.isEmpty()) {
+            for (TipoVisita tipoVisita : tipiVisita) {
                 if (tipoVisita.getTitolo().equals(titolo)) {
                     return tipoVisita;
                 }

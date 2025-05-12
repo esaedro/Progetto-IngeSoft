@@ -3,13 +3,7 @@ package services;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
-import application.Configuratore;
-import application.Fruitore;
-import application.Luogo;
-import application.TipoVisita;
-import application.Utente;
-import application.Volontario;
+import application.*;
 import utility.FileManager;
 
 public class PersistenceServiceImpl implements IPersistenceService {
@@ -53,7 +47,7 @@ public class PersistenceServiceImpl implements IPersistenceService {
     }
 
     @Override
-    public <K, V> HashMap<K, Set<V>> caricaDatiArchioStorico(
+    public <K, V> HashMap<K, Set<V>> caricaDatiArchivioStorico(
         Class<K> tipoChiave,
         Class<V> tipoValore
     ) {

@@ -39,8 +39,8 @@ public class SessionController {
         persistenceService.salvaParametriGlobali();
     }
 
-    public void cambiaPassword(Utente utente, String newPassword) {
-        userService.cambiaPassword(utente, newPassword);
+    public void cambiaPassword(String newPassword) {
+        userService.cambiaPassword(newPassword);
     }
 
     public void carica() {
@@ -98,28 +98,37 @@ public class SessionController {
         placeService.rimuoviLuoghi(luoghiDaRimuovere);
     }
 
-    public Set<TipoVisita> getVisite() {
+    //TODO:CAMBIARE NOME IN getTipiVisita!
+    public Set<TipoVisita> getTipiVisita() {
         return visitService.getTipiVisita();
     }
 
-    public void setVisite(Set<TipoVisita> visite) {
-        visitService.setTipiVisita(visite);
+    public void setTipiVisite(Set<TipoVisita> tipiVisita) {
+        visitService.setTipiVisita(tipiVisita);
     }
 
-    public void addVisita(TipoVisita visita) {
-        visitService.aggiungiTipoVisita(visita);
+    public void addTipoVisita(TipoVisita tipoVisita) {
+        visitService.aggiungiTipoVisita(tipoVisita);
     }
 
-    public void addTipoVisite(Set<TipoVisita> tipiVisitaDaAggiungere) {
+    public void addTipiVisita(Set<TipoVisita> tipiVisitaDaAggiungere) {
         visitService.aggiungiTipiVisita(tipiVisitaDaAggiungere);
     }
 
     public HashMap<String, Set<Visita>> getStoricoVisite() {
-        return persistenceService.caricaDatiArchioStorico(String.class, Visita.class);
+        return persistenceService.caricaDatiArchivioStorico(String.class, Visita.class);
     }
 
     public void removeTipoVisita(Set<TipoVisita> visiteDaRimuovere) {
         visitService.rimuoviTipiVisita(visiteDaRimuovere, placeService, userService);
+    }
+
+    public Set<Visita> getAllVisite() {
+        return visitService.getAllVisite();
+    }
+
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
+        return visitService.separaVisitePerStato(visite);
     }
 
     public Set<Volontario> getVolontari() {
@@ -139,7 +148,7 @@ public class SessionController {
     }
 
     public void removeVolontario(Set<Volontario> volontariDaRimuovere) {
-        userService.rimuoviVolontari(volontariDaRimuovere, visitService);
+        userService.rimuoviVolontari(volontariDaRimuovere, visitService.getTipiVisita());
     }
 
     public void cleanDisponibilitaDeiVolontari() {
@@ -228,7 +237,7 @@ public class SessionController {
     }
 
     public void iscrizione(
-        Fruitore fruitore,
+        Utente fruitore,
         Visita visita,
         int numeroIscritti,
         TipoVisita tipoVisita
@@ -236,7 +245,7 @@ public class SessionController {
         bookingService.iscrizione(fruitore, getFruitori(), visita, numeroIscritti, tipoVisita);
     }
 
-    public void disiscrizione(Fruitore fruitore, Visita visita) {
+    public void disiscrizione(Utente fruitore, Visita visita) {
         bookingService.disiscrizione(fruitore, visita);
     }
 }

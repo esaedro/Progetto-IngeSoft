@@ -1,24 +1,7 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeSet;
-
-import application.Fruitore;
-import application.Luogo;
-import application.StatoVisita;
-import application.TipoVisita;
-import application.Utente;
-import application.Visita;
-import application.Volontario;
+import java.util.*;
+import application.*;
 
 public class VisitServiceImpl implements IVisitService {
 
@@ -77,12 +60,10 @@ public class VisitServiceImpl implements IVisitService {
             for (Luogo luogo : placeService.getLuoghi()) {
                 luogo.rimuoviVisita(tipoVisita.getTitolo());
             }
-            for (Utente fruitore : userService.getUtenti()) {
-                if (fruitore instanceof Fruitore) {
+            for (Utente fruitore : userService.getFruitori()) {
                     tipoVisita
                         .getVisiteAssociate()
-                        .forEach((visita -> ((Fruitore) fruitore).rimuoviIscrizione(visita)));
-                }
+                        .forEach(visita -> fruitore.rimuoviIscrizione(visita));
             }
         }
 
@@ -90,10 +71,43 @@ public class VisitServiceImpl implements IVisitService {
     }
 
     @Override
-    public HashMap<String, Set<Visita>> getStoricoVisite() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getStoricoVisite'");
+    public Set<Visita> getAllVisite() {
+        Set<Visita> visite = new HashSet<>();
+        if (tipiVisita != null) {
+            for (TipoVisita tipoVisita : tipiVisita) {
+                if (tipoVisita.getVisiteAssociate() != null) {
+                    visite.addAll(tipoVisita.getVisiteAssociate());
+                }
+            }
+        }
+
+        for (Map.Entry<String, Set<Visita>> entry : 
+                persistenceService.caricaDatiArchivioStorico(String.class, Visita.class).entrySet()) {
+            if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+                visite.addAll(entry.getValue());
+            }
+        }
+        return visite;
     }
+
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite) {
+        Map<StatoVisita, List<Visita>> visitePerStato = new TreeMap<>();
+
+        for (Visita visita : visite) {
+            visitePerStato.computeIfAbsent(visita.getStato(), k -> new ArrayList<>()).add(visita);
+        }
+        for (StatoVisita stato : StatoVisita.values()) {
+            if (!visitePerStato.containsKey(stato)) {
+                visitePerStato.put(stato, new ArrayList<>());
+            }
+        }
+
+        visitePerStato.remove(StatoVisita.NON_ISTANZIATA);
+        visitePerStato.remove(StatoVisita.EFFETTUATA); //verranno visualizzate dall'archivio
+
+        return visitePerStato;
+    }
+
 
     @Override
     public void salvaStoricoVisite() {
@@ -116,7 +130,7 @@ public class VisitServiceImpl implements IVisitService {
         }
 
         if (!visiteDaSalvare.isEmpty()) {
-            HashMap<String, Set<Visita>> storicoVisite = persistenceService.caricaDatiArchioStorico(
+            HashMap<String, Set<Visita>> storicoVisite = persistenceService.caricaDatiArchivioStorico(
                 String.class,
                 Visita.class
             );
@@ -230,7 +244,7 @@ public class VisitServiceImpl implements IVisitService {
             // Controllo se il volontario è già impegnato in altre visite per la stessa data
             boolean impegnato = false;
             if (volontarioEstratto != null) {
-                for (TipoVisita tipoV : volontarioEstratto.getVisiteAssociate(tipiVisita)) {
+                for (TipoVisita tipoV : volontarioEstratto.getTipiVisiteAssociate(tipiVisita)) {
                     for (Visita visita : tipoV.getVisiteAssociate()) {
                         if (
                             visita.getDataVisita().get(Calendar.DAY_OF_MONTH) ==

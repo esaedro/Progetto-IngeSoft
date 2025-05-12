@@ -4,7 +4,6 @@ import application.*;
 import java.time.*;
 import java.util.*;
 import org.junit.jupiter.api.*;
-import utility.FileManager;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestMain {
@@ -92,7 +91,7 @@ public class TestMain {
 
         Utente finale = session.login("V_Jhonny", "volontario");
 
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
 
         Set<Volontario> volontari = new HashSet<>();
         volontari.add((Volontario) finale);
@@ -127,15 +126,15 @@ public class TestMain {
             new HashSet<>()
         );
 
-        session.addVisita(associata);
-        session.addVisita(nonAssociata);
+        session.addTipoVisita(associata);
+        session.addTipoVisita(nonAssociata);
 
         session.salva();
-        session.getVisite().clear();
+        session.getTipiVisita().clear();
         session.carica();
 
         Set<TipoVisita> visiteAssociate =
-            ((Volontario) finale).getVisiteAssociate(session.getVisite());
+            ((Volontario) finale).getTipiVisiteAssociate(session.getTipiVisita());
 
         visiteAssociate.forEach(visita ->
             assertTrue(
@@ -152,7 +151,7 @@ public class TestMain {
     @Test
     void backupStorico() {
         SessionController session = new SessionController();
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
         session.visitService.salvaStoricoVisite();
         // session.getFilemanager().salva(FileManager.fileStorico, null);
 
@@ -186,7 +185,7 @@ public class TestMain {
 
         visita1.addVisita(visita1Proposta);
         visita1.addVisita(visita1Effettuata);
-        session.addVisita(visita1);
+        session.addTipoVisita(visita1);
 
         TipoVisita visita2 = new TipoVisita(
             "Visita2",
@@ -218,7 +217,7 @@ public class TestMain {
 
         visita2.addVisita(visita2Proposta);
         visita2.addVisita(visita2Effettuata);
-        session.addVisita(visita2);
+        session.addTipoVisita(visita2);
 
         session.salva();
         session.carica();
@@ -322,7 +321,7 @@ public class TestMain {
     void rimuoviTipoVisita() {
         SessionController session = new SessionController();
 
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
         session.setLuoghi(new HashSet<>());
         session.setUtenti(new HashSet<>());
 
@@ -355,7 +354,7 @@ public class TestMain {
             true,
             volontariPerVisita
         );
-        session.addVisita(tipoVisitaDaDistruggere);
+        session.addTipoVisita(tipoVisitaDaDistruggere);
 
         Set<TipoVisita> tipoVisiteDaDistruggere = new HashSet<>();
         tipoVisiteDaDistruggere.add(tipoVisitaDaDistruggere);
@@ -378,7 +377,7 @@ public class TestMain {
     void rimuoviLuogo() {
         SessionController session = new SessionController();
 
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
         session.setLuoghi(new HashSet<>());
         session.setUtenti(new HashSet<>());
 
@@ -407,7 +406,7 @@ public class TestMain {
             true,
             volontariPerVisita
         );
-        session.addVisita(visitaDaDistruggere);
+        session.addTipoVisita(visitaDaDistruggere);
 
         Luogo luogoDaNonDistruggere = new Luogo("Luogo", "boh");
         luogoDaNonDistruggere.addVisita("Visita da non distruggere");
@@ -418,6 +417,9 @@ public class TestMain {
 
         Set<Volontario> volontariPerVisitaNonDaDistruggere = new HashSet<>();
         volontariPerVisitaNonDaDistruggere.add(volontarioNonDaDistruggere);
+
+        //Aggiunto per controllare se CheckCondizioniDiVolontario non tocca altri utenti
+        volontari.add(new Configuratore("Con", "Configuadsadsa")); 
 
         session.setUtenti(volontari);
 
@@ -435,7 +437,7 @@ public class TestMain {
             true,
             volontariPerVisitaNonDaDistruggere
         );
-        session.addVisita(visitaNonDaDistruggere);
+        session.addTipoVisita(visitaNonDaDistruggere);
 
         Set<Luogo> luoghiDaRimuovere = new HashSet<>();
         luoghiDaRimuovere.add(luogoDaDistruggere);
@@ -452,11 +454,11 @@ public class TestMain {
             "Problema eliminazione volontari dopo luogo"
         );
         assertTrue(
-            session.getVisite().contains(visitaNonDaDistruggere),
+            session.getTipiVisita().contains(visitaNonDaDistruggere),
             "Problema eliminazione visita dopo luogo"
         );
         assertFalse(
-            session.getVisite().contains(visitaDaDistruggere),
+            session.getTipiVisita().contains(visitaDaDistruggere),
             "Problema eliminazione visita dopo luogo"
         );
     }
@@ -465,7 +467,7 @@ public class TestMain {
     void rimuoviVolontario() {
         SessionController session = new SessionController();
 
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
         session.setLuoghi(new HashSet<>());
         session.setUtenti(new HashSet<>());
 
@@ -494,7 +496,7 @@ public class TestMain {
             true,
             volontariPerVisita
         );
-        session.addVisita(visitaDaDistruggere);
+        session.addTipoVisita(visitaDaDistruggere);
 
         Luogo luogoDaNonDistruggere = new Luogo("Luogo", "boh");
         luogoDaNonDistruggere.addVisita("Visita da non distruggere");
@@ -522,7 +524,7 @@ public class TestMain {
             true,
             volontariPerVisitaNonDaDistruggere
         );
-        session.addVisita(visitaNonDaDistruggere);
+        session.addTipoVisita(visitaNonDaDistruggere);
 
         Set<Volontario> volontariDaDistruggere = new HashSet<>();
         volontariDaDistruggere.add(volontarioDaDistruggere);
@@ -539,11 +541,11 @@ public class TestMain {
             "Problema eliminazione luogo dopo volontario"
         );
         assertTrue(
-            session.getVisite().contains(visitaNonDaDistruggere),
+            session.getTipiVisita().contains(visitaNonDaDistruggere),
             "Problema eliminazione visita dopo volontario"
         );
         assertFalse(
-            session.getVisite().contains(visitaDaDistruggere),
+            session.getTipiVisita().contains(visitaDaDistruggere),
             "Problema eliminazione visita dopo volontario"
         );
     }
@@ -574,7 +576,7 @@ public class TestMain {
     @Test
     void scritturaVisitaDentroTipoVisita() {
         SessionController session = new SessionController();
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
 
         Visita visita = new Visita("Titolotest2", Calendar.getInstance(), StatoVisita.PROPOSTA, 5);
         visita.setVolontarioAssociato(new Volontario("volontario", "volontario"));
@@ -595,15 +597,15 @@ public class TestMain {
         );
         tipoVisita.addVisita(visita);
 
-        session.addVisita(tipoVisita);
+        session.addTipoVisita(tipoVisita);
 
         session.salva();
-        session.setVisite(new HashSet<>());
+        session.setTipiVisite(new HashSet<>());
 
         session.carica();
 
         session
-            .getVisite()
+            .getTipiVisita()
             .forEach(tV ->
                 tV.getVisiteAssociate().forEach((v -> assertNotNull(v.getVolontarioAssociato())))
             );

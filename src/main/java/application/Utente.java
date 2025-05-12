@@ -52,7 +52,7 @@ public class Utente implements Serializable {
         throw new UnsupportedOperationException("Metodo getDisponibilita() non implementato per la classe Utente");
     }
 
-    public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
+    public Set<TipoVisita> getTipiVisiteAssociate(Set<TipoVisita> visite) {
         throw new UnsupportedOperationException("Metodo getVisiteAssociate() non implementato per la classe Utente");
     }
 

@@ -78,7 +78,7 @@ public class Luogo implements Serializable {
     /**
      * @ ensures visiteIds.contains(visiteDaAggiungere);
      */
-    public void aggiungiVisite(Set<TipoVisita> visiteDaAggiungere) {
+    public void aggiungiIdVisite(Set<TipoVisita> visiteDaAggiungere) {
         for (TipoVisita visita : visiteDaAggiungere) {
             String titolo = visita.getTitolo();
             visiteIds.add(titolo);

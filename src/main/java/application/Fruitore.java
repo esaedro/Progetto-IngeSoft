@@ -27,7 +27,7 @@ public class Fruitore extends Utente {
      * @ requires visita != null && iscrizione != null;
      */
     @Override
-    public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) {  //TODO: togliere instanceof in session
+    public void aggiungiIscrizione(Visita visita, Iscrizione iscrizione) { 
         iscrizioni.put(visita, iscrizione);
     }
 
@@ -35,7 +35,7 @@ public class Fruitore extends Utente {
      * @ requires visita != null;
      */
     @Override
-    public void rimuoviIscrizione(Visita visita) {  //TODO: togliere instanceof in session
+    public void rimuoviIscrizione(Visita visita) {  
         iscrizioni.remove(visita);
     }
 

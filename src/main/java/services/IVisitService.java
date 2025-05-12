@@ -1,15 +1,7 @@
 package services;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import application.Luogo;
-import application.TipoVisita;
-import application.Visita;
-import application.Volontario;
+import java.util.*;
+import application.*;
 
 public interface IVisitService {
     Set<TipoVisita> getTipiVisita();
@@ -23,7 +15,10 @@ public interface IVisitService {
         IPlaceService placeService,
         IUserService userService
     );
-    HashMap<String, Set<Visita>> getStoricoVisite();
+   
+    public Set<Visita> getAllVisite();
+    public Map<StatoVisita, List<Visita>> separaVisitePerStato(Set<Visita> visite);
+    
     void salvaStoricoVisite();
     Set<TipoVisita> getTipiVisitaProssimoMese(Calendar inizioMese, Calendar fineMese);
     void salvaDatePrecluseFutureInAttuali();

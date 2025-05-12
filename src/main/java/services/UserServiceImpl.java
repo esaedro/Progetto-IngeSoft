@@ -1,13 +1,8 @@
 package services;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
-import application.Fruitore;
-import application.TipoVisita;
-import application.Utente;
-import application.Volontario;
+import application.*;
 
 public class UserServiceImpl implements IUserService {
 
@@ -116,15 +111,43 @@ public class UserServiceImpl implements IUserService {
      *           utente instanceof Volontario && ((Volontario) utente).getDisponibilita().isEmpty()));
      */
     @Override
-    public void rimuoviVolontari(Set<Volontario> volontariDaRimuovere, IVisitService visitService) {
+    public void rimuoviVolontari(Set<Volontario> volontariDaRimuovere, Set<TipoVisita> tipiVisita) {
         for (Volontario volontario : volontariDaRimuovere) {
-            for (TipoVisita tipoVisita : visitService.getTipiVisita()) {
+            for (TipoVisita tipoVisita : tipiVisita) {
                 tipoVisita.rimuoviVolontario(volontario);
             }
         }
 
         utenti.removeAll(volontariDaRimuovere);
     }
+
+    @Override
+    public void checkCondizioniDiVolontario(Set<TipoVisita> tipiVisita) {
+        Set<Volontario> volontariDaEliminare = new HashSet<>();
+
+        for (Volontario volontario : getVolontari()) {
+            if (!volontario.haVisiteAssociate(tipiVisita)) {
+                volontariDaEliminare.add(volontario);
+            }   
+        }
+
+        if (volontariDaEliminare.isEmpty()) return;
+        rimuoviVolontari(volontariDaEliminare, tipiVisita);
+    }
+
+        /* Iterator<Utente> volontarioIterator = utenti.iterator();
+        while (volontarioIterator.hasNext()) {
+            Utente utente = volontarioIterator.next();
+            if (utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(tipiVisita)) {
+                
+                volontarioIterator.remove();
+
+                for (TipoVisita tipoVisita : tipiVisita) {
+                    tipoVisita.rimuoviVolontario((Volontario) utente);
+                }
+            }
+        } */
+    
 
     /**
      * @ requires utente != null && newPassword != null && !newPassword.isEmpty();
@@ -134,9 +157,9 @@ public class UserServiceImpl implements IUserService {
      * @ ensures \old(salvaUtenti());
      */
     @Override
-    public void cambiaPassword(Utente utente, String newPassword) {
+    public void cambiaPassword(String newPassword) {
         for (Utente user : utenti) {
-            if (user.getNomeUtente().equals(utente.getNomeUtente())) {
+            if (user.getNomeUtente().equals(utenteAttivo.getNomeUtente())) {
                 user.setPassword(newPassword);
             }
         }
@@ -145,27 +168,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void cleanDisponibilitaVolontari() {
-        for (Utente utente : utenti) {
-            if (utente instanceof Volontario) {
-                ((Volontario) utente).clearDisponibilita();
-            }
+        for (Volontario volontario : getVolontari()) {
+            volontario.clearDisponibilita();
         }
     }
 
-    @Override
-    public void checkCondizioniDiVolontario(Set<TipoVisita> tipiVisita) {
-        Iterator<Utente> volontarioIterator = utenti.iterator();
-        while (volontarioIterator.hasNext()) {
-            Utente utente = volontarioIterator.next();
-            if (
-                utente instanceof Volontario && !((Volontario) utente).haVisiteAssociate(tipiVisita)
-            ) {
-                volontarioIterator.remove();
-
-                for (TipoVisita tipoVisita : tipiVisita) {
-                    tipoVisita.rimuoviVolontario((Volontario) utente);
-                }
-            }
-        }
-    }
 }

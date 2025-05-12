@@ -1,15 +1,7 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import application.Fruitore;
-import application.Iscrizione;
-import application.StatoVisita;
-import application.TipoVisita;
-import application.Visita;
+import java.util.*;
+import application.*;
 
 public class BookingServiceImpl implements IBookingService {
 
@@ -17,7 +9,7 @@ public class BookingServiceImpl implements IBookingService {
      * @ requires fruitore != null && visita != null && numeroIscritti != null && numeroIscritti > 0;
      */
 	@Override
-	public boolean puoIscriversi(Fruitore fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
+	public boolean puoIscriversi(Utente fruitore, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
 	    if (visita.getStato() == StatoVisita.PROPOSTA && !fruitore.getIscrizioni().containsKey(visita)) {
             if (tipoVisita != null) {
                 return (visita.getNumeroIscritti() + numeroIscritti <= tipoVisita.getMaxPartecipante());
@@ -30,7 +22,7 @@ public class BookingServiceImpl implements IBookingService {
      * @ requires fruitore != null && visita != null;
      */
 	@Override
-	public boolean puoDisiscriversi(Fruitore fruitore, Visita visita) {
+	public boolean puoDisiscriversi(Utente fruitore, Visita visita) {
 	    if (fruitore.getIscrizioni().containsKey(visita)) {
             return (visita.getStato() == StatoVisita.COMPLETA ||
                     visita.getStato() == StatoVisita.PROPOSTA);
@@ -51,7 +43,7 @@ public class BookingServiceImpl implements IBookingService {
      *           visita.getStato() == StatoVisita.COMPLETA;
      */
 	@Override
-	public void iscrizione(Fruitore fruitore, Set<Fruitore> tuttiIFruitori, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
+	public void iscrizione(Utente fruitore, Set<Fruitore> tuttiIFruitori, Visita visita, int numeroIscritti, TipoVisita tipoVisita) {
 	    if (puoIscriversi(fruitore, visita, numeroIscritti, tipoVisita)) {
             Iscrizione nuovaIscrizione;
             String codiceIscrizione;
@@ -91,7 +83,7 @@ public class BookingServiceImpl implements IBookingService {
      * @ ensures \old(puoDisiscriversi(fruitore, visita)) ==> visita.getStato() == StatoVisita.PROPOSTA;
      */
 	@Override
-	public void disiscrizione(Fruitore fruitore, Visita visita) {
+	public void disiscrizione(Utente fruitore, Visita visita) {
 	    if (puoDisiscriversi(fruitore, visita)) {
             visita.setNumeroIscritti(visita.getNumeroIscritti() - fruitore.getIscrizioni().get(visita).getNumeroDiIscritti());
             fruitore.rimuoviIscrizione(visita);

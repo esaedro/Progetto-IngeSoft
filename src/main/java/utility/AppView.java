@@ -103,17 +103,12 @@ public class AppView {
         TipoVisita tipoVisita;
         Set<TipoVisita> visite = new HashSet<>();
 
-        if (utenteAttivo instanceof Configuratore) {
-            System.out.println("\nInserire almeno un tipo di visita");
-            do {
-                tipoVisita = menuInserimentoTipoVisita(utenti, volontari, controller);
-                visite.add(tipoVisita);
-            } while (InputDati.conferma("Inserire un altro tipo di visita?"));
-        } else {
-                System.out.println("Permessi non sufficienti");
-                return null;
-            }
-
+        System.out.println("\nInserire almeno un tipo di visita");
+        do {
+            tipoVisita = menuInserimentoTipoVisita(utenti, volontari, controller);
+            visite.add(tipoVisita);
+        } while (InputDati.conferma("Inserire un altro tipo di visita?"));
+    
         return visite;
     }
 
@@ -499,9 +494,9 @@ public class AppView {
         }
     }
    
-    public void mostraTipiVisiteAssociateAlVolontario(Set<TipoVisita> visiteAssociate) {
-        if (!visiteAssociate.isEmpty()) {
-            for (TipoVisita tipoVisita : visiteAssociate) {
+    public void mostraTipiVisiteAssociateAlVolontario(Set<TipoVisita> tipiVisitaAssociati) {
+        if (!tipiVisitaAssociati.isEmpty()) {
+            for (TipoVisita tipoVisita : tipiVisitaAssociati) {
                 System.out.println("\n" + formattaTipoVisita(tipoVisita));
             }
             System.out.println();
@@ -633,10 +628,7 @@ public class AppView {
     }
 
     public String formattaVisita(Visita visita, Controller controller) {
-
-        // TODO remove getInstance
         TipoVisita tipoVisita = controller.getTipoVisitaAssociato(visita.getTitolo());
-    
         StringBuilder sb = new StringBuilder();
         
         if (visita.getStato() == StatoVisita.EFFETTUATA) return formattaVisitaArchivio(visita);

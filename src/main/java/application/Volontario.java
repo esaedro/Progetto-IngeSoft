@@ -36,19 +36,19 @@ public class Volontario extends Utente {
     }
 
     @Override
-    public Set<TipoVisita> getVisiteAssociate(Set<TipoVisita> visite) {
+    public Set<TipoVisita> getTipiVisiteAssociate(Set<TipoVisita> visite) {
         Set<TipoVisita> visiteTemp = new HashSet<>(visite);
-        visiteTemp.removeIf(luogo -> !luogo.getVolontariIdonei().contains(this));
+        visiteTemp.removeIf(tipoVisita -> !tipoVisita.getVolontariIdonei().contains(this));
         return visiteTemp;
     }
 
     @Override
-    public boolean haVisiteAssociate(Set<TipoVisita> visite) { //TODO: togliere instanceof in session
-        return !getVisiteAssociate(visite).isEmpty();
+    public boolean haVisiteAssociate(Set<TipoVisita> visite) {
+        return !getTipiVisiteAssociate(visite).isEmpty();
     }
 
     @Override
-    public void clearDisponibilita() {      //TODO: togliere instanceof in session
+    public void clearDisponibilita() {
         disponibilita.clear();
     }
 
