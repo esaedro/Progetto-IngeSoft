@@ -37,7 +37,6 @@ public class Utente implements Serializable {
         this.password = password;
     }
 
-
     //Metodi per Configuratore 
     public void inizializzaParametroTerritoriale(String parametroTerritoriale) {}
     public void setNumeroMassimoIscritti(int numeroMassimoIscritti) {}
@@ -78,8 +77,7 @@ public class Utente implements Serializable {
     }
 
     public TipoMenu getTipoMenu() {
-        throw new UnsupportedOperationException("Metodo getTipoMenu() non implementato per la classe Utente");
-        //return TipoMenu.NESSUNO;
+        return TipoMenu.NESSUNO;
     }
 
 }

@@ -19,7 +19,7 @@ public class AppView {
         String nomeUtente, password;
 
         do {
-            System.out.println("\nInserire le credenziali (inserire '0' nel campo password per uscire dal programma)");
+            System.out.println("\nInserire le credenziali (inserire '0' nel campo password per tornare al menu principale)");
             nomeUtente = InputDati.leggiStringaNonVuota("Inserire il nome utente: ", "Il nome utente non puo' essere vuoto");
             password = InputDati.leggiStringaNonVuota("Inserire la password: ", "La password non puo' essere vuota");
         } while (!(password.equals(Character.toString('0'))) && !(InputDati.conferma("Confermare le credenziali?")));
@@ -393,7 +393,7 @@ public class AppView {
         if (luoghi == null || luoghi.isEmpty()) {
             System.out.println("Non ci sono luoghi disponibili");
         } else {
-            System.out.println(BelleStringhe.incornicia("Luoghi Presenti nel territorio di " + Luogo.getParametroTerritoriale()));
+            System.out.println(BelleStringhe.incornicia("Luoghi presenti nel territorio di " + Luogo.getParametroTerritoriale()));
             for (Luogo luogo : luoghi) {
                 System.out.println(formattaLuogo(luogo) + "\n");
             }
@@ -558,8 +558,8 @@ public class AppView {
 
         if (luogo == null) return "Luogo_null";
         else {  
-            sb.append(luogo.getNome());
-            sb.append("\t\tIndirizzo: ").append(luogo.getIndirizzo()).append("\n");
+            sb.append(luogo.getNome()).append("\n");
+            sb.append("Indirizzo: ").append(luogo.getIndirizzo()).append("\n");
             sb.append("Tipi di visita svolti qui: ").append(luogo.getVisiteIds());
         }
         
@@ -646,7 +646,7 @@ public class AppView {
             return sb.toString();
         }
 
-        sb.append("Descrizione: ").append(tipoVisita.getDescrizione()).append("\t\t");
+        sb.append("Descrizione: ").append(tipoVisita.getDescrizione()).append("\n");
         sb.append("Punto di incontro: ").append(tipoVisita.getPuntoIncontro()).append("\n");
         sb.append("Data di svolgimento: ").append(formattaData(visita.getDataVisita())).append("\n");
         sb.append("Ora inizio: ").append(formattaOra(tipoVisita.getOraInizio())).append("\n");
@@ -656,7 +656,7 @@ public class AppView {
     }
 
     public String formattaVisitaArchivio(Visita visita) {
-        return "Data svolgimento " + formattaData(visita.getDataVisita());
+        return "\nData svolgimento " + formattaData(visita.getDataVisita()) + "\n";
     }
 
     private String formattaIscrizione(Iscrizione iscrizione) {

@@ -38,7 +38,7 @@ public class Configuratore extends Utente {
 
     @Override
     public TipoMenu getTipoMenu() {
-        return (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 8) 
+        return (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) != 16) 
             ? TipoMenu.CONFIGURATORE
             : TipoMenu.CONFIGURATORE_RACCOLTA;
     }

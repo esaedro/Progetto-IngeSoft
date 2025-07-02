@@ -98,7 +98,6 @@ public class SessionController {
         placeService.rimuoviLuoghi(luoghiDaRimuovere);
     }
 
-    //TODO:CAMBIARE NOME IN getTipiVisita!
     public Set<TipoVisita> getTipiVisita() {
         return visitService.getTipiVisita();
     }
